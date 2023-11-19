@@ -1,3 +1,6 @@
 dependency-reduced-pom.xml
 .vscode/
 target/
+compile_to_exe.xml
+first_task/documentation.txt
+first_task/db.db

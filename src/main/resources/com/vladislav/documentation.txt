@@ -1,0 +1,5 @@
+Пояснительная записка
+файл db.db и программа должны находиться в одной папке
+
+Explanatory note
+db file.db and the program must be in the same folder

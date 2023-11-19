@@ -10,12 +10,12 @@ public class Event {
     private StringProperty timeToStart;
     private StringProperty type;
 
-    public Event(String title, String description, String timeToStart, Type type)
+    public Event(String title, String description, String timeToStart, String type)
     {
         this.title = new SimpleStringProperty(title);
         this.description = new SimpleStringProperty(description);
         this.timeToStart = new SimpleStringProperty(timeToStart);
-        this.type = new SimpleStringProperty(type.getName());
+        this.type = new SimpleStringProperty(type);
     }
 
     public String getTitle()

@@ -1,11 +1,11 @@
 package com.vladislav.models;
 
-public enum Type 
+public enum Type
 {
     PERFORMANCE("Предстваление"),
     CONCERT("Концерт"),
     REHEARSAL("Репетиция"),
-    EXHIBITION("Выставка"),     
+    EXHIBITION("Выставка"),
     LECTURE("Лекция");
 
 
@@ -19,5 +19,17 @@ public enum Type
     String getName()
     {
         return name;
+    }
+
+    static public Type getValueFromName(String name)
+    {
+        for (Type type : values())
+        {
+            if (type.name.equals(name))
+            {
+                return type;
+            }
+        }
+        return null;
     }
 }

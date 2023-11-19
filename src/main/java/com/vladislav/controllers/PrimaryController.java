@@ -1,17 +1,12 @@
-package com.vladislav;
+package com.vladislav.controllers;
 
 import java.io.IOException;
 
-import com.vladislav.models.Event;
+import com.vladislav.App;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableView;
 
-public class PrimaryController {
-    
-    @FXML
-    private TableView<Event> tableOfEvents;
+public class PrimaryController extends Controller{
 
     @FXML
     private void switchToEntertainments() throws IOException
@@ -29,11 +24,5 @@ public class PrimaryController {
     private void switchToTeaching() throws IOException
     {
         App.setRoot("teaching");
-    }
-
-    @FXML
-    private void exit()
-    {
-        Platform.exit();
     }
 }
