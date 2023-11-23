@@ -1,35 +1,32 @@
 package com.vladislav.models;
 
-public enum Type
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
+public class Type
 {
-    PERFORMANCE("Предстваление"),
-    CONCERT("Концерт"),
-    REHEARSAL("Репетиция"),
-    EXHIBITION("Выставка"),
-    LECTURE("Лекция");
+    private final StringProperty name;
+    private final StringProperty isEntertainment;
 
-
-    private String name;
-
-    Type(String name) 
+    public Type(String name, String isEntertainment)
     {
-        this.name = name;
-    }
-    
-    String getName()
-    {
-        return name;
+        this.name = new SimpleStringProperty(name);
+        this.isEntertainment = new SimpleStringProperty(isEntertainment);
     }
 
-    static public Type getValueFromName(String name)
-    {
-        for (Type type : values())
-        {
-            if (type.name.equals(name))
-            {
-                return type;
-            }
-        }
-        return null;
+    public String getName() {
+        return name.getValue();
+    }
+
+    public String getIsEntertainment() {
+        return isEntertainment.getValue();
+    }
+
+    public void setName(StringProperty name) {
+        this.name.set(name.get());
+    }
+
+    public void setIsEntertainment(String isEntertainment) {
+        this.isEntertainment.set(isEntertainment);
     }
 }

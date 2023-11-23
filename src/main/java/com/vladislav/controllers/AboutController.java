@@ -1,11 +1,9 @@
 package com.vladislav.controllers;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import com.vladislav.App;
@@ -29,17 +27,15 @@ public class AboutController extends Controller implements Initializable {
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 	    try 
         {
-			BufferedReader doc = new BufferedReader(new FileReader("documentation.txt", Charset.forName("windows-1251")));
-            textArea.setText(doc.lines().reduce((x, y) -> x + '\n' + y).get());              
-            doc.close();
-		} 
-        catch (FileNotFoundException ex) {
-			System.out.println(ex.getMessage());
-		}
-        catch (IOException ex) {
+            URL doc = App.class.getResource("documentation.txt");
+            assert doc != null;
+            BufferedReader text = new BufferedReader(new InputStreamReader((InputStream) doc.getContent()));
+            text.lines().reduce((x, y) -> x + '\n' + y).ifPresent(t -> textArea.setText(t));
+            text.close();
+		} catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
 
-	}
+    }
 
 }

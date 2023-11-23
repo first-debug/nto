@@ -1,6 +1,5 @@
-dependency-reduced-pom.xml
 .vscode/
+.idea/
 target/
-compile_to_exe.xml
-first_task/documentation.txt
-first_task/db.db
+out/
+solution/

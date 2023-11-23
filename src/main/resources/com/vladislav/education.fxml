@@ -12,91 +12,77 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" maxHeight="1080.0" maxWidth="1920.0" minHeight="400.0" minWidth="600.0" prefHeight="450.0" prefWidth="600.0" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.vladislav.controllers.EducationController">
-   <children>
-      <MenuBar fx:id="menuBar" prefHeight="17.0" prefWidth="552.0">
-         <menus>
-            <Menu mnemonicParsing="false" text="File">
-               <items>
-                  <MenuItem mnemonicParsing="false" onAction="#exit" text="Exit" />
-               </items>
-            </Menu>
-            <Menu mnemonicParsing="false" onAction="#edit" text="Edit" />
-            <Menu mnemonicParsing="false" text="Help">
-               <items>
-                  <MenuItem mnemonicParsing="false" onAction="#showDocumentation" text="About" />
-               </items>
-            </Menu>
-         </menus>
-      </MenuBar>
-      <Label alignment="CENTER" prefHeight="45.0" prefWidth="255.0" text="Развлечения" textAlignment="CENTER">
-         <font>
-            <Font size="30.0" />
-         </font>
-      </Label>
-      <HBox alignment="CENTER" prefHeight="295.0" prefWidth="560.0">
+<VBox alignment="TOP_CENTER" maxHeight="1080.0" maxWidth="1920.0" minHeight="400.0" minWidth="600.0" prefHeight="450.0"
+      prefWidth="600.0" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.vladislav.controllers.EducationController">
+   <MenuBar fx:id="menuBar" prefHeight="17.0" prefWidth="552.0">
+      <Menu mnemonicParsing="false" text="File">
+         <MenuItem mnemonicParsing="false" onAction="#exit" text="Exit"/>
+      </Menu>
+      <Menu mnemonicParsing="false" onAction="#edit" text="Edit" visible="false"/>
+      <Menu mnemonicParsing="false" text="Help">
+         <MenuItem mnemonicParsing="false" onAction="#showDocumentation" text="About"/>
+      </Menu>
+   </MenuBar>
+   <Label alignment="CENTER" prefHeight="45.0" prefWidth="255.0" text="Развлечения" textAlignment="CENTER">
+      <font>
+         <Font size="30.0"/>
+      </font>
+   </Label>
+   <HBox alignment="CENTER" prefHeight="295.0" prefWidth="560.0">
+      <opaqueInsets>
+         <Insets/>
+      </opaqueInsets>
+      <VBox.margin>
+         <Insets left="20.0" right="20.0"/>
+      </VBox.margin>
+      <TableView fx:id="tableOfEvents" accessibleHelp="Нет событий" prefHeight="269.0" prefWidth="560.0">
+         <columns>
+            <TableColumn fx:id="nameColumn" prefWidth="125.0" text="Имя"/>
+            <TableColumn fx:id="descriptionColumn" prefWidth="240.0" text="Описание"/>
+            <TableColumn fx:id="startColumn" prefWidth="107.0" text="Начало"/>
+            <TableColumn fx:id="typeColumn" prefWidth="86.0" text="Вид"/>
+         </columns>
+      </TableView>
+   </HBox>
+   <HBox alignment="CENTER" prefHeight="0.0" prefWidth="600.0">
+      <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="200.0">
          <opaqueInsets>
-            <Insets />
+            <Insets/>
          </opaqueInsets>
-         <VBox.margin>
-            <Insets left="20.0" right="20.0" />
-         </VBox.margin>
-         <children>
-            <TableView fx:id="tableOfEvents" accessibleHelp="Нет событий" prefHeight="269.0" prefWidth="560.0">
-               <columns>
-                  <TableColumn fx:id="nameColumn" prefWidth="125.0" text="Имя" />
-                  <TableColumn fx:id="descriptionColumn" prefWidth="240.0" text="Описание" />
-                  <TableColumn fx:id="startClolumn" prefWidth="107.0" text="Начало" />
-                  <TableColumn fx:id="typeColumn" prefWidth="86.0" text="Вид" />
-               </columns>
-            </TableView>
-         </children>
+         <HBox.margin>
+            <Insets bottom="5.0" right="90.0"/>
+         </HBox.margin>
+         <padding>
+            <Insets bottom="5.0" left="5.0"/>
+         </padding>
+         <Button mnemonicParsing="false" onAction="#switchToPrimary" text="Назад">
+            <font>
+               <Font size="13.0"/>
+            </font>
+            <HBox.margin>
+               <Insets/>
+            </HBox.margin>
+         </Button>
       </HBox>
-      <HBox alignment="CENTER" prefHeight="0.0" prefWidth="600.0">
-         <children>
-            <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <Button mnemonicParsing="false" onAction="#switchToPrimary" text="Назад">
-                     <font>
-                        <Font size="13.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </Button>
-               </children>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <HBox.margin>
-                  <Insets bottom="5.0" right="90.0" />
-               </HBox.margin>
-               <padding>
-                  <Insets bottom="5.0" left="5.0" />
-               </padding>
-            </HBox>
-            <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <Button mnemonicParsing="false" onAction="#exit" text="Выход" visible="false">
-                     <font>
-                        <Font size="13.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </Button>
-               </children>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <HBox.margin>
-                  <Insets bottom="5.0" left="90.0" />
-               </HBox.margin>
-               <padding>
-                  <Insets bottom="5.0" right="5.0" />
-               </padding>
-            </HBox>
-         </children>
+      <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0">
+         <opaqueInsets>
+            <Insets/>
+         </opaqueInsets>
+         <HBox.margin>
+            <Insets bottom="5.0" left="90.0"/>
+         </HBox.margin>
+         <padding>
+            <Insets bottom="5.0" right="5.0"/>
+         </padding>
+         <Button mnemonicParsing="false" onAction="#editEvents" text="Редактировать мероприятия">
+            <font>
+               <Font size="13.0"/>
+            </font>
+            <HBox.margin>
+               <Insets/>
+            </HBox.margin>
+         </Button>
       </HBox>
-   </children>
+   </HBox>
 </VBox>

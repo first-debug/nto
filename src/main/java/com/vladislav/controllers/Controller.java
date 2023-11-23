@@ -33,7 +33,7 @@ public class Controller {
     }
 
     @FXML
-    private void editEvents(ActionEvent event) {
-        System.out.print(event);
+    private void editEvents(ActionEvent event) throws IOException {
+        App.setRoot("createNewEvent");
     }
 }

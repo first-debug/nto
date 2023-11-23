@@ -25,4 +25,10 @@ public class PrimaryController extends Controller{
     {
         App.setRoot("teaching");
     }
+
+    @FXML
+    private void switchToEditEvents() throws IOException
+    {
+        App.setRoot("createNewEvent");
+    }
 }
