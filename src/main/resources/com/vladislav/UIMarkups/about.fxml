@@ -14,15 +14,9 @@
    <children>
       <MenuBar fx:id="menuBar" prefHeight="17.0" prefWidth="552.0">
          <menus>
-            <Menu mnemonicParsing="false" text="File">
+            <Menu mnemonicParsing="false" text="Файл">
                <items>
-                  <MenuItem mnemonicParsing="false" onAction="#exit" text="Exit" />
-               </items>
-            </Menu>
-            <Menu mnemonicParsing="false" onAction="#edit" text="Edit" visible="false" />
-            <Menu mnemonicParsing="false" text="Help" visible="false">
-               <items>
-                  <MenuItem mnemonicParsing="false" onAction="#showDocumentation" text="About" />
+                  <MenuItem mnemonicParsing="false" onAction="#exit" text="Выход" />
                </items>
             </Menu>
          </menus>
@@ -46,7 +40,7 @@
          <children>
             <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#switchToPrimary" text="Назад">
+                  <Button mnemonicParsing="false" onAction="#closeWindow" text="Назад">
                      <font>
                         <Font size="13.0" />
                      </font>

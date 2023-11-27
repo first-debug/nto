@@ -1,5 +1,6 @@
 package com.vladislav.controllers;
 
+import com.vladislav.App;
 import com.vladislav.models.DataBase;
 import com.vladislav.models.EventType;
 import com.vladislav.models.Space;
@@ -12,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -21,7 +23,7 @@ import java.util.ResourceBundle;
 
 import static javafx.collections.FXCollections.observableList;
 
-public class CreateNewEventController extends Controller implements Initializable {
+public class AdminCreateNewEventController extends Controller implements Initializable {
 
     @FXML
     private TextField titleInput;
@@ -74,13 +76,18 @@ public class CreateNewEventController extends Controller implements Initializabl
     @FXML
     private Text warningAddType;
 
+    @FXML @Override
+    public void switchToPrimary() throws IOException {
+        App.setRoot("adminDesktop");
+    }
+
     @FXML
     void fixMinutes() {
-        if (minutes.getValue().isEmpty()) {
+        if (minutes.getValue() == null || minutes.getValue().isEmpty()) {
             minutes.setValue("00");
             return;
         }
-        if (minutes.getValue() != null && Integer.parseInt(minutes.getValue()) > 59) {
+        if (minutes.getValue() == null || Integer.parseInt(minutes.getValue()) > 59) {
             minutes.setValue("59");
         }
     }
@@ -184,12 +191,8 @@ public class CreateNewEventController extends Controller implements Initializabl
             int year = Integer.parseInt(dateSet[0]);
             int month = Integer.parseInt(dateSet[1]);
             int day = Integer.parseInt(dateSet[2]);
-            int hour;
-            if (hours.getValue().isEmpty()) hour = 0;
-            else hour = Integer.parseInt(minutes.getValue());
-            int minute;
-            if (minutes.getValue().isEmpty()) minute = 0;
-            else minute = Integer.parseInt(minutes.getValue());
+            int hour = Integer.parseInt(hours.getValue());
+            int minute = Integer.parseInt(minutes.getValue());
             dateBuilder.setDate(year, month, day);
             dateBuilder.setTimeOfDay(hour, minute, 0);
             timeToStart = dateBuilder.build();
@@ -203,7 +206,7 @@ public class CreateNewEventController extends Controller implements Initializabl
             flag = false;
         }
         if (!flag) return; // выше последней проверки для того, чтобы знать наверняка, что timeToStart != null
-        if (!timeToStart.after(System.currentTimeMillis())) {
+        if (!timeToStart.before(System.currentTimeMillis())) {
             warningDate.setVisible(true);
             return;
         }

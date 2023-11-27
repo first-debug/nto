@@ -3,7 +3,8 @@ package com.vladislav.models;
 public enum Status {
     CREATED("Создана"),
     EXECUTED("К выполнению"),
-    COMPLETED("Выполнена");
+    COMPLETED("Выполнена"),
+    OVERDUE("Просрочена");
 
     private final String name;
 

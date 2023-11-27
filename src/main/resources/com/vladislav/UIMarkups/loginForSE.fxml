@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox alignment="TOP_CENTER" maxHeight="1080.0" maxWidth="1920.0" minHeight="600.0" minWidth="960.0" prefHeight="650.0" prefWidth="980.0" spacing="50.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.vladislav.controllers.LoginForSEController">
+   <MenuBar fx:id="menuBar" prefHeight="17.0" prefWidth="552.0">
+      <menus>
+         <Menu mnemonicParsing="false" text="Файл">
+            <items>
+               <MenuItem mnemonicParsing="false" onAction="#exit" text="Выход" />
+            </items>
+         </Menu>
+         <Menu mnemonicParsing="false" text="Помощь">
+            <items>
+               <MenuItem mnemonicParsing="false" onAction="#showDocumentation" text="О приложении" />
+            </items>
+         </Menu>
+      </menus>
+   </MenuBar>
+    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Вход">
+        <font>
+            <Font size="31.0" />
+        </font>
+    </Text>
+    <HBox alignment="CENTER" prefHeight="302.0" prefWidth="920.0" spacing="5.0">
+        <opaqueInsets>
+            <Insets />
+        </opaqueInsets>
+        <VBox.margin>
+            <Insets left="20.0" right="20.0" />
+        </VBox.margin>
+        <VBox alignment="CENTER" prefHeight="302.0" prefWidth="573.0" spacing="15.0">
+            <HBox.margin>
+                <Insets left="5.0" right="5.0" />
+            </HBox.margin>
+            <padding>
+                <Insets bottom="5.0" left="60.0" right="60.0" top="5.0" />
+            </padding>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Логин" textAlignment="CENTER" wrappingWidth="97.0">
+                <font>
+                    <Font size="18.0" />
+                </font>
+            </Text>
+            <VBox prefHeight="58.0" prefWidth="577.0" spacing="10.0">
+                <TextField fx:id="loginInput" onMouseClicked="#hideWarnings" prefHeight="25.0" prefWidth="437.0" promptText="Логин">
+                    <cursor>
+                        <Cursor fx:constant="TEXT" />
+                    </cursor>
+                    <VBox.margin>
+                        <Insets />
+                    </VBox.margin>
+               <font>
+                  <Font size="15.0" />
+               </font>
+                </TextField>
+                <Text fx:id="warningLogin" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="1234567890" visible="false" wrappingWidth="427.0">
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin></Text>
+            <VBox.margin>
+               <Insets />
+            </VBox.margin>
+            </VBox>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Пароль" textAlignment="CENTER" wrappingWidth="97.0">
+                <font>
+                    <Font size="18.0" />
+                </font>
+            </Text>
+            <VBox prefHeight="55.0" prefWidth="577.0" spacing="10.0">
+            <TextField fx:id="passwordInput" accessibleRole="PASSWORD_FIELD" onMouseClicked="#hideWarnings" prefHeight="25.0" prefWidth="608.0" promptText=" Пароль">
+               <cursor>
+                  <Cursor fx:constant="TEXT" />
+               </cursor>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </TextField>
+                <Text id="warning-text" fx:id="warningPassword" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="1234567890" visible="false" wrappingWidth="427.0">
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin></Text>
+            </VBox>
+          <HBox alignment="CENTER" prefHeight="37.0" prefWidth="541.0">
+              <HBox alignment="BOTTOM_LEFT" prefHeight="35.0" prefWidth="232.0">
+                  <opaqueInsets>
+                      <Insets />
+                  </opaqueInsets>
+                  <HBox.margin>
+                      <Insets bottom="5.0" />
+                  </HBox.margin>
+                  <padding>
+                      <Insets bottom="5.0" left="5.0" />
+                  </padding>
+                  <Button mnemonicParsing="false" onAction="#switchToPrimary" text="Назад">
+                      <font>
+                          <Font size="14.0" />
+                      </font>
+                      <HBox.margin>
+                          <Insets />
+                      </HBox.margin>
+                  </Button>
+              </HBox>
+              <HBox alignment="BOTTOM_RIGHT" prefHeight="32.0" prefWidth="285.0" spacing="20.0">
+                  <opaqueInsets>
+                      <Insets />
+                  </opaqueInsets>
+                  <HBox.margin>
+                      <Insets bottom="5.0" />
+                  </HBox.margin>
+                  <padding>
+                      <Insets bottom="5.0" right="5.0" />
+                  </padding>
+                  <Button mnemonicParsing="false" onAction="#login" text="Войти">
+                      <font>
+                          <Font size="14.0" />
+                      </font>
+                      <HBox.margin>
+                          <Insets />
+                      </HBox.margin>
+                  </Button>
+               <Button mnemonicParsing="false" onAction="#clearForm" text="Сбросить">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+               </Button>
+              </HBox>
+          </HBox>
+        </VBox>
+    </HBox>
+</VBox>

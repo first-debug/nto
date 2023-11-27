@@ -6,64 +6,75 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" maxHeight="1080.0" maxWidth="1920.0" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.vladislav.controllers.PrimaryController">
+<VBox alignment="TOP_CENTER" maxHeight="1080.0" maxWidth="1920.0" minHeight="600.0" minWidth="960.0" prefHeight="650.0" prefWidth="980.0" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.vladislav.controllers.PrimaryController">
    <MenuBar fx:id="menuBar" prefHeight="17.0" prefWidth="552.0">
-      <Menu mnemonicParsing="false" text="File">
-         <MenuItem mnemonicParsing="false" onAction="#exit" text="Exit" />
+      <Menu mnemonicParsing="false" text="Файл">
+         <MenuItem mnemonicParsing="false" onAction="#switchToLoginWindow" text="Вход для сотрудников" />
+         <SeparatorMenuItem mnemonicParsing="false" />
+         <MenuItem mnemonicParsing="false" onAction="#exit" text="Выход" />
       </Menu>
-      <Menu mnemonicParsing="false" onAction="#edit" text="Edit" visible="false" />
-      <Menu mnemonicParsing="false" text="Help">
-         <MenuItem mnemonicParsing="false" onAction="#showDocumentation" text="About" />
+      <Menu mnemonicParsing="false" text="Помощь">
+         <MenuItem mnemonicParsing="false" onAction="#showDocumentation" text="О приложении" />
       </Menu>
    </MenuBar>
-   <Label prefHeight="45.0" prefWidth="255.0" text="Выбирете раздел:">
+   <Label prefHeight="58.0" prefWidth="255.0" text="Выбирете раздел:">
       <font>
-         <Font size="30.0" />
+         <Font size="31.0" />
       </font>
    </Label>
-   <HBox alignment="CENTER" prefHeight="103.0" prefWidth="600.0">
+   <VBox alignment="CENTER" prefHeight="67.0" prefWidth="960.0" spacing="30.0">
+      <children>
+         <Button onAction="#switchToEventsList" text="Список всех мероприятий" textAlignment="CENTER">
+            <opaqueInsets>
+               <Insets />
+            </opaqueInsets>
+            <font>
+               <Font size="18.0" />
+            </font>
+         </Button>
+      </children>
+   </VBox>
+   <HBox alignment="CENTER" prefHeight="119.0" prefWidth="960.0" spacing="100.0">
       <opaqueInsets>
          <Insets />
       </opaqueInsets>
-      <Button onAction="#switchToEntertainments" prefHeight="41.0" prefWidth="114.0" text="Развлечения">
+      <Button onAction="#switchToEntertainments" text="Развлечения" textAlignment="CENTER">
          <opaqueInsets>
             <Insets right="10.0" />
          </opaqueInsets>
          <HBox.margin>
-            <Insets right="30.0" />
+            <Insets />
          </HBox.margin>
          <font>
-            <Font size="14.0" />
+            <Font size="18.0" />
          </font>
       </Button>
-      <Button layoutX="230.0" layoutY="48.0" onAction="#switchToEducation" prefHeight="41.0" prefWidth="114.0" text="Просвещение">
+      <Button onAction="#switchToEducation" text="Просвещение" textAlignment="CENTER">
          <opaqueInsets>
             <Insets left="10.0" right="10.0" />
          </opaqueInsets>
-         <HBox.margin>
-            <Insets left="45.0" right="45.0" />
-         </HBox.margin>
          <font>
-            <Font size="14.0" />
+            <Font size="18.0" />
          </font>
       </Button>
-      <Button layoutX="154.0" layoutY="48.0" onAction="#switchToTeaching" prefHeight="41.0" prefWidth="114.0" text="Образование">
+      <Button layoutX="154.0" layoutY="48.0" onAction="#switchToTeaching" text="Образование" textAlignment="CENTER">
          <opaqueInsets>
             <Insets left="10.0" />
          </opaqueInsets>
          <HBox.margin>
-            <Insets left="30.0" />
+            <Insets />
          </HBox.margin>
          <font>
-            <Font size="13.0" />
+            <Font size="18.0" />
          </font>
       </Button>
    </HBox>
-   <HBox alignment="CENTER" prefHeight="234.0" prefWidth="592.0">
+   <HBox alignment="CENTER" prefHeight="290.0" prefWidth="960.0">
       <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="200.0">
          <opaqueInsets>
             <Insets />
@@ -76,7 +87,7 @@
          </padding>
          <Button mnemonicParsing="false" text="Назад" visible="false">
             <font>
-               <Font size="13.0" />
+               <Font size="15.0" />
             </font>
             <HBox.margin>
                <Insets />
@@ -93,7 +104,10 @@
          <padding>
             <Insets bottom="15.0" />
          </padding>
-         <Button mnemonicParsing="false" onAction="#switchToEditEvents" text="Добавить событие" />
+         <Button mnemonicParsing="false" onAction="#switchToEditEvents" text="Добавить событие" visible="false">
+            <font>
+               <Font size="16.0" />
+            </font></Button>
       </HBox>
       <HBox alignment="BOTTOM_RIGHT" prefHeight="204.0" prefWidth="200.0">
          <opaqueInsets>
@@ -107,7 +121,7 @@
          </padding>
          <Button mnemonicParsing="false" onAction="#exit" text="Выход">
             <font>
-               <Font size="13.0" />
+               <Font size="15.0" />
             </font>
             <HBox.margin>
                <Insets />

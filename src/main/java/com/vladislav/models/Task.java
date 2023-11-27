@@ -1,50 +1,90 @@
 package com.vladislav.models;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.LongProperty;
-import javafx.beans.property.Property;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Task {
-    private final LongProperty timeOfReg;
-    private final Property<Event> event;
-    private final StringProperty typeName;
-    private final IntegerProperty spaceName;
-    private final LongProperty deadline;
-    private final StringProperty description;
-    private final Property<Status> status;
 
-    public Task(LongProperty timeOfReg, Property<Event> event,
-                StringProperty typeName, IntegerProperty spaceName,
-                LongProperty deadline, StringProperty description,
-                Property<Status> status) {
+    private final Integer id;
+    private final Long timeOfReg;
+    private final StringProperty timeOfRegName;
+    private final TaskType type;
+    private final StringProperty typeName;
+    private final Event event;
+    private final StringProperty eventName;
+    private final Space space;
+    private final StringProperty spaceName;
+    private final LongProperty deadline;
+    private final StringProperty deadlineString;
+    private final StringProperty description;
+    private Status status;
+    private StringProperty statusName;
+
+    public Task(Integer id, Long timeOfReg, Event event,
+                TaskType type, Long deadline, Status status) {
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm dd.MM.yyyy");
+
+        this.id = id;
         this.timeOfReg = timeOfReg;
+        this.timeOfRegName = new SimpleStringProperty(format.format(new Date(this.timeOfReg)));
         this.event = event;
-        this.typeName = typeName;
-        this.spaceName = spaceName;
-        this.deadline = deadline;
-        this.description = description;
+        this.eventName = new SimpleStringProperty(event.getTitle());
+        this.type = type;
+        this.typeName = new SimpleStringProperty(type.getName());
+        this.space = event.getSpace();
+        this.spaceName = new SimpleStringProperty(this.space.getName());
+        this.deadline = new SimpleLongProperty(deadline);
+        this.description = new SimpleStringProperty(this.type.getDescription());
         this.status = status;
+        this.statusName = new SimpleStringProperty(status.getName());
+        this.deadlineString = new SimpleStringProperty(format.format(new Date(deadline)));
     }
 
-    public long getTimeOfReg() {
-        return timeOfReg.get();
+    public void setCompleted() {
+        status = Status.COMPLETED;
+        statusName = new SimpleStringProperty(status.getName());
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public Long getTimeOfReg() {
+        return timeOfReg;
     }
 
     public Event getEvent() {
-        return event.getValue();
+        return event;
+    }
+
+    public String getEventName() {
+        return eventName.get();
+    }
+
+    public TaskType getType() {
+        return type;
     }
 
     public String getTypeName() {
         return typeName.get();
     }
 
-    public int getSpaceName() {
+    public Space getSpace() {
+        return space;
+    }
+
+    public String getSpaceName() {
         return spaceName.get();
     }
 
-    public long getDeadline() {
+    public Long getDeadline() {
         return deadline.get();
+    }
+
+    public String getDeadlineString() {
+        return deadlineString.get();
     }
 
     public String getDescription() {
@@ -52,6 +92,14 @@ public class Task {
     }
 
     public Status getStatus() {
-        return status.getValue();
+        return status;
+    }
+
+    public String getStatusName() {
+        return statusName.get();
+    }
+
+    public String getTimeOfRegName() {
+        return timeOfRegName.get();
     }
 }

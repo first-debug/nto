@@ -9,31 +9,38 @@ import com.vladislav.App;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuBar;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 public class Controller {
 
     @FXML
-    private MenuBar menuBar;
-
-    @FXML
-    private void exit(ActionEvent event)
-    {
+    private void exit() {
         App.exit();
     }
 
     @FXML
-    private void showDocumentation(ActionEvent event) throws IOException
-    {
-        App.setRoot("about");
+    private void closeWindow() {
+        App.closeSecondWindow();
     }
 
     @FXML
-    private void edit(ActionEvent event) {
-        System.out.print(event);
+    private void showDocumentation() throws IOException {
+        App.newSecondWindow("about", "About");
     }
 
     @FXML
-    private void editEvents(ActionEvent event) throws IOException {
+    private void switchToLoginWindow() throws IOException {
+        App.setRoot("loginForSE");
+    }
+
+    @FXML
+    private void editEvents() throws IOException {
         App.setRoot("createNewEvent");
+    }
+
+    @FXML
+    void switchToPrimary() throws IOException {
+        App.setRoot("primary");
     }
 }

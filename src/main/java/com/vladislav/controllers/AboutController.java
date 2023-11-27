@@ -18,11 +18,6 @@ public class AboutController extends Controller implements Initializable {
     @FXML
     private Text textArea;
 
-    @FXML
-    private void switchToPrimary(ActionEvent event) throws IOException {
-        App.setRoot("primary");
-    }
-
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 	    try 
@@ -33,7 +28,7 @@ public class AboutController extends Controller implements Initializable {
             text.lines().reduce((x, y) -> x + '\n' + y).ifPresent(t -> textArea.setText(t));
             text.close();
 		} catch (IOException ex) {
-            System.out.println(ex.getMessage());
+            App.logger.error(ex.getMessage());
         }
 
     }

@@ -1,27 +1,35 @@
 package com.vladislav.models;
 
-import javafx.beans.property.LongProperty;
-import javafx.beans.property.SimpleLongProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Event {
-    
+
+
+    private final Integer id;
     private final StringProperty title;
     private final StringProperty description;
+    private final Space space;
+    private final StringProperty spaceName;
     private final LongProperty timeToStart;
     private final StringProperty stringTime;
-    private final StringProperty type;
+    private final EventType eventType;
+    private final StringProperty typeName;
+    private final boolean isEntertainment;
 
-    public Event(String title, String description, Long timeToStart, String type)
+    public Event(Integer id, String title, String description, Space space, Long timeToStart, EventType eventType)
     {
+        this.id = id;
         this.title = new SimpleStringProperty(title);
         this.description = new SimpleStringProperty(description);
+        this.space = space;
+        this.spaceName = new SimpleStringProperty(this.space.getName());
         this.timeToStart = new SimpleLongProperty(timeToStart);
-        this.type = new SimpleStringProperty(type);
+        this.eventType = eventType;
+        this.typeName = new SimpleStringProperty(eventType.getName());
+        this.isEntertainment = eventType.getIsEntertainment();
         
         SimpleDateFormat format = new SimpleDateFormat("HH:mm dd.MM.yyyy");
         this.stringTime = new SimpleStringProperty(format.format(new Date(timeToStart)));
@@ -36,15 +44,35 @@ public class Event {
 		return description.get();
 	}
 
-	public Long getTimeToStart() {
+    public Space getSpace() {
+        return space;
+    }
+
+    public String getSpaceName() {
+        return spaceName.get();
+    }
+
+    public Long getTimeToStart() {
 		return timeToStart.get();
 	}
 
-	public String getType() {
-		return type.get();
+	public EventType getType() {
+		return eventType;
 	}
+
+    public String getTypeName() {
+        return typeName.get();
+    }
 
     public String getStringTime() {
         return stringTime.get();
+    }
+
+    public boolean getIsEntertainment() {
+        return isEntertainment;
+    }
+
+    public Integer getId() {
+        return id;
     }
 }
