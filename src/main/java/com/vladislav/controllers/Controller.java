@@ -6,11 +6,9 @@ import java.io.IOException;
 
 import com.vladislav.App;
 
-import javafx.event.ActionEvent;
+import com.vladislav.controllers.primary.CreateNewEventController;
+import com.vladislav.controllers.primary.PrimaryController;
 import javafx.fxml.FXML;
-import javafx.scene.control.MenuBar;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 
 public class Controller {
 
@@ -26,21 +24,21 @@ public class Controller {
 
     @FXML
     private void showDocumentation() throws IOException {
-        App.newSecondWindow("about", "About");
+        App.newSecondWindow("about", new AboutController(),"About");
     }
 
     @FXML
-    private void switchToLoginWindow() throws IOException {
-        App.setRoot("loginForSE");
+    private void switchToLoginWindow() {
+        App.setRoot("loginForSE", new LoginForSEController());
     }
 
     @FXML
-    private void editEvents() throws IOException {
-        App.setRoot("createNewEvent");
+    private void editEvents() {
+        App.setRoot("createNewEvent", new CreateNewEventController());
     }
 
     @FXML
-    void switchToPrimary() throws IOException {
-        App.setRoot("primary");
+    void switchToPrimary() {
+        App.setRoot("primary", new PrimaryController());
     }
 }

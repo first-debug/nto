@@ -1,4 +1,4 @@
-package com.vladislav.models;
+package com.vladislav.controllers;
 
 import com.vladislav.controllers.Controller;
 

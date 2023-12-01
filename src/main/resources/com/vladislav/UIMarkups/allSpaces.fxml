@@ -12,20 +12,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" maxHeight="1080.0" maxWidth="1920.0" minHeight="600.0" minWidth="960.0" prefHeight="650.0" prefWidth="980.0" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.vladislav.controllers.AdminAllSpacesController">
+<VBox alignment="TOP_CENTER" maxHeight="1080.0" maxWidth="1920.0" minHeight="600.0" minWidth="960.0" prefHeight="650.0" prefWidth="980.0" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <MenuBar fx:id="menuBar" prefHeight="17.0" prefWidth="552.0">
-      <menus>
-         <Menu mnemonicParsing="false" text="Файл">
-            <items>
-               <MenuItem mnemonicParsing="false" onAction="#exit" text="Выход" />
-            </items>
-         </Menu>
-         <Menu mnemonicParsing="false" text="Помощь">
-            <items>
-               <MenuItem mnemonicParsing="false" onAction="#showDocumentation" text="О приложении" />
-            </items>
-         </Menu>
-      </menus>
+      <Menu mnemonicParsing="false" text="Файл">
+         <MenuItem mnemonicParsing="false" onAction="#exit" text="Выход"/>
+      </Menu>
+      <Menu mnemonicParsing="false" text="Помощь">
+         <MenuItem mnemonicParsing="false" onAction="#showDocumentation" text="О приложении"/>
+      </Menu>
    </MenuBar>
    <Label alignment="CENTER" prefHeight="45.0" prefWidth="255.0" text="Все заявки" textAlignment="CENTER">
       <font>
@@ -41,7 +35,7 @@
       </VBox.margin>
       <TableView fx:id="tableOfSpaces" accessibleHelp="Нет событий" prefHeight="440.0" prefWidth="951.0">
          <columns>
-            <TableColumn fx:id="idColumn" prefWidth="79.0" text="Id" />
+            <TableColumn fx:id="idColumn" prefWidth="79.0" text="ID" />
             <TableColumn fx:id="nameColumn" prefWidth="192.0" text="Название" />
             <TableColumn fx:id="descriptionColumn" prefWidth="445.0" text="Описнание" />
             <TableColumn fx:id="areaColumn" prefWidth="125.0" text="Площадь" />

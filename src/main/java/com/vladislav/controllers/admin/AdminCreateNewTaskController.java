@@ -1,6 +1,8 @@
-package com.vladislav.controllers;
+package com.vladislav.controllers.admin;
 
 import com.vladislav.App;
+import com.vladislav.controllers.AdminDesktopController;
+import com.vladislav.controllers.Controller;
 import com.vladislav.models.*;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -16,10 +18,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.ResourceBundle;
 
-public class EditTasksController extends Controller implements Initializable {
+public class AdminCreateNewTaskController extends Controller implements Initializable {
 
     @FXML
     private TableView<Event> eventTable;
@@ -31,7 +32,7 @@ public class EditTasksController extends Controller implements Initializable {
     private TableColumn<Event, StringProperty> startTimeColumn;
 
     @FXML
-    private TableColumn<Event, StringProperty> eventTypeColumn;
+    private TableColumn<Event, String> eventTypeColumn;
 
     @FXML
     private TableView<TaskType> typeTable;
@@ -103,7 +104,7 @@ public class EditTasksController extends Controller implements Initializable {
                 return;
             }
         }
-        DataBase.addTask(new Task((int) (Math.random() * 1000), System.currentTimeMillis(), event, type, deadline, status));
+        DataBase.addTask(System.currentTimeMillis(), type, event, deadline, status);
         cleanForm();
     }
 
@@ -135,17 +136,17 @@ public class EditTasksController extends Controller implements Initializable {
     }
 
     @FXML
-    @Override
     public void switchToPrimary() throws IOException {
-        App.setRoot("adminDesktop");
+        App.setRoot("adminDesktop", new AdminDesktopController());
 }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        // eventTable
         eventColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         startTimeColumn.setCellValueFactory(new PropertyValueFactory<>("stringTime"));
-        eventTypeColumn.setCellValueFactory(new PropertyValueFactory<>("typeName"));
-
+        eventTypeColumn.setCellValueFactory(cell -> cell.getValue().titleProperty());
+        // typeTable
         taskType.setCellValueFactory(new PropertyValueFactory<>("name"));
         typeDescriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
 
@@ -155,7 +156,7 @@ public class EditTasksController extends Controller implements Initializable {
             eventTable.setItems(eventsRows);
         }
 
-        ArrayList<TaskType> taskTypesList = DataBase.getTaskTypeList();
+        ArrayList<TaskType> taskTypesList = DataBase.getTypeTaskList();
         if (!eventList.isEmpty()) {
             ObservableList<TaskType> taskTypesRows = FXCollections.observableArrayList(taskTypesList);
             typeTable.setItems(taskTypesRows);

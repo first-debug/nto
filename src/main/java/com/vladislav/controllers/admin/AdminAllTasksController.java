@@ -1,6 +1,8 @@
-package com.vladislav.controllers;
+package com.vladislav.controllers.admin;
 
 import com.vladislav.App;
+import com.vladislav.controllers.AdminDesktopController;
+import com.vladislav.controllers.EventTablesController;
 import com.vladislav.models.DataBase;
 import com.vladislav.models.Task;
 import javafx.beans.property.StringProperty;
@@ -27,13 +29,13 @@ public class AdminAllTasksController extends EventTablesController implements In
     private TableColumn<Task, StringProperty> descriptionColumn;
 
     @FXML
-    private TableColumn<Task, StringProperty> eventColumn;
+    private TableColumn<Task, String> eventColumn;
 
     @FXML
-    private TableColumn<Task, StringProperty> spaceColumn;
+    private TableColumn<Task, String> spaceColumn;
 
     @FXML
-    private TableColumn<Task, StringProperty> statusColumn;
+    private TableColumn<Task, String> statusColumn;
 
     @FXML
     private TableView<Task> tableOfTasks;
@@ -42,12 +44,11 @@ public class AdminAllTasksController extends EventTablesController implements In
     private TableColumn<Task, StringProperty> timeRegColumn;
 
     @FXML
-    private TableColumn<Task, StringProperty> typeColumn;
+    private TableColumn<Task, String> typeColumn;
 
     @FXML
-    @Override
     public void switchToPrimary() throws IOException {
-        App.setRoot("adminDesktop");
+        App.setRoot("adminDesktop", new AdminDesktopController());
     }
 
     @Override
@@ -99,16 +100,16 @@ public class AdminAllTasksController extends EventTablesController implements In
             super.updateSelected(var1);
         }
     });
-        typeColumn.setCellValueFactory(new PropertyValueFactory<>("typeName"));
+        typeColumn.setCellValueFactory(cell -> cell.getValue().getType().nameProperty());
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         deadlineColumn.setCellValueFactory(new PropertyValueFactory<>("deadlineString"));
-        eventColumn.setCellValueFactory(new PropertyValueFactory<>("eventName"));
-        spaceColumn.setCellValueFactory(new PropertyValueFactory<>("spaceName"));
-        statusColumn.setCellValueFactory(new PropertyValueFactory<>("statusName"));
+        eventColumn.setCellValueFactory(cell -> cell.getValue().getEvent().titleProperty());
+        spaceColumn.setCellValueFactory(cell -> cell.getValue().getSpace().nameProperty());
+        statusColumn.setCellValueFactory(cell -> cell.getValue().getStatus().nameProperty());
         timeRegColumn.setCellValueFactory(new PropertyValueFactory<>("timeOfRegName"));
 
 
-        ArrayList<Task> events = DataBase.getTasksList(false);
+        ArrayList<Task> events = DataBase.getTasksList(false, null);
         if (!events.isEmpty()) {
             ObservableList<Task> listOfStrings = FXCollections.observableArrayList(events);
             tableOfTasks.setItems(listOfStrings);

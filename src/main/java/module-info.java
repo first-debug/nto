@@ -9,7 +9,10 @@ module com.vladislav {
 
     opens com.vladislav to javafx.fxml;
     opens com.vladislav.models to javafx.base;
-    opens com.vladislav.controllers to javafx.fxml;
     exports com.vladislav;
     exports com.vladislav.models;
+    opens com.vladislav.controllers.admin to javafx.fxml;
+    opens com.vladislav.controllers.primary to javafx.fxml;
+    exports com.vladislav.controllers;
+    opens com.vladislav.controllers to javafx.base, javafx.fxml;
 }

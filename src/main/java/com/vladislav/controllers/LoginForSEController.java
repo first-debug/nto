@@ -42,7 +42,8 @@ public class LoginForSEController extends Controller{
     }
 
     @FXML
-    void login() throws IOException {
+    void login() {
+        App.setRoot("desktopForSE", new DesktopForSEController());
         boolean flag = true;
 
         String login = loginInput.getText();
@@ -84,7 +85,7 @@ public class LoginForSEController extends Controller{
             return;
         }
         String role = dbAnswer[2];
-        if (role.equals("admin")) App.setRoot("adminDesktop");
-        else if (role.equals("service")) App.setRoot("desktopForSE");
+        if (role.equals("admin")) App.setRoot("adminDesktop", new AdminDesktopController());
+        else if (role.equals("service")) App.setRoot("desktopForSE", new DesktopForSEController());
     }
 }

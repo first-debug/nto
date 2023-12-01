@@ -1,6 +1,8 @@
-package com.vladislav.controllers;
+package com.vladislav.controllers.admin;
 
 import com.vladislav.App;
+import com.vladislav.controllers.AdminDesktopController;
+import com.vladislav.controllers.EventTablesController;
 import com.vladislav.models.DataBase;
 import com.vladislav.models.Space;
 import com.vladislav.models.Task;
@@ -23,33 +25,27 @@ import java.util.ResourceBundle;
 public class AdminAllSpacesController extends EventTablesController implements Initializable {
 
     @FXML
-    private TableColumn<Space, IntegerProperty> areaColumn;
-
+    private TableView<Space> tableOfSpaces;
+    @FXML
+    private TableColumn<Space, IntegerProperty> idColumn;
+    @FXML
+    private TableColumn<Space, StringProperty> nameColumn;
     @FXML
     private TableColumn<Space, StringProperty> descriptionColumn;
-
+    @FXML
+    private TableColumn<Space, IntegerProperty> areaColumn;
     @FXML
     private TableColumn<Space, IntegerProperty> capacityColumn;
 
     @FXML
-    private TableView<Space> tableOfSpaces;
-
-    @FXML
-    private TableColumn<Space, StringProperty> nameColumn;
-
-    @FXML
-    private TableColumn<Space, IntegerProperty> idColumn;
-
-    @FXML
-    @Override
     public void switchToPrimary() throws IOException {
-        App.setRoot("adminDesktop");
+        App.setRoot("adminDesktop", new AdminDesktopController());
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         areaColumn.setCellValueFactory(new PropertyValueFactory<>("area"));
         capacityColumn.setCellValueFactory(new PropertyValueFactory<>("capacity"));
 

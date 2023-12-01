@@ -2,49 +2,43 @@ package com.vladislav.models;
 
 import javafx.beans.property.*;
 
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
+import static com.vladislav.App.format;
+
 public class Task {
+    public final static  ArrayList<Task> objectsList = new ArrayList<>();
 
     private final Integer id;
     private final Long timeOfReg;
-    private final StringProperty timeOfRegName;
-    private final TaskType type;
-    private final StringProperty typeName;
-    private final Event event;
-    private final StringProperty eventName;
-    private final Space space;
-    private final StringProperty spaceName;
+    private final StringProperty timeOfRegString;
+    private final Property<TaskType> type;
+    private final Property<Event> event;
+    private final Property<Space> space;
     private final LongProperty deadline;
     private final StringProperty deadlineString;
     private final StringProperty description;
     private Status status;
-    private StringProperty statusName;
 
     public Task(Integer id, Long timeOfReg, Event event,
                 TaskType type, Long deadline, Status status) {
-        SimpleDateFormat format = new SimpleDateFormat("HH:mm dd.MM.yyyy");
 
         this.id = id;
         this.timeOfReg = timeOfReg;
-        this.timeOfRegName = new SimpleStringProperty(format.format(new Date(this.timeOfReg)));
-        this.event = event;
-        this.eventName = new SimpleStringProperty(event.getTitle());
-        this.type = type;
-        this.typeName = new SimpleStringProperty(type.getName());
-        this.space = event.getSpace();
-        this.spaceName = new SimpleStringProperty(this.space.getName());
+        this.timeOfRegString = new SimpleStringProperty(format.format(new Date(this.timeOfReg)));
+        this.event = new SimpleObjectProperty<>(event);
+        this.type = new SimpleObjectProperty<>(type);
+        this.space = new SimpleObjectProperty<>(event.getSpace());
         this.deadline = new SimpleLongProperty(deadline);
-        this.description = new SimpleStringProperty(this.type.getDescription());
+        this.description = new SimpleStringProperty(type.getDescription());
         this.status = status;
-        this.statusName = new SimpleStringProperty(status.getName());
         this.deadlineString = new SimpleStringProperty(format.format(new Date(deadline)));
+        Task.objectsList.add(this);
     }
 
     public void setCompleted() {
         status = Status.COMPLETED;
-        statusName = new SimpleStringProperty(status.getName());
     }
 
     public Integer getId() {
@@ -56,27 +50,27 @@ public class Task {
     }
 
     public Event getEvent() {
+        return event.getValue();
+    }
+
+    public Property<Event> EventProperty() {
         return event;
     }
 
-    public String getEventName() {
-        return eventName.get();
+    public TaskType getType() {
+        return type.getValue();
     }
 
-    public TaskType getType() {
+    public Property<TaskType> TaskTypeProperty() {
         return type;
     }
 
-    public String getTypeName() {
-        return typeName.get();
-    }
-
     public Space getSpace() {
-        return space;
+        return space.getValue();
     }
 
-    public String getSpaceName() {
-        return spaceName.get();
+    public Property<Space> SpaceProperty() {
+        return space;
     }
 
     public Long getDeadline() {
@@ -95,11 +89,24 @@ public class Task {
         return status;
     }
 
-    public String getStatusName() {
-        return statusName.get();
+    public String getTimeOfRegName() {
+        return timeOfRegString.get();
     }
 
-    public String getTimeOfRegName() {
-        return timeOfRegName.get();
+    @Override
+    public String toString() {
+        return "Task{" +
+                this.hashCode() +
+                " id=" + id +
+                ", timeOfReg=" + timeOfReg +
+                ", timeOfRegString=" + timeOfRegString +
+                ", type=" + type +
+                ", event=" + event +
+                ", space=" + space.getName() +
+                ", deadline=" + deadline +
+                ", deadlineString=" + deadlineString +
+                ", description=" + description +
+                ", status=" + status +
+                '}';
     }
 }

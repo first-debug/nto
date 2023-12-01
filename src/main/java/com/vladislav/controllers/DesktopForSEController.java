@@ -2,6 +2,7 @@ package com.vladislav.controllers;
 
 import com.vladislav.models.*;
 import javafx.beans.property.Property;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,32 +21,24 @@ import java.util.ResourceBundle;
 
 public class DesktopForSEController extends Controller implements Initializable {
 
-
-    FilteredList<Task> filteredList;
-
+    private FilteredList<Task> filteredList;
     @FXML
     private ChoiceBox<String> filter;
-
     @FXML
     private TableView<Task> tableOfTasks;
-
     @FXML
-    private TableColumn<Task, StringProperty> nameColumn;
-
+    private TableColumn<Task, String> nameColumn;
     @FXML
-    private TableColumn<Task, Status> statusColumn;
-
+    private TableColumn<Task, String> statusColumn;
     @FXML
-    private TableColumn<Task, Property<Event>> eventColumn;
-
+    private TableColumn<Task, String> eventColumn;
     @FXML
-    private TableColumn<Task, StringProperty> spaceColumn;
-
+    private TableColumn<Task, String> spaceColumn;
     @FXML
     private TableColumn<Task, StringProperty> deadlineColumn;
-
     @FXML
     private TableColumn<Task, StringProperty> descriptionColumn;
+    private int count;
 
     @FXML
     private void markCompleted() {
@@ -59,7 +52,7 @@ public class DesktopForSEController extends Controller implements Initializable 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ArrayList<TaskType> spacesList = DataBase.getTaskTypeList();
+        ArrayList<TaskType> spacesList = DataBase.getTypeTaskList();
         ArrayList<String> spaceStringsList = new ArrayList<>();
         spaceStringsList.add("Все");
         for (TaskType sp : spacesList) spaceStringsList.add(sp.getName());
@@ -67,26 +60,44 @@ public class DesktopForSEController extends Controller implements Initializable 
             filter.setItems(FXCollections.observableList(spaceStringsList));
         }
         filter.setValue("Все");
-        tableOfTasks.setRowFactory(row -> new TableRow<>(){
+
+        nameColumn.setCellValueFactory(cell -> cell.getValue().getType().nameProperty());
+        statusColumn.setCellValueFactory(cell -> cell.getValue().getStatus().nameProperty());
+        eventColumn.setCellValueFactory(cell -> cell.getValue().getEvent().titleProperty());
+        spaceColumn.setCellValueFactory(cell -> cell.getValue().getSpace().nameProperty());
+        deadlineColumn.setCellValueFactory(new PropertyValueFactory<>("deadlineString"));
+        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+
+        tableOfTasks.setRowFactory(row -> new TableRow<>() {
             @Override
             public void updateItem(Task item, boolean empty) {
-                if (!empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
                     switch (item.getStatus()) {
                         case EXECUTED:
-                            setStyle("-fx-background-color: pink"); break;
+                            setStyle("-fx-background-color: pink");
+                            break;
                         case COMPLETED:
-                            setStyle("-fx-background-color: grey"); break;
+                            setStyle("-fx-background-color: grey");
+                            break;
                     }
-                    super.updateItem(item, false);
                 }
             }
 
             @Override
             public void updateSelected(boolean var1) {
+                System.out.println(getText());
                 if (var1) {
-                    this.getChildren().forEach(node -> node.setStyle("-fx-background-color: #0095c7;-fx-fill: white"));
+                    row.getItems().forEach(System.out::println);
+                    getChildren().forEach(node -> {
+                        node.setStyle("-fx-background-color: #0095c7;-fx-fill: white");
+                    });
                 } else {
-                    this.getChildren().forEach(node -> {
+                    getChildren().forEach(node -> {
                         String info = this.getChildren().get(1).toString();
                         int startIndex = info.indexOf("'") + 1;
                         int endIndex = info.length() - 1;
@@ -101,26 +112,23 @@ public class DesktopForSEController extends Controller implements Initializable 
                         }
                     });
                 }
-                super.updateSelected(var1);
             }
         });
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("typeName"));
-        statusColumn.setCellValueFactory(new PropertyValueFactory<>("statusName"));
-        eventColumn.setCellValueFactory(new PropertyValueFactory<>("eventName"));
-        spaceColumn.setCellValueFactory(new PropertyValueFactory<>("spaceName"));
-        deadlineColumn.setCellValueFactory(new PropertyValueFactory<>("deadlineString"));
-        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
 
-        ArrayList<Task> tasksList = DataBase.getTasksList(true);
+        ArrayList<Task> tasksList = DataBase.getTasksList(true, null);
         if (!tasksList.isEmpty()) {
             ObservableList<Task> list = FXCollections.observableList(tasksList);
-            filteredList = new FilteredList<>(list, l -> true);
-            filter.valueProperty().addListener((observable, oldValue, newValue) -> filteredList.setPredicate(task -> {
-                if (newValue.equals("Все")) return true;
-                return task.getTypeName().equals(newValue);
-            }));
+            filteredList = new FilteredList<>(list, t -> true);
             tableOfTasks.setItems(filteredList);
+            filter.valueProperty().addListener((observable, oldValue, newValue) -> filteredList.setPredicate(task ->
+            {
+                boolean result;
+                if (newValue == null || newValue.isEmpty() || newValue.equals("Все")) result = true;
+                else result = task.getType().getName().equals(newValue);
+                tableOfTasks.refresh();
+                return result;
+            }));
         }
-
+        tableOfTasks.getChildrenUnmodifiable().forEach(System.out::println);
     }
 }

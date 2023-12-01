@@ -10,77 +10,63 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="TOP_CENTER" maxHeight="1080.0" maxWidth="1920.0" minHeight="400.0" minWidth="600.0" prefHeight="450.0" prefWidth="600.0" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.vladislav.controllers.AboutController">
-   <children>
-      <MenuBar fx:id="menuBar" prefHeight="17.0" prefWidth="552.0">
-         <menus>
-            <Menu mnemonicParsing="false" text="Файл">
-               <items>
-                  <MenuItem mnemonicParsing="false" onAction="#exit" text="Выход" />
-               </items>
-            </Menu>
-         </menus>
-      </MenuBar>
-      <HBox alignment="CENTER" prefHeight="317.0" prefWidth="560.0">
+<VBox alignment="TOP_CENTER" maxHeight="1080.0" maxWidth="1920.0" minHeight="400.0" minWidth="600.0" prefHeight="450.0" prefWidth="600.0" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+   <MenuBar fx:id="menuBar" prefHeight="17.0" prefWidth="552.0">
+      <Menu mnemonicParsing="false" text="Файл">
+         <MenuItem mnemonicParsing="false" onAction="#exit" text="Выход" />
+      </Menu>
+   </MenuBar>
+   <HBox alignment="CENTER" prefHeight="317.0" prefWidth="560.0">
+      <opaqueInsets>
+         <Insets />
+      </opaqueInsets>
+      <VBox.margin>
+         <Insets left="20.0" right="20.0" />
+      </VBox.margin>
+      <Text fx:id="textArea" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER" wrappingWidth="558.13671875">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Text>
+   </HBox>
+   <HBox alignment="CENTER" prefHeight="0.0" prefWidth="600.0">
+      <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="200.0">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
-         <VBox.margin>
-            <Insets left="20.0" right="20.0" />
-         </VBox.margin>
-         <children>
-            <Text fx:id="textArea" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER" wrappingWidth="558.13671875">
-               <font>
-                  <Font size="17.0" />
-               </font>
-            </Text>
-         </children>
+         <HBox.margin>
+            <Insets bottom="5.0" right="90.0" />
+         </HBox.margin>
+         <padding>
+            <Insets bottom="5.0" left="5.0" />
+         </padding>
+         <Button mnemonicParsing="false" onAction="#closeWindow" text="Назад">
+            <font>
+               <Font size="13.0" />
+            </font>
+            <HBox.margin>
+               <Insets />
+            </HBox.margin>
+         </Button>
       </HBox>
-      <HBox alignment="CENTER" prefHeight="0.0" prefWidth="600.0">
-         <children>
-            <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <Button mnemonicParsing="false" onAction="#closeWindow" text="Назад">
-                     <font>
-                        <Font size="13.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </Button>
-               </children>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <HBox.margin>
-                  <Insets bottom="5.0" right="90.0" />
-               </HBox.margin>
-               <padding>
-                  <Insets bottom="5.0" left="5.0" />
-               </padding>
-            </HBox>
-            <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <Button mnemonicParsing="false" onAction="#exit" text="Выход" visible="false">
-                     <font>
-                        <Font size="13.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </Button>
-               </children>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <HBox.margin>
-                  <Insets bottom="5.0" left="90.0" />
-               </HBox.margin>
-               <padding>
-                  <Insets bottom="5.0" right="5.0" />
-               </padding>
-            </HBox>
-         </children>
+      <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <HBox.margin>
+            <Insets bottom="5.0" left="90.0" />
+         </HBox.margin>
+         <padding>
+            <Insets bottom="5.0" right="5.0" />
+         </padding>
+         <Button mnemonicParsing="false" onAction="#exit" text="Выход" visible="false">
+            <font>
+               <Font size="13.0" />
+            </font>
+            <HBox.margin>
+               <Insets />
+            </HBox.margin>
+         </Button>
       </HBox>
-   </children>
+   </HBox>
 </VBox>

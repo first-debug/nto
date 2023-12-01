@@ -1,5 +1,6 @@
-package com.vladislav.controllers;
+package com.vladislav.controllers.primary;
 
+import com.vladislav.controllers.Controller;
 import com.vladislav.models.DataBase;
 import com.vladislav.models.EventType;
 import com.vladislav.models.Space;
@@ -114,7 +115,7 @@ public class CreateNewEventController extends Controller implements Initializabl
             return;
         }
         // Нужна поверка и текст предупереждения
-        DataBase.addEventType(new EventType(nameType, typeIsEntertainmentArea.equalsIgnoreCase("да")));
+        DataBase.addEventType(nameType, typeIsEntertainmentArea.equalsIgnoreCase("да"));
         typeName.setText(null);
         isEntertainmentArea.setValue(null);
     }
@@ -218,7 +219,7 @@ public class CreateNewEventController extends Controller implements Initializabl
         type.setCellValueFactory(new PropertyValueFactory<>("name"));
         isEntertainment.setCellValueFactory(new PropertyValueFactory<>("isEntertainmentString"));
 
-        List<EventType> typesList = DataBase.getTypesList();
+        List<EventType> typesList = DataBase.getTypesEventList();
         if (!typesList.isEmpty()) {
             ObservableList<EventType> list = observableList(typesList);
             typeTable.setItems(list);
