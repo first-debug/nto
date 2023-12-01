@@ -228,7 +228,7 @@ public class AdminCreateNewEventController extends Controller implements Initial
         }
 
         // ComboBox - часы
-        ObservableList<String> hoursList = FXCollections.observableList(new ArrayList<>(){{
+        ObservableList<String> hoursList = FXCollections.observableList(new ArrayList<String>(){{
             for (Integer i = 0; i < 24; i++) {
                 if (i < 10) {
                     add('0' + i.toString());
@@ -239,7 +239,7 @@ public class AdminCreateNewEventController extends Controller implements Initial
         hours.setValue(null);
 
         // ComboBox - минуты
-        ObservableList<String> minutesList = FXCollections.observableList(new ArrayList<>(){{
+        ObservableList<String> minutesList = FXCollections.observableList(new ArrayList<String>(){{
             for (Integer i = 0; i < 60; i++) {
                 if (i < 10){
                     add('0' + i.toString());
@@ -250,13 +250,13 @@ public class AdminCreateNewEventController extends Controller implements Initial
         minutes.setValue(null);
 
         // ComboBox - развлекательный ли новый тип
-        isEntertainmentArea.setItems(FXCollections.observableList(new ArrayList<>(){{
+        isEntertainmentArea.setItems(FXCollections.observableList(new ArrayList<String>(){{
             add("Да");
             add("Нет");
         }}));
 
         ArrayList<Space> spacesList = DataBase.getSpacesList();
-        ArrayList<String> spaceStringsList = new ArrayList<>(){{
+        ArrayList<String> spaceStringsList = new ArrayList<String>(){{
             for (Space sp : spacesList) add(sp.getName());
         }};
         if (!spacesList.isEmpty()) {

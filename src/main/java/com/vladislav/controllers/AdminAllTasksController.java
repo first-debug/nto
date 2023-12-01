@@ -52,7 +52,7 @@ public class AdminAllTasksController extends EventTablesController implements In
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        tableOfTasks.setRowFactory(row -> new TableRow<>(){
+        tableOfTasks.setRowFactory(row -> new TableRow<Task>(){
         @Override
         public void updateItem(Task item, boolean empty) {
             if (!empty) {

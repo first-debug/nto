@@ -13,8 +13,8 @@ import java.net.URL;
 
 import com.vladislav.models.DataBase;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.lang.IllegalStateException;
 import java.util.Objects;
@@ -29,7 +29,7 @@ public class App extends Application {
     private static Image appIcon;
 
 	public static void main(String[] args) {
-        logger = LoggerFactory.getLogger(App.class);
+        logger = LogManager.getRootLogger();
         launch();
     }
 

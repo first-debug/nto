@@ -67,7 +67,7 @@ public class DesktopForSEController extends Controller implements Initializable 
             filter.setItems(FXCollections.observableList(spaceStringsList));
         }
         filter.setValue("Все");
-        tableOfTasks.setRowFactory(row -> new TableRow<>(){
+        tableOfTasks.setRowFactory(row -> new TableRow<Task>(){
             @Override
             public void updateItem(Task item, boolean empty) {
                 if (!empty) {
