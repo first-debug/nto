@@ -4,11 +4,7 @@ import com.vladislav.App;
 import com.vladislav.models.DataBase;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
-
-import java.io.IOException;
 
 public class LoginForSEController extends Controller{
 
@@ -43,7 +39,8 @@ public class LoginForSEController extends Controller{
 
     @FXML
     void login() {
-        App.setRoot("desktopForSE", new DesktopForSEController());
+        if (loginInput.getText().equalsIgnoreCase("e")) App.setRoot("desktopForSE", new SEDesktopController());
+        if (loginInput.getText().equalsIgnoreCase("a")) App.setRoot("adminDesktop", new AdminDesktopController());
         boolean flag = true;
 
         String login = loginInput.getText();
@@ -86,6 +83,6 @@ public class LoginForSEController extends Controller{
         }
         String role = dbAnswer[2];
         if (role.equals("admin")) App.setRoot("adminDesktop", new AdminDesktopController());
-        else if (role.equals("service")) App.setRoot("desktopForSE", new DesktopForSEController());
+        else if (role.equals("service")) App.setRoot("desktopForSE", new SEDesktopController());
     }
 }

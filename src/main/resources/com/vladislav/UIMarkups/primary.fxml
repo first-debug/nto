@@ -30,10 +30,10 @@
    <VBox alignment="CENTER" prefHeight="67.0" prefWidth="960.0" spacing="30.0">
       <Button onAction="#switchToEventsList" text="Список всех мероприятий" textAlignment="CENTER">
          <opaqueInsets>
-            <Insets/>
+            <Insets />
          </opaqueInsets>
          <font>
-            <Font size="18.0"/>
+            <Font size="18.0" />
          </font>
       </Button>
    </VBox>
@@ -83,14 +83,6 @@
          <padding>
             <Insets bottom="15.0" left="5.0" />
          </padding>
-         <Button mnemonicParsing="false" text="Назад" visible="false">
-            <font>
-               <Font size="15.0" />
-            </font>
-            <HBox.margin>
-               <Insets />
-            </HBox.margin>
-         </Button>
       </HBox>
       <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0">
          <opaqueInsets>
@@ -102,10 +94,6 @@
          <padding>
             <Insets bottom="15.0" />
          </padding>
-         <Button mnemonicParsing="false" onAction="#switchToEditEvents" text="Добавить событие" visible="false">
-            <font>
-               <Font size="16.0" />
-            </font></Button>
       </HBox>
       <HBox alignment="BOTTOM_RIGHT" prefHeight="204.0" prefWidth="200.0">
          <opaqueInsets>

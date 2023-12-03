@@ -16,15 +16,15 @@
 <VBox alignment="TOP_CENTER" maxHeight="1080.0" maxWidth="1920.0" minHeight="600.0" minWidth="960.0" prefHeight="650.0" prefWidth="980.0" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <MenuBar fx:id="menuBar" prefHeight="17.0" prefWidth="552.0">
       <Menu mnemonicParsing="false" text="Файл">
-         <MenuItem mnemonicParsing="false" onAction="#switchToLoginWindow" text="Вход для сотрудников"/>
-         <SeparatorMenuItem mnemonicParsing="false"/>
-         <MenuItem mnemonicParsing="false" onAction="#exit" text="Выход"/>
+         <MenuItem mnemonicParsing="false" onAction="#switchToLoginWindow" text="Вход для сотрудников" />
+         <SeparatorMenuItem mnemonicParsing="false" />
+         <MenuItem mnemonicParsing="false" onAction="#exit" text="Выход" />
       </Menu>
       <Menu mnemonicParsing="false" text="Помощь">
-         <MenuItem mnemonicParsing="false" onAction="#showDocumentation" text="О приложении"/>
+         <MenuItem mnemonicParsing="false" onAction="#showDocumentation" text="О приложении" />
       </Menu>
    </MenuBar>
-   <Label fx:id="title" alignment="CENTER" prefHeight="45.0" prefWidth="255.0" textAlignment="CENTER">
+   <Label fx:id="title" alignment="CENTER" prefHeight="45.0" textAlignment="CENTER">
       <font>
          <Font size="30.0" />
       </font>
@@ -76,14 +76,6 @@
          <padding>
             <Insets bottom="5.0" right="5.0" />
          </padding>
-         <Button mnemonicParsing="false" onAction="#editEvents" text="Редактировать мероприятия">
-            <font>
-               <Font size="14.0" />
-            </font>
-            <HBox.margin>
-               <Insets />
-            </HBox.margin>
-         </Button>
       </HBox>
    </HBox>
 </VBox>

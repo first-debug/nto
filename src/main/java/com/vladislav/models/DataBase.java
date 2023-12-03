@@ -122,14 +122,14 @@ public class DataBase {
         return result;
     }
 
-    public static void addEvent(String title, String description, Integer spaceId, long timeToStart, EventType type) {
+    public static void addEvent(String title, String description, Space space, long timeToStart, EventType type) {
         try {
             PreparedStatement pStatement = connection.prepareStatement(
-                    "INSERT INTO events (title, description, spaceId, timeToStart, typeId, isEntertainment) VALUES (?, ?, ?, ?, ?, ?)"
+                    "INSERT OR UPDATE INTO events (title, description, spaceId, timeToStart, typeId, isEntertainment) VALUES (?, ?, ?, ?, ?, ?)"
             );
             pStatement.setString(1, title);
             pStatement.setString(2, description);
-            pStatement.setInt(3, spaceId);
+            pStatement.setInt(3, space.getId());
             pStatement.setLong(4, timeToStart);
             pStatement.setInt(5, type.getId());
             pStatement.setBoolean(6, type.getIsEntertainment());
@@ -275,6 +275,32 @@ public class DataBase {
         }
         return result;
     }
+
+    public static void addTaskType(String type, String description) {
+        try {
+            PreparedStatement pStatement = connection.prepareStatement(
+                    "INSERT INTO typesOfTasks (type, description) VALUES (?, ?)"
+            );
+            pStatement.setString(1, type);
+            pStatement.setString(2, description);
+            pStatement.execute();
+        } catch (SQLException ex) {
+            logger.error(288  + " " + ex.getMessage());
+        }
+    }
+
+    public static void removeTaskType(TaskType taskType) {
+        try {
+            PreparedStatement pStatement = connection.prepareStatement(
+                    "DELETE FROM typesOfTasks WHERE id=?"
+            );
+            pStatement.setInt(1, taskType.getId());
+            pStatement.execute();
+        } catch (SQLException ex) {
+            logger.error(291  + " " + ex.getMessage());
+        }
+    }
+
 
     // ИЗМЕНИТЬ
     public static ArrayList<Task> getTasksList(boolean isExecuted, String name) {

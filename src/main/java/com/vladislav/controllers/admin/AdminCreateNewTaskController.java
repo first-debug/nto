@@ -110,11 +110,13 @@ public class AdminCreateNewTaskController extends Controller implements Initiali
 
     @FXML
     void checkExecutedStatus() {
+        hideWarnings();
         noExecuted.setSelected(false);
     }
 
     @FXML
     void checkNoExecutedStatus() {
+        hideWarnings();
         executed.setSelected(false);
     }
 
@@ -136,7 +138,7 @@ public class AdminCreateNewTaskController extends Controller implements Initiali
     }
 
     @FXML
-    public void switchToPrimary() throws IOException {
+    private void switchToPrimary() {
         App.setRoot("adminDesktop", new AdminDesktopController());
 }
 

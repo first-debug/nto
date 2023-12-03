@@ -1,8 +1,6 @@
 package com.vladislav.controllers;
 
 import com.vladislav.models.*;
-import javafx.beans.property.Property;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,7 +17,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class DesktopForSEController extends Controller implements Initializable {
+public class SEDesktopController extends Controller implements Initializable {
 
     private FilteredList<Task> filteredList;
     @FXML
@@ -38,7 +36,6 @@ public class DesktopForSEController extends Controller implements Initializable 
     private TableColumn<Task, StringProperty> deadlineColumn;
     @FXML
     private TableColumn<Task, StringProperty> descriptionColumn;
-    private int count;
 
     @FXML
     private void markCompleted() {
@@ -60,6 +57,14 @@ public class DesktopForSEController extends Controller implements Initializable 
             filter.setItems(FXCollections.observableList(spaceStringsList));
         }
         filter.setValue("Все");
+        filter.valueProperty().addListener((observable, oldValue, newValue) -> filteredList.setPredicate(task -> {
+            boolean result;
+            if (newValue == null || newValue.isEmpty() || newValue.equals("Все")) result = true;
+            else result = task.getType().getName().equals(newValue);
+            tableOfTasks.refresh();
+            return result;
+        }));
+
 
         nameColumn.setCellValueFactory(cell -> cell.getValue().getType().nameProperty());
         statusColumn.setCellValueFactory(cell -> cell.getValue().getStatus().nameProperty());
@@ -90,12 +95,8 @@ public class DesktopForSEController extends Controller implements Initializable 
 
             @Override
             public void updateSelected(boolean var1) {
-                System.out.println(getText());
                 if (var1) {
-                    row.getItems().forEach(System.out::println);
-                    getChildren().forEach(node -> {
-                        node.setStyle("-fx-background-color: #0095c7;-fx-fill: white");
-                    });
+                    getChildren().forEach(node -> node.setStyle("-fx-background-color: #0095c7;-fx-fill: white"));
                 } else {
                     getChildren().forEach(node -> {
                         String info = this.getChildren().get(1).toString();
@@ -120,15 +121,6 @@ public class DesktopForSEController extends Controller implements Initializable 
             ObservableList<Task> list = FXCollections.observableList(tasksList);
             filteredList = new FilteredList<>(list, t -> true);
             tableOfTasks.setItems(filteredList);
-            filter.valueProperty().addListener((observable, oldValue, newValue) -> filteredList.setPredicate(task ->
-            {
-                boolean result;
-                if (newValue == null || newValue.isEmpty() || newValue.equals("Все")) result = true;
-                else result = task.getType().getName().equals(newValue);
-                tableOfTasks.refresh();
-                return result;
-            }));
         }
-        tableOfTasks.getChildrenUnmodifiable().forEach(System.out::println);
     }
 }

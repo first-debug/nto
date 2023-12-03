@@ -4,8 +4,6 @@ import com.vladislav.App;
 import com.vladislav.controllers.admin.*;
 import javafx.fxml.FXML;
 
-import java.io.IOException;
-
 public class AdminDesktopController extends Controller {
 
     @FXML
@@ -15,7 +13,7 @@ public class AdminDesktopController extends Controller {
 
     @FXML
     void toEditEvents() {
-        App.setRoot("createNewEvent", new AdminCreateNewEventController());
+        App.setRoot("createNewEvent copy", new AdminCreateNewEventController());
     }
 
     @FXML

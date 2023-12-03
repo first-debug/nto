@@ -2,7 +2,10 @@ package com.vladislav.models;
 
 import javafx.beans.property.*;
 
+import java.util.ArrayList;
+
 public class Booking {
+    public final static ArrayList<Booking> objectsList = new ArrayList<>();
 
     private final Integer id;
     private final LongProperty timeOfReg;
@@ -23,6 +26,7 @@ public class Booking {
         this.space = new SimpleObjectProperty<>(space);
         this.halfOfSpace = halfOfSpace;
         this.comment = new SimpleStringProperty(comment);
+        objectsList.add(this);
     }
 
     public Integer getId() {

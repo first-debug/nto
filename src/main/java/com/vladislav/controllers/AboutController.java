@@ -2,13 +2,10 @@ package com.vladislav.controllers;
 
 import java.io.*;
 import java.net.URL;
-import java.nio.charset.Charset;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 import com.vladislav.App;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.text.Text;

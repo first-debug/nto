@@ -5,6 +5,7 @@ module com.vladislav {
     requires transitive javafx.graphics;
     requires org.slf4j;
     requires java.sql;
+    requires java.desktop;
 
 
     opens com.vladislav to javafx.fxml;
