@@ -13,8 +13,8 @@ public class DataBase {
         try
         {
             // костыль для запуска с помощью .bat
-            // для работы костыля "jdbc:sqlite:db.db"
-            connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/com/vladislav/db.db");
+            // для работы костыля "jdbc:sqlite:src/main/resources/com/vladislav/db.db"
+            connection = DriverManager.getConnection("jdbc:sqlite:db.db");
             connection.setAutoCommit(true);
         }
         catch (SQLException ex)
