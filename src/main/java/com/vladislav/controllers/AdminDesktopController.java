@@ -12,13 +12,8 @@ public class AdminDesktopController extends Controller {
     }
 
     @FXML
-    void toEditEvents() {
-        App.setRoot("createNewEvent copy", new AdminCreateNewEventController());
-    }
-
-    @FXML
-    void toAddTask() {
-        App.setRoot("createNewTask", new AdminCreateNewTaskController());
+    void toAddEvents() {
+        App.setRoot("createNewEvent", new AdminCreateNewEventController());
     }
 
     @FXML
@@ -27,7 +22,24 @@ public class AdminDesktopController extends Controller {
     }
 
     @FXML
+    void toAddTask() {
+        App.setRoot("createNewTask", new AdminCreateNewTaskController());
+    }
+
+    @FXML
     void toSpaces() {
         App.setRoot("allSpaces", new AdminAllSpacesController());
     }
+
+    @FXML
+    void toAddSpace() {
+        App.setRoot("createNewSpace", new AdminCreateNewSpaceController());
+    }
+
+    @FXML
+    void toAddBooking() {
+        App.setRoot("createNewBooking", new AdminCreateNewBookingController());
+    }
 }
+
+

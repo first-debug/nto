@@ -4,13 +4,12 @@ import com.vladislav.App;
 import com.vladislav.controllers.AdminDesktopController;
 import com.vladislav.controllers.Controller;
 import com.vladislav.controllers.EditEventTypeController;
-import com.vladislav.models.DataBase;
-import com.vladislav.models.EventType;
-import com.vladislav.models.Space;
+import com.vladislav.models.*;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -19,17 +18,14 @@ import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.ResourceBundle;
-
-import static javafx.collections.FXCollections.observableList;
+import java.time.ZoneId;
+import java.util.*;
 
 public class AdminCreateNewEventController extends Controller implements Initializable {
 
     @FXML
     private TextField titleInput;
+
     @FXML
     private Text warningTitle;
 
@@ -40,7 +36,7 @@ public class AdminCreateNewEventController extends Controller implements Initial
     private Text warningDescription;
 
     @FXML
-    private DatePicker timeInput;
+    private DatePicker dateInput;
 
     @FXML
     private Text warningDate;
@@ -52,22 +48,22 @@ public class AdminCreateNewEventController extends Controller implements Initial
     private ComboBox<String> minutes;
 
     @FXML
-    private Text warningSpace;
-
-    @FXML
     private TableView<EventType> typeTable;
 
     @FXML
     private TableColumn<EventType, StringProperty> type;
 
     @FXML
+    private Text warningType;
+
+    @FXML
     private TableView<Space> spacesTable;
 
     @FXML
-    private TableColumn<Space, StringProperty> spaceColumn;
+    private TableColumn<Space, StringProperty> spaceNameColumn;
 
     @FXML
-    private TableColumn<Space, StringProperty> descriptionColumn;
+    private TableColumn<Space, StringProperty> spaceDescriptionColumn;
 
     @FXML
     private TableColumn<Space, IntegerProperty> areaColumn;
@@ -76,7 +72,28 @@ public class AdminCreateNewEventController extends Controller implements Initial
     private TableColumn<Space, IntegerProperty> capacityColumn;
 
     @FXML
-    private Text warningType;
+    private Text warningSpace;
+
+    @FXML
+    private TableView<Event> eventsTable;
+
+    @FXML
+    private TableColumn<Event, StringProperty> eventColumn;
+
+    @FXML
+    private TableColumn<Event, StringProperty> eventDescriptionColumn;
+
+    @FXML
+    private TableColumn<Event, String> spaceColumn;
+
+    @FXML
+    private TableColumn<Event, StringProperty> startColumn;
+
+    @FXML
+    private TableColumn<Event, String> typeColumn;
+
+    @FXML
+    private Text warningEvent;
 
     @FXML
     private Text successfulSaving;
@@ -95,14 +112,13 @@ public class AdminCreateNewEventController extends Controller implements Initial
 
     @FXML
     private void switchToEditSpaces() {
-        hideWarnings();
-//        App.newWindow("editSpaces", new EditSpacesController(), "Редактирование помещений");
+        App.setRoot("createNewSpace", new AdminCreateNewSpaceController());
     }
 
     @FXML
     void fixMinutes() {
         if (minutes.getValue() == null || minutes.getValue().isEmpty()) {
-            minutes.setValue("00");
+            minutes.setValue(null);
             return;
         }
         if (minutes.getValue() != null && Integer.parseInt(minutes.getValue()) > 59) {
@@ -113,7 +129,7 @@ public class AdminCreateNewEventController extends Controller implements Initial
     @FXML
     void fixHours() {
         if (hours.getValue() == null || hours.getValue().isEmpty()) {
-            hours.setValue("00");
+            hours.setValue(null);
             return;
         }
         if (hours.getValue() != null && Integer.parseInt(hours.getValue()) > 23) {
@@ -122,16 +138,42 @@ public class AdminCreateNewEventController extends Controller implements Initial
     }
 
     @FXML
-    void removeType() {
+    void edit() {
+        TableView.TableViewSelectionModel<Event> selectedEvents = eventsTable.getSelectionModel();
+        ObservableList<Event> eventList = selectedEvents.getSelectedItems();
+        if (eventList.size() != 0) {
+            Event event = eventList.get(0);
+            titleInput.setText(event.getTitle());
+            descriptionInput.setText(event.getDescription());
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(new Date(event.getTimeToStart()));
+            dateInput.setValue(calendar.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+            hours.setValue(String.valueOf(calendar.get(Calendar.HOUR)));
+            minutes.setValue(String.valueOf(calendar.get(Calendar.MINUTE)));
+            typeTable.getSelectionModel().select(event.getType());
+            spacesTable.getSelectionModel().select(event.getSpace());
+        } else {
+            warningEvent.setVisible(true);}
+    }
+
+    @FXML
+    void delete() {
         hideWarnings();
-        typeTable.getSelectionModel().getSelectedItems().forEach(DataBase::removeEventType);
+        TableView.TableViewSelectionModel<Event> selectionModel = eventsTable.getSelectionModel();
+        ObservableList<Event> eventsList = selectionModel.getSelectedItems();
+
+        if (eventsList == null || eventsList.isEmpty()) {
+            warningEvent.setVisible(true);
+            return;
+        }
+        eventsList.forEach(DataBase::removeEvent);
     }
 
     @FXML
     void cleanForm() {
         titleInput.setText(null);
         descriptionInput.setText(null);
-        timeInput.setValue(null);
+        dateInput.setValue(null);
         hours.setValue(null);
         minutes.setValue(null);
         typeTable.getSelectionModel().clearSelection();
@@ -152,7 +194,7 @@ public class AdminCreateNewEventController extends Controller implements Initial
         hideWarnings();
         String title = titleInput.getText();
         String description = descriptionInput.getText();
-        LocalDate date = timeInput.getValue();
+        LocalDate date = dateInput.getValue();
         Calendar timeToStart = null;
         TableView.TableViewSelectionModel<EventType> selectedTypes = typeTable.getSelectionModel();
         ObservableList<EventType> eventTypeList = selectedTypes.getSelectedItems();
@@ -191,12 +233,12 @@ public class AdminCreateNewEventController extends Controller implements Initial
             int month = Integer.parseInt(dateSet[1]);
             int day = Integer.parseInt(dateSet[2]);
             int hour;
-            if (hours.getValue().isEmpty()) hour = 0;
-            else hour = Integer.parseInt(minutes.getValue());
+            if (hours.getValue() == null) hour = 0;
+            else hour = Integer.parseInt(hours.getValue());
             int minute;
-            if (minutes.getValue().isEmpty()) minute = 0;
+            if (minutes.getValue() == null) minute = 0;
             else minute = Integer.parseInt(minutes.getValue());
-            dateBuilder.setDate(year, month, day);
+            dateBuilder.setDate(year, month - 1, day);
             dateBuilder.setTimeOfDay(hour, minute, 0);
             timeToStart = dateBuilder.build();
         } catch (NullPointerException ex)
@@ -204,10 +246,13 @@ public class AdminCreateNewEventController extends Controller implements Initial
             warningDate.setVisible(true);
             flag = false;
         }
-        if (flag && !timeToStart.after(System.currentTimeMillis())) {
-            warningDate.setVisible(true);
-            return;
-        }
+//        if (flag && !timeToStart.after(System.currentTimeMillis())) {
+//            Calendar cal = Calendar.getInstance();
+//            cal.setTime(new Date(System.currentTimeMillis()));
+//            App.logger.error(timeToStart + "\n" +  cal);
+//            warningDate.setVisible(true);
+//            return;
+//        }
         if (!flag) return;
 
         DataBase.addEvent(title, description, spaceList.get(0), timeToStart.getTimeInMillis(), eventTypeList.get(0));
@@ -218,26 +263,29 @@ public class AdminCreateNewEventController extends Controller implements Initial
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // задаём настройки таблицы выбора типов и заполняем её
         type.setCellValueFactory(new PropertyValueFactory<>("name"));
+        FilteredList<EventType> filteredEventTypeList = new FilteredList<>(EventType.objectsList, p -> true);
+        typeTable.setItems(filteredEventTypeList);
 
-        List<EventType> typesList = DataBase.getTypesEventList();
-        if (!typesList.isEmpty()) {
-            ObservableList<EventType> list = observableList(typesList);
-            typeTable.setItems(list);
-        }
-
-        spaceColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+        // задаём настройки таблицы выбора места проведения и заполняем её
+        spaceNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        spaceDescriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         areaColumn.setCellValueFactory(new PropertyValueFactory<>("area"));
         capacityColumn.setCellValueFactory(new PropertyValueFactory<>("capacity"));
+        DataBase.getSpacesList();
+        FilteredList<Space> filteredSpaceList = new FilteredList<>(Space.objectsList, p -> true);
+        spacesTable.setItems(filteredSpaceList);
 
-        List<Space> spacesList = DataBase.getSpacesList();
-        if (!spacesList.isEmpty()) {
-            ObservableList<Space> list = observableList(spacesList);
-            spacesTable.setItems(list);
-        }
-
+        // задаём настройки таблицы выбора мероприятий и заполняем её
+        eventColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+        eventDescriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+        spaceColumn.setCellValueFactory(cell -> cell.getValue().getSpace().nameProperty());
+        startColumn.setCellValueFactory(new PropertyValueFactory<>("stringTime"));
+        typeColumn.setCellValueFactory(cell -> cell.getValue().getType().nameProperty());
+        DataBase.loadEvents(null);
+        FilteredList<Event> filteredEventList = new FilteredList<>(Event.objectsList, p -> true);
+        eventsTable.setItems(filteredEventList);
         // ComboBox - часы
-        ObservableList<String> hoursList = FXCollections.observableList(new ArrayList<>(){{
+        ObservableList<String> hoursList = FXCollections.observableList(new ArrayList<String>(){{
             for (Integer i = 0; i < 24; i++) {
                 if (i < 10) {
                     add('0' + i.toString());
@@ -248,7 +296,7 @@ public class AdminCreateNewEventController extends Controller implements Initial
         hours.setValue(null);
 
         // ComboBox - минуты
-        ObservableList<String> minutesList = FXCollections.observableList(new ArrayList<>(){{
+        ObservableList<String> minutesList = FXCollections.observableList(new ArrayList<String>(){{
             for (Integer i = 0; i < 60; i++) {
                 if (i < 10){
                     add('0' + i.toString());

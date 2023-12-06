@@ -31,7 +31,7 @@ public class LoginForSEController extends Controller{
     }
 
     @FXML
-    void clearForm() {
+    void cleanForm() {
         loginInput.setText(null);
         passwordInput.setText(null);
         hideWarnings();

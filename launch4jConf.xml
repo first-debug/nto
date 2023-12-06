@@ -13,7 +13,7 @@
   <stayAlive>false</stayAlive>
   <restartOnCrash>false</restartOnCrash>
   <manifest></manifest>
-  <icon></icon>
+  <icon>C:\Users\vladi\IdeaProjects\nto\src\main\resources\com\vladislav\icon.ico</icon>
   <jre>
     <path>%JAVA_HOME%;%PATH%;c:\Program Files\java\jre-1.8;c:\Program Files (x86)\java\jre-1.8</path>
     <requiresJdk>false</requiresJdk>

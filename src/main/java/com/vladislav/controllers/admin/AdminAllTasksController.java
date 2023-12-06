@@ -6,8 +6,7 @@ import com.vladislav.controllers.EventTablesController;
 import com.vladislav.models.DataBase;
 import com.vladislav.models.Task;
 import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
@@ -17,7 +16,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class AdminAllTasksController extends EventTablesController implements Initializable {
@@ -59,13 +57,25 @@ public class AdminAllTasksController extends EventTablesController implements In
             if (!empty) {
                 switch (item.getStatus()) {
                     case CREATED:
-                        setStyle("-fx-background-color: null"); break;
+                        setStyle("-fx-background-color: null; " +
+                                "-fx-border-color: transparent -fx-table-cell-border-color " +
+                                "-fx-table-cell-border-color transparent; ");
+                        break;
                     case EXECUTED:
-                        setStyle("-fx-background-color: pink"); break;
+                        setStyle("-fx-background-color: pink; " +
+                                "-fx-border-color: transparent -fx-table-cell-border-color " +
+                                "-fx-table-cell-border-color transparent; ");
+                        break;
                     case COMPLETED:
-                        setStyle("-fx-background-color: grey"); break;
+                        setStyle("-fx-background-color: grey; " +
+                                "-fx-border-color: transparent -fx-table-cell-border-color " +
+                                "-fx-table-cell-border-color transparent; ");
+                        break;
                     case OVERDUE:
-                        setStyle("-fx-background-color: red"); break;
+                        setStyle("-fx-background-color: red; " +
+                                "-fx-border-color: transparent -fx-table-cell-border-color " +
+                                "-fx-table-cell-border-color transparent;");
+                        break;
                 }
                 super.updateItem(item, false);
             }
@@ -83,16 +93,28 @@ public class AdminAllTasksController extends EventTablesController implements In
                     String taskType = info.substring(startIndex, endIndex);
                     switch (taskType) {
                         case "Создана":
-                            node.setStyle("-fx-background-color: null; -fx-fill: black");
+                            node.setStyle("-fx-background-color: null; " +
+                                    "-fx-fill: black; " +
+                                    "-fx-border-color: transparent -fx-table-cell-border-color " +
+                                    "-fx-table-cell-border-color transparent;");
                             break;
                         case "К выполнению":
-                            node.setStyle("-fx-background-color: pink; -fx-fill: black");
+                            node.setStyle("-fx-background-color: pink; " +
+                                    "-fx-fill: black; " +
+                                    "-fx-border-color: transparent -fx-table-cell-border-color " +
+                                    "-fx-table-cell-border-color transparent;");
                             break;
                         case "Выполнена":
-                            node.setStyle("-fx-background-color: grey; -fx-fill: black");
+                            node.setStyle("-fx-background-color: grey; " +
+                                    "-fx-fill: black; " +
+                                    "-fx-border-color: transparent -fx-table-cell-border-color " +
+                                    "-fx-table-cell-border-color transparent;");
                             break;
                         case "Просрочена":
-                            node.setStyle("-fx-background-color: null; -fx-fill: red");
+                            node.setStyle("-fx-background-color: null; " +
+                                    "-fx-fill: red; " +
+                                    "-fx-border-color: transparent -fx-table-cell-border-color " +
+                                    "-fx-table-cell-border-color transparentransparent;");
                             break;
                     }
                 });
@@ -109,10 +131,9 @@ public class AdminAllTasksController extends EventTablesController implements In
         timeRegColumn.setCellValueFactory(new PropertyValueFactory<>("timeOfRegName"));
 
 
-        ArrayList<Task> events = DataBase.getTasksList(false, null);
-        if (!events.isEmpty()) {
-            ObservableList<Task> listOfStrings = FXCollections.observableArrayList(events);
-            tableOfTasks.setItems(listOfStrings);
-        }
+        DataBase.getTasksList(false, null);
+        FilteredList<Task> filteredTaskList = new FilteredList<>(Task.objectsList, p -> true);
+        tableOfTasks.setItems(filteredTaskList);
+
     }
 }

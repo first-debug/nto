@@ -1,48 +1,85 @@
 package com.vladislav.models;
 
 import javafx.beans.property.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
+import java.util.Date;
+
+import static com.vladislav.App.dateFormat;
 
 public class Booking {
-    public final static ArrayList<Booking> objectsList = new ArrayList<>();
+    public final static ObservableList<Booking> objectsList = FXCollections.observableArrayList();
+    public final static ArrayList<Integer> objectsId = new ArrayList<>();
 
     private final Integer id;
-    private final LongProperty timeOfReg;
+    private Long timeOfReg;
+    private final StringProperty timeOfRegString;
     private final Property<Event> event;
-    private final Long timeOfStart;
-    private final Long timeOfEnd;
+    private Long timeOfStart;
+    private final StringProperty timeOfStartString;
+    private Long timeOfEnd;
+    private final StringProperty timeOfEndString;
     private final Property<Space> space;
-    private Integer halfOfSpace; // от 1 до 3; 1-первая, 2-вторая, 3-полностью
+    private final IntegerProperty halfOfSpace; // от 1 до 3; 1-первая, 2-вторая, 3-полностью
     private final StringProperty comment;
 
-    public Booking(Integer id, Long timeOfReg, Event event, Long timeOfStart,
+    private Booking(Integer id, Long timeOfReg, Event event, Long timeOfStart,
                    Long timeOfEnd, Space space, Integer halfOfSpace, String comment) {
         this.id = id;
-        this.timeOfReg = new SimpleLongProperty(timeOfReg);
+        this.timeOfReg = timeOfReg;
+        this.timeOfRegString = new SimpleStringProperty(dateFormat.format(new Date(timeOfReg)));
         this.event = new SimpleObjectProperty<>(event);
         this.timeOfStart = timeOfStart;
+        this.timeOfStartString = new SimpleStringProperty(dateFormat.format(new Date(timeOfStart)));
         this.timeOfEnd = timeOfEnd;
+        this.timeOfEndString = new SimpleStringProperty(dateFormat.format(new Date(timeOfEnd)));
         this.space = new SimpleObjectProperty<>(space);
-        this.halfOfSpace = halfOfSpace;
+        this.halfOfSpace = new SimpleIntegerProperty(halfOfSpace);
         this.comment = new SimpleStringProperty(comment);
         objectsList.add(this);
+        objectsId.add(id);
+    }
+
+    public static Booking getInstant(Integer id, Long timeOfReg, Event event, Long timeOfStart,
+                                     Long timeOfEnd, Space space, Integer halfOfSpace, String comment) {
+        int objectIndex = objectsId.indexOf(id);
+        if (objectIndex == -1) {
+            return new Booking(id, timeOfReg, event, timeOfStart,
+                    timeOfEnd, space, halfOfSpace, comment);
+        } else {
+            objectsList.forEach(f -> {
+                if (f.getId().equals(id)) {
+                    f.setTimeOfReg(timeOfReg);
+                    f.setEvent(event);
+                    f.setTimeOfStart(timeOfStart);
+                    f.setTimeOfEnd(timeOfEnd);
+                    f.setSpace(space);
+                    f.setHalfOfSpace(halfOfSpace);
+                    f.setComment(comment);
+                    return;
+                }
+            });
+            return objectsList.get(objectIndex);
+        }
+    }
+
+    public static void remove(Booking booking) {
+        objectsList.remove(booking);
+        objectsId.remove(booking.id);
     }
 
     public Integer getId() {
         return id;
     }
 
-    public long getTimeOfReg() {
-        return timeOfReg.get();
-    }
-
-    public LongProperty timeOfRegProperty() {
+    public Long getTimeOfReg() {
         return timeOfReg;
     }
 
-    public void setTimeOfReg(long timeOfReg) {
-        this.timeOfReg.set(timeOfReg);
+    public void setTimeOfReg(Long timeOfReg) {
+        this.timeOfReg= timeOfReg;
     }
 
     public Event getEvent() {
@@ -90,10 +127,54 @@ public class Booking {
     }
 
     public Integer getHalfOfSpace() {
-        return halfOfSpace;
+        return halfOfSpace.get();
     }
 
     public void setHalfOfSpace(Integer halfOfSpace) {
-        this.halfOfSpace = halfOfSpace;
+        this.halfOfSpace.set(halfOfSpace);
+    }
+
+    public String getTimeOfRegString() {
+        return timeOfRegString.get();
+    }
+
+    public StringProperty timeOfRegStringProperty() {
+        return timeOfRegString;
+    }
+
+    public void setTimeOfRegString(String timeOfRegString) {
+        this.timeOfRegString.set(timeOfRegString);
+    }
+
+    public void setTimeOfStart(Long timeOfStart) {
+        this.timeOfStart = timeOfStart;
+    }
+
+    public String getTimeOfStartString() {
+        return timeOfStartString.get();
+    }
+
+    public StringProperty timeOfStartStringProperty() {
+        return timeOfStartString;
+    }
+
+    public void setTimeOfStartString(String timeOfStartString) {
+        this.timeOfStartString.set(timeOfStartString);
+    }
+
+    public void setTimeOfEnd(Long timeOfEnd) {
+        this.timeOfEnd = timeOfEnd;
+    }
+
+    public String getTimeOfEndString() {
+        return timeOfEndString.get();
+    }
+
+    public StringProperty timeOfEndStringProperty() {
+        return timeOfEndString;
+    }
+
+    public void setTimeOfEndString(String timeOfEndString) {
+        this.timeOfEndString.set(timeOfEndString);
     }
 }

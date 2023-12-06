@@ -1,10 +1,12 @@
 package com.vladislav.controllers;
 
+import com.vladislav.App;
 import com.vladislav.models.DataBase;
 import com.vladislav.models.EventType;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -59,12 +61,14 @@ public class EditEventTypeController extends Controller implements Initializable
     void checkYesStatus() {
         hideWarnings();
         noCheck.setSelected(false);
+        if (!yesCheck.isSelected()) yesCheck.setSelected(true);
     }
 
     @FXML
     void checkNoStatus() {
         hideWarnings();
         yesCheck.setSelected(false);
+        if (!noCheck.isSelected()) noCheck.setSelected(true);
     }
 
     @FXML
@@ -111,11 +115,7 @@ public class EditEventTypeController extends Controller implements Initializable
             warningType.setVisible(true);
             return;
         }
-        for (EventType type : eventTypeList) {
-            String name = type.getName();
-            DataBase.removeEventType(type);
-            EventType.objectsList.removeIf(f -> (f.getName().equalsIgnoreCase(name)));
-        }
+        eventTypeList.forEach(DataBase::removeEventType);
     }
 
     @FXML
@@ -123,19 +123,25 @@ public class EditEventTypeController extends Controller implements Initializable
         hideWarnings();
         String type = nameInput.getText();
         boolean isEntertainment = yesCheck.isSelected();
+        boolean noIsEntertainment = noCheck.isSelected();
 
         boolean flag = true;
         if (type == null || type.isEmpty()) {
             warningTitle.setVisible(true);
             flag = false;
         }
-//        if (isEntertainment.isEmpty()) {
-//            warningDescription.setVisible(true);
-//            flag = false;
-//        }
+        if (!isEntertainment && noIsEntertainment || isEntertainment && !noIsEntertainment) {
+            warningEntertainment.setVisible(true);
+            flag = false;
+        }
         if (!flag) return;
         DataBase.addEventType(type, isEntertainment);
         successfulSaving.setVisible(true);
+    }
+
+    @FXML
+    private void close() {
+        App.closeSecondWindow();
     }
 
     @Override
@@ -144,10 +150,8 @@ public class EditEventTypeController extends Controller implements Initializable
 
         typeEventColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         isEntertainmentColumn.setCellValueFactory(new PropertyValueFactory<>("isEntertainmentString"));
-        ArrayList<EventType> list = DataBase.getTypesEventList();
-        if (!list.isEmpty()) {
-            ObservableList<EventType> typesList = FXCollections.observableList(list);
-            typeEventTable.setItems(typesList);
-        }
+        DataBase.getTypesEventList();
+        FilteredList<EventType> typesList = new FilteredList<>(EventType.objectsList, p -> true);
+        typeEventTable.setItems(typesList);
     }
 }

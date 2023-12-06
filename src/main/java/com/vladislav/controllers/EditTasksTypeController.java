@@ -1,14 +1,23 @@
 package com.vladislav.controllers;
 
+import com.vladislav.App;
 import com.vladislav.models.DataBase;
 import com.vladislav.models.TaskType;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 
-public class EditTasksTypeController extends Controller {
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
+
+public class EditTasksTypeController extends Controller implements Initializable {
 
     @FXML
     private TextField nameInput;
@@ -26,19 +35,13 @@ public class EditTasksTypeController extends Controller {
     private TableView<TaskType> typeTaskTable;
 
     @FXML
-    private TableColumn<TaskType, StringProperty> typeColumn;
+    private TableColumn<TaskType, StringProperty> typeTaskColumn;
 
     @FXML
     private TableColumn<TaskType, StringProperty> descriptionColumn;
 
     @FXML
     private Text warningType;
-
-    @FXML
-    private Button editButton;
-
-    @FXML
-    private Button deleteButton;
 
     @FXML
     private Text successfulSaving;
@@ -93,9 +96,7 @@ public class EditTasksTypeController extends Controller {
             return;
         }
         for (TaskType type : taskTypeList) {
-            String name = type.getName();
             DataBase.removeTaskType(type);
-            TaskType.objectsList.removeIf(f -> (f.getName().equalsIgnoreCase(name)));
         }
     }
 
@@ -117,5 +118,19 @@ public class EditTasksTypeController extends Controller {
         if (!flag) return;
         DataBase.addTaskType(type, description);
         successfulSaving.setVisible(true);
+    }
+
+    @FXML
+    private void close() {
+        App.closeSecondWindow();
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        typeTaskColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+        DataBase.loadTypeTaskList();
+        FilteredList<TaskType> taskTypeList = new FilteredList<>(TaskType.objectsList, p -> true);
+        typeTaskTable.setItems(taskTypeList);
     }
 }

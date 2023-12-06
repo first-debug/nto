@@ -19,7 +19,7 @@ import java.util.ResourceBundle;
 
 public class SEDesktopController extends Controller implements Initializable {
 
-    private FilteredList<Task> filteredList;
+    private FilteredList<Task> filteredTaskList;
     @FXML
     private ChoiceBox<String> filter;
     @FXML
@@ -49,15 +49,13 @@ public class SEDesktopController extends Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ArrayList<TaskType> spacesList = DataBase.getTypeTaskList();
-        ArrayList<String> spaceStringsList = new ArrayList<>();
-        spaceStringsList.add("Все");
-        for (TaskType sp : spacesList) spaceStringsList.add(sp.getName());
-        if (!spacesList.isEmpty()) {
-            filter.setItems(FXCollections.observableList(spaceStringsList));
-        }
+        DataBase.loadTypeTaskList();
+        ArrayList<String> taskTypeStringsList = new ArrayList<>();
+        taskTypeStringsList.add("Все");
+        TaskType.objectsList.forEach(f -> taskTypeStringsList.add(f.getName()));
         filter.setValue("Все");
-        filter.valueProperty().addListener((observable, oldValue, newValue) -> filteredList.setPredicate(task -> {
+        filter.setItems(FXCollections.observableList(taskTypeStringsList));
+        filter.valueProperty().addListener((observable, oldValue, newValue) -> filteredTaskList.setPredicate(task -> {
             boolean result;
             if (newValue == null || newValue.isEmpty() || newValue.equals("Все")) result = true;
             else result = task.getType().getName().equals(newValue);
@@ -72,8 +70,7 @@ public class SEDesktopController extends Controller implements Initializable {
         spaceColumn.setCellValueFactory(cell -> cell.getValue().getSpace().nameProperty());
         deadlineColumn.setCellValueFactory(new PropertyValueFactory<>("deadlineString"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
-
-        tableOfTasks.setRowFactory(row -> new TableRow<>() {
+        tableOfTasks.setRowFactory(row -> new TableRow<Task>() {
             @Override
             public void updateItem(Task item, boolean empty) {
                 super.updateItem(item, empty);
@@ -84,10 +81,14 @@ public class SEDesktopController extends Controller implements Initializable {
                 } else {
                     switch (item.getStatus()) {
                         case EXECUTED:
-                            setStyle("-fx-background-color: pink");
+                            setStyle("-fx-background-color: pink;" +
+                                    "-fx-border-color: transparent -fx-table-cell-border-color " +
+                                    "-fx-table-cell-border-color transparent;");
                             break;
                         case COMPLETED:
-                            setStyle("-fx-background-color: grey");
+                            setStyle("-fx-background-color: grey;" +
+                                    "-fx-border-color: transparent -fx-table-cell-border-color " +
+                                    "-fx-table-cell-border-color transparent;");
                             break;
                     }
                 }
@@ -105,22 +106,22 @@ public class SEDesktopController extends Controller implements Initializable {
                         String taskType = info.substring(startIndex, endIndex);
                         switch (taskType) {
                             case "К выполнению":
-                                node.setStyle("-fx-background-color: pink; -fx-fill: black");
+                                node.setStyle("-fx-background-color: pink; -fx-fill: black;" +
+                                        "-fx-border-color: transparent -fx-table-cell-border-color " +
+                                        "-fx-table-cell-border-color transparent;");
                                 break;
                             case "Выполнена":
-                                node.setStyle("-fx-background-color: grey; -fx-fill: black");
+                                node.setStyle("-fx-background-color: grey; -fx-fill: black;" +
+                                        "-fx-border-color: transparent -fx-table-cell-border-color " +
+                                        "-fx-table-cell-border-color transparent;");
                                 break;
                         }
                     });
                 }
             }
         });
-
-        ArrayList<Task> tasksList = DataBase.getTasksList(true, null);
-        if (!tasksList.isEmpty()) {
-            ObservableList<Task> list = FXCollections.observableList(tasksList);
-            filteredList = new FilteredList<>(list, t -> true);
-            tableOfTasks.setItems(filteredList);
-        }
+        DataBase.getTasksList(true, null);
+        filteredTaskList = new FilteredList<>(Task.objectsList);
+        tableOfTasks.setItems(filteredTaskList);
     }
 }

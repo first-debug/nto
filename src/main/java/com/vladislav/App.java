@@ -1,8 +1,8 @@
 package com.vladislav;
 
 import com.vladislav.controllers.Controller;
-import com.vladislav.controllers.admin.AdminCreateNewEventController;
 import com.vladislav.controllers.primary.PrimaryController;
+import com.vladislav.models.Event;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -17,8 +17,8 @@ import java.net.URL;
 
 import com.vladislav.models.DataBase;
 
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.IllegalStateException;
 import java.text.SimpleDateFormat;
@@ -34,10 +34,10 @@ public class App extends Application {
     private static DataBase dataBase;
     private static Image appIcon;
 
-    public static SimpleDateFormat format;
+    public static SimpleDateFormat dateFormat;
 
 	public static void main(String[] args) {
-        logger = LogManager.getRootLogger();
+        logger = LoggerFactory.getLogger(App.class);
         launch();
     }
 
@@ -45,9 +45,9 @@ public class App extends Application {
     public void start(Stage stage) {
         try {
             dataBase = new DataBase();
-            format = new SimpleDateFormat("HH:mm dd.MM.yyyy");
+            dateFormat = new SimpleDateFormat("HH:mm dd.MM.yyyy");
             appIcon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("icon.png")));
-            scene = new Scene(loadFXML("primary", new PrimaryController()), 1080, 650);
+            scene = new Scene(loadFXML("primary", new PrimaryController()), 1240, 650);
             stage.setMinWidth(960);
             stage.setMinHeight(600);
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -99,9 +99,7 @@ public class App extends Application {
         {
             URL fxmlFile = App.class.getResource("UIMarkups/" + fxml + ".fxml");
             FXMLLoader fxmlLoader = new FXMLLoader(fxmlFile);
-            if (!(controller instanceof AdminCreateNewEventController)) {
-                fxmlLoader.setController(controller);
-            } else fxmlLoader.getController();
+            fxmlLoader.setController(controller);
             return fxmlLoader.load(); 
         } catch (IllegalStateException | IOException ex) {
             logger.error("A nonexistent FXML-file is specified: " + fxml);

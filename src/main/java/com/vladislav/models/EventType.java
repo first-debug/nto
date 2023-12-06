@@ -4,24 +4,49 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 
 public class EventType {
-    public final static ArrayList<EventType> objectsList = new ArrayList<>();
+    public final static ObservableList<EventType> objectsList = FXCollections.observableArrayList();
+    public final static ArrayList<Integer> objectsId = new ArrayList<>();
 
     private final IntegerProperty id;
     private final StringProperty name;
     private final boolean isEntertainment;
     private final StringProperty isEntertainmentString;
 
-    public EventType(Integer id, String name, boolean isEntertainment)
+    private EventType(Integer id, String name, boolean isEntertainment)
     {
         this.id = new SimpleIntegerProperty(id);
         this.name = new SimpleStringProperty(name);
         this.isEntertainment = isEntertainment;
         this.isEntertainmentString = new SimpleStringProperty(this.isEntertainment ? "Да" : "Нет");
-        EventType.objectsList.add(this);
+        objectsList.add(this);
+        objectsId.add(id);
+    }
+
+    public static EventType getInstant(Integer id, String name, boolean isEntertainment) {
+        int objectIndex = objectsId.indexOf(id);
+        if (objectIndex == -1) {
+            return new EventType(id, name, isEntertainment);
+        } else {
+            objectsList.forEach(f -> {
+                if (f.getId() == id) {
+                    f.setName(name);
+                    f.setIsEntertainmentString(isEntertainment);
+                    return;
+                }
+            });
+            return objectsList.get(objectIndex);
+        }
+    }
+
+    public static void remove(EventType eventType) {
+        objectsList.remove(eventType);
+        objectsId.remove(eventType.getId());
     }
 
     public int getId() {

@@ -3,18 +3,14 @@ package com.vladislav.controllers;
 import com.vladislav.models.DataBase;
 import com.vladislav.models.Event;
 import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 
-import java.util.ArrayList;
+import java.util.function.Predicate;
 
 public class EventTablesController extends Controller {
 
@@ -46,13 +42,12 @@ public class EventTablesController extends Controller {
         spaceColumn.setCellValueFactory(cell -> cell.getValue().getSpace().nameProperty());
         startColumn.setCellValueFactory(new PropertyValueFactory<>("stringTime"));
         typeColumn.setCellValueFactory(cell -> cell.getValue().getType().nameProperty());
-
-        ArrayList<Event> events;
-        events = DataBase.getEventsList(isEntertainment);
-
-        if (!events.isEmpty()) {
-            ObservableList<Event> listOfStrings = FXCollections.observableArrayList(events);
-            tableOfEvents.setItems(listOfStrings);
-        }
+        DataBase.loadEvents(isEntertainment);
+        Predicate<Event> predicate = event -> {
+            if (isEntertainment == null) return true;
+            return event.getIsEntertainment() == isEntertainment;
+        };
+        FilteredList<Event> filteredEventList = new FilteredList<>(Event.objectsList, predicate);
+        tableOfEvents.setItems(filteredEventList);
     }
 }

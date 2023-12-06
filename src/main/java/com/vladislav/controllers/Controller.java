@@ -19,7 +19,7 @@ public class Controller {
 
     @FXML
     private void showDocumentation() {
-        App.newWindow("about", new AboutController(),"About", 600, 450);
+        App.newWindow("about", new AboutController(),"About", 720, 540);
     }
 
     @FXML

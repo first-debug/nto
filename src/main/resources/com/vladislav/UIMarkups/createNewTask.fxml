@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="TOP_CENTER" maxHeight="1080.0" maxWidth="1920.0" minHeight="600.0" minWidth="960.0" prefHeight="650.0" prefWidth="1080.0" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="TOP_CENTER" maxHeight="1080.0" maxWidth="1920.0" minHeight="600.0" minWidth="960.0" prefHeight="650.0" prefWidth="1080.0" spacing="20.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
    <MenuBar fx:id="menuBar" prefHeight="17.0" prefWidth="552.0">
       <Menu mnemonicParsing="false" text="Файл">
          <MenuItem mnemonicParsing="false" onAction="#exit" text="Выход" />
@@ -29,13 +29,10 @@
          <Font size="30.0" />
       </font>
    </Text>
-   <VBox prefHeight="456.0" prefWidth="1080.0" spacing="20.0">
-      <HBox alignment="CENTER" prefHeight="335.0" prefWidth="960.0" spacing="15.0">
-         <padding>
-            <Insets left="10.0" right="10.0" />
-         </padding>
-         <VBox prefHeight="327.0" prefWidth="570.0">
-            <TableView fx:id="eventTable">
+   <VBox prefHeight="460.0" prefWidth="1080.0" spacing="5.0">
+      <HBox alignment="CENTER" prefHeight="380.0" prefWidth="1040.0" spacing="15.0">
+         <VBox alignment="TOP_RIGHT" prefHeight="327.0" prefWidth="570.0">
+            <TableView fx:id="eventTable" prefHeight="315.0" prefWidth="570.0">
                <columns>
                   <TableColumn fx:id="eventColumn" prefWidth="358.0" text="Событие" />
                   <TableColumn fx:id="startTimeColumn" prefWidth="111.0" text="Начало" />
@@ -45,10 +42,11 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </TableView>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Нужно выбрать мероприятие!" />
+            <Text fx:id="warningEvent" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Нужно выбрать мероприятие!" visible="false" />
+            <Button mnemonicParsing="false" onAction="#switchToEditEvents" text="Редактивароть" />
          </VBox>
-         <VBox prefHeight="327.0" prefWidth="280.0">
-            <TableView fx:id="typeTable">
+         <VBox alignment="TOP_RIGHT" prefHeight="351.0" prefWidth="280.0">
+            <TableView fx:id="typeTable" prefHeight="315.0" prefWidth="280.0">
                <columns>
                   <TableColumn fx:id="taskType" prefWidth="104.0" text="Вид" />
                   <TableColumn fx:id="typeDescriptionColumn" prefWidth="175.0" text="Описание" />
@@ -57,8 +55,12 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </TableView>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Нужно выбрать вид!" />
+            <Text fx:id="warningType" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Нужно выбрать вид!" visible="false" />
+            <Button mnemonicParsing="false" onAction="#switchToEditTypes" text="Редактировать" />
          </VBox>
+         <padding>
+            <Insets left="10.0" right="10.0" />
+         </padding>
       </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <HBox alignment="CENTER" prefHeight="93.0" prefWidth="402.0" spacing="20.0">
@@ -69,8 +71,6 @@
                         <Font size="18.0"/>
                      </font>
                   </Text>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Нужно выбрать статус!"
-                        wrappingWidth="131.01171875"/>
                </VBox>
             </HBox>
             <VBox prefHeight="297.0" prefWidth="168.0" spacing="15.0">
@@ -99,11 +99,9 @@
                      <Font size="18.0"/>
                   </font>
                </Text>
-               <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Нужно выбрать срок!"
-                     wrappingWidth="154.763671875"/>
             </VBox>
             <VBox alignment="CENTER_LEFT" prefHeight="93.0" prefWidth="216.0" spacing="10.0">
-               <RadioButton fx:id="toStartEvent" mnemonicParsing="false" onAction="#checkDeadlineStart" text="До начала мероприятия">
+               <RadioButton fx:id="toStartEvent" mnemonicParsing="false" onAction="#checkDeadlineStart" selected="true" text="До начала мероприятия">
                   <font>
                      <Font size="16.0" />
                   </font>
@@ -130,6 +128,9 @@
             </VBox>
          </HBox>
       </HBox>
+      <VBox.margin>
+         <Insets left="20.0" right="20.0" />
+      </VBox.margin>
    </VBox>
    <HBox alignment="CENTER" prefHeight="0.0" prefWidth="600.0" spacing="300.0">
       <Button mnemonicParsing="false" onAction="#switchToPrimary" text="Назад">
@@ -140,14 +141,14 @@
             <Insets />
          </HBox.margin>
       </Button>
-      <HBox alignment="CENTER" prefHeight="30.0" prefWidth="262.0" spacing="15.0">
+      <HBox alignment="CENTER" prefHeight="30.0" prefWidth="288.0" spacing="20.0">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
          <HBox.margin>
             <Insets />
          </HBox.margin>
-         <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: green;" text="Сохранено!" />
+         <Text fx:id="successfulSaving" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: green;" text="Сохранено!" visible="false" />
          <Button mnemonicParsing="false" onAction="#save" text="Сохранить">
             <font>
                <Font size="14.0" />

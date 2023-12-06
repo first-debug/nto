@@ -1,15 +1,18 @@
 package com.vladislav.models;
 
 import javafx.beans.property.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static com.vladislav.App.format;
+import static com.vladislav.App.dateFormat;
 
 public class Event {
-    public final static ArrayList<Event> objectsList = new ArrayList<>();
+    public final static ObservableList<Event> objectsList = FXCollections.observableArrayList();
+    public final static ArrayList<Integer> objectsId = new ArrayList<>();
 
     private final Integer id;
     private final StringProperty title;
@@ -20,8 +23,9 @@ public class Event {
     private final Property<EventType> eventType;
     private final boolean isEntertainment;
 
-    public Event(Integer id, String title, String description, Space space, Long timeToStart, EventType eventType)
+    private Event(Integer id, String title, String description, Space space, Long timeToStart, EventType eventType)
     {
+
         this.id = id;
         this.title = new SimpleStringProperty(title);
         this.description = new SimpleStringProperty(description);
@@ -29,8 +33,33 @@ public class Event {
         this.timeToStart = new SimpleLongProperty(timeToStart);
         this.eventType = new SimpleObjectProperty<>(eventType);
         this.isEntertainment = eventType.getIsEntertainment();
-        this.stringTime = new SimpleStringProperty(format.format(new Date(timeToStart)));
-        Event.objectsList.add(this);
+        this.stringTime = new SimpleStringProperty(dateFormat.format(new Date(timeToStart)));
+        objectsList.add(this);
+        objectsId.add(id);
+    }
+
+    public static Event getInstant(Integer id, String title, String description, Space space, Long timeToStart, EventType eventType) {
+        int objectIndex = objectsId.indexOf(id);
+        if (objectIndex == -1) {
+            return new Event(id, title, description, space, timeToStart, eventType);
+        } else {
+            objectsList.forEach(f -> {
+                if (f.getId().equals(id)) {
+                    f.setTitle(title);
+                    f.setDescription(description);
+                    f.setSpace(space);
+                    f.setTimeToStart(timeToStart);
+                    f.setEventType(eventType);
+                    return;
+                }
+            });
+            return objectsList.get(objectIndex);
+        }
+    }
+
+    public static void remove(Event event) {
+        objectsList.remove(event);
+        objectsId.remove(event.id);
     }
 
     public String getTitle()
@@ -99,5 +128,23 @@ public class Event {
         this.timeToStart.set(timeToStart);
         SimpleDateFormat format = new SimpleDateFormat("HH:mm dd.MM.yyyy");
         this.stringTime.set(format.format(new Date(timeToStart)));
+    }
+
+    public void setEventType(EventType eventType) {
+        this.eventType.setValue(eventType);
+    }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "id=" + id +
+                ", title=" + title +
+                ", description=" + description +
+                ", space=" + space +
+                ", timeToStart=" + timeToStart +
+                ", stringTime=" + stringTime +
+                ", eventType=" + eventType +
+                ", isEntertainment=" + isEntertainment +
+                '}';
     }
 }

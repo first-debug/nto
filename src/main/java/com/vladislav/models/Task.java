@@ -1,17 +1,20 @@
 package com.vladislav.models;
 
 import javafx.beans.property.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-import static com.vladislav.App.format;
+import static com.vladislav.App.dateFormat;
 
 public class Task {
-    public final static  ArrayList<Task> objectsList = new ArrayList<>();
+    public final static ObservableList<Task> objectsList = FXCollections.observableArrayList();
+    public final static ArrayList<Integer> objectsId = new ArrayList<>();
 
     private final Integer id;
-    private final Long timeOfReg;
+    private Long timeOfReg;
     private final StringProperty timeOfRegString;
     private final Property<TaskType> type;
     private final Property<Event> event;
@@ -21,20 +24,46 @@ public class Task {
     private final StringProperty description;
     private Status status;
 
-    public Task(Integer id, Long timeOfReg, Event event,
+    private Task(Integer id, Long timeOfReg, Event event,
                 TaskType type, Long deadline, Status status) {
 
         this.id = id;
         this.timeOfReg = timeOfReg;
-        this.timeOfRegString = new SimpleStringProperty(format.format(new Date(this.timeOfReg)));
+        this.timeOfRegString = new SimpleStringProperty(dateFormat.format(new Date(this.timeOfReg)));
         this.event = new SimpleObjectProperty<>(event);
         this.type = new SimpleObjectProperty<>(type);
         this.space = new SimpleObjectProperty<>(event.getSpace());
         this.deadline = new SimpleLongProperty(deadline);
         this.description = new SimpleStringProperty(type.getDescription());
         this.status = status;
-        this.deadlineString = new SimpleStringProperty(format.format(new Date(deadline)));
-        Task.objectsList.add(this);
+        this.deadlineString = new SimpleStringProperty(dateFormat.format(new Date(deadline)));
+        objectsList.add(this);
+        objectsId.add(id);
+    }
+
+    public static Task getInstant(Integer id, Long timeOfReg, Event event,
+                                  TaskType type, Long deadline, Status status) {
+        int objectIndex = objectsId.indexOf(id);
+        if (objectIndex == -1) {
+            return new Task(id, timeOfReg, event, type, deadline, status);
+        } else {
+            objectsList.forEach(f -> {
+                if (f.getId().equals(id)) {
+                    f.setTimeOfReg(timeOfReg);
+                    f.setEvent(event);
+                    f.setType(type);
+                    f.setDeadline(deadline);
+                    f.setStatus(status);
+                    return;
+                }
+            });
+            return objectsList.get(objectIndex);
+        }
+    }
+
+    public static void remove(Task task) {
+        objectsId.remove(task.id);
+        objectsList.remove(task);
     }
 
     public void setCompleted() {
@@ -91,6 +120,42 @@ public class Task {
 
     public String getTimeOfRegName() {
         return timeOfRegString.get();
+    }
+
+    public void setTimeOfReg(Long timeOfReg) {
+        this.timeOfReg = timeOfReg;
+    }
+
+    public void setTimeOfRegString(String timeOfRegString) {
+        this.timeOfRegString.set(timeOfRegString);
+    }
+
+    public void setType(TaskType type) {
+        this.type.setValue(type);
+    }
+
+    public void setEvent(Event event) {
+        this.event.setValue(event);
+    }
+
+    public void setSpace(Space space) {
+        this.space.setValue(space);
+    }
+
+    public void setDeadline(long deadline) {
+        this.deadline.set(deadline);
+    }
+
+    public void setDeadlineString(String deadlineString) {
+        this.deadlineString.set(deadlineString);
+    }
+
+    public void setDescription(String description) {
+        this.description.set(description);
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     @Override

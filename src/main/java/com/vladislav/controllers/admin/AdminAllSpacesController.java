@@ -10,6 +10,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
@@ -50,10 +51,8 @@ public class AdminAllSpacesController extends EventTablesController implements I
         capacityColumn.setCellValueFactory(new PropertyValueFactory<>("capacity"));
 
 
-        ArrayList<Space> events = DataBase.getSpacesList();
-        if (!events.isEmpty()) {
-            ObservableList<Space> listOfStrings = FXCollections.observableArrayList(events);
-            tableOfSpaces.setItems(listOfStrings);
-        }
+        DataBase.getSpacesList();
+        FilteredList<Space> filteredSpaceList = new FilteredList<>(FXCollections.observableArrayList(Space.objectsList));
+        tableOfSpaces.setItems(filteredSpaceList);
     }
 }
