@@ -4,7 +4,10 @@ import com.vladislav.App;
 import com.vladislav.controllers.AdminDesktopController;
 import com.vladislav.controllers.Controller;
 import com.vladislav.controllers.EditEventTypeController;
-import com.vladislav.models.*;
+import com.vladislav.models.DataBase;
+import com.vladislav.models.Event;
+import com.vladislav.models.EventType;
+import com.vladislav.models.Space;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -19,7 +22,10 @@ import javafx.scene.text.Text;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.ResourceBundle;
 
 public class AdminCreateNewEventController extends Controller implements Initializable {
 
@@ -271,8 +277,8 @@ public class AdminCreateNewEventController extends Controller implements Initial
         spaceDescriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         areaColumn.setCellValueFactory(new PropertyValueFactory<>("area"));
         capacityColumn.setCellValueFactory(new PropertyValueFactory<>("capacity"));
-        DataBase.getSpacesList();
-        FilteredList<Space> filteredSpaceList = new FilteredList<>(Space.objectsList, p -> true);
+        DataBase.loadSpacesList("event");
+        FilteredList<Space> filteredSpaceList = new FilteredList<>(Space.objectsList, p -> p.getType().equals("event"));
         spacesTable.setItems(filteredSpaceList);
 
         // задаём настройки таблицы выбора мероприятий и заполняем её

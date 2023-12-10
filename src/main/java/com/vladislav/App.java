@@ -2,7 +2,7 @@ package com.vladislav;
 
 import com.vladislav.controllers.Controller;
 import com.vladislav.controllers.primary.PrimaryController;
-import com.vladislav.models.Event;
+import com.vladislav.models.DataBase;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -10,17 +10,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
-
-import com.vladislav.models.DataBase;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.lang.IllegalStateException;
 import java.text.SimpleDateFormat;
 import java.util.Objects;
 
@@ -88,6 +83,10 @@ public class App extends Application {
             newStageWindow.setScene(new Scene(parent, width, height));
             newStageWindow.getIcons().add(appIcon);
             newStageWindow.show();}
+    }
+
+    public static void newWindow(String fxml, Controller controller, String title) {
+        newWindow(fxml, controller, title, 720, 540);
     }
 
     public static void closeSecondWindow() {

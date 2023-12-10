@@ -13,13 +13,13 @@ public class DataBase {
         try
         {
             // костыль для запуска с помощью .bat
-            // для работы костыля "jdbc:sqlite:db.db"
-            connection = DriverManager.getConnection("jdbc:sqlite:db.db");
+            // для работы костыля "jdbc:sqlite:src/main/resources/com/vladislav/db.db"
+            connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/com/vladislav/db.db");
             connection.setAutoCommit(true);
         }
         catch (SQLException ex)
         {
-            logger.error(20  + " " + ex.getMessage());
+            logger.error("DataBase() " + ex.getMessage());
         }
     }
 
@@ -29,7 +29,7 @@ public class DataBase {
                 connection.close();
             }
 		} catch (SQLException ex) {
-            logger.error(30  + " " + ex.getMessage());
+            logger.error("closeConnection() " + ex.getMessage());
 		}
     }
 
@@ -47,10 +47,10 @@ public class DataBase {
             Integer typeId = answer.getInt("typeId");
             String typeName = answer.getString("typeName");
             boolean typeIsEntertainment = answer.getBoolean("isEntertainment");
-            EventType type = EventType.getInstant(typeId, typeName, typeIsEntertainment);
-            return Event.getInstant(eventId, title, eventDescription, space, timeToStart, type);
+            EventType type = EventType.getInstance(typeId, typeName, typeIsEntertainment);
+            return Event.getInstance(eventId, title, eventDescription, space, timeToStart, type);
         } catch (SQLException ex) {
-            logger.error(54 + " " + ex.getMessage());
+            logger.error("parseEvent() " + ex.getMessage());
             return null;
         }
     }
@@ -60,23 +60,24 @@ public class DataBase {
             Integer spaceId = answer.getInt("id");
             String spaceName = answer.getString("space");
             String spaceDescription = answer.getString("description");
+            String type = answer.getString("type");
             Integer area = answer.getInt("area");
             Integer capacity = answer.getInt("capacity");
             Boolean hasSeveralParts = answer.getBoolean("hasSeveralParts");
             int firstPartArea = answer.getInt("firstPartArea");
             int secondPartArea = answer.getInt("secondPartArea");
-            return Space.getInstant(spaceId, spaceName, spaceDescription, area, capacity, hasSeveralParts,
-                    new Integer[]{firstPartArea, secondPartArea});
+            return Space.getInstance(spaceId, spaceName, spaceDescription, area, capacity, hasSeveralParts,
+                    new Integer[]{firstPartArea, secondPartArea}, type);
         } catch (SQLException ex) {
-            logger.error(72 + " " + ex.getMessage());
+            logger.error("parseSpace() " + ex.getMessage());
             return null;
         }
     }
 
-    public static void addEvent(String title, String description, Space space, long timeToStart, EventType type) {
+    public static void addEvent(String title, String description, Space space, Long timeToStart, EventType type) {
         try {
             PreparedStatement pStatement = connection.prepareStatement(
-                    "INSERT OR REPLACE events(title, description, spaceId, timeToStart, typeId, isEntertainment) " +
+                    "INSERT OR REPLACE INTO events(title, description, spaceId, timeToStart, typeId, isEntertainment) " +
                             "VALUES (?, ?, ?, ?, ?, ?)"
             );
             pStatement.setString(1, title);
@@ -88,7 +89,7 @@ public class DataBase {
             pStatement.execute();
             loadEvents(type.getIsEntertainment());
         } catch (SQLException ex) {
-            logger.error(92  + " " + ex.getMessage());
+            logger.error("addEvent() " + ex.getMessage());
         }
     }
 
@@ -101,15 +102,16 @@ public class DataBase {
             pStatement.execute();
             Event.remove(event);
         } catch (SQLException ex) {
-            logger.error(104  + " " + ex.getMessage());
+            logger.error("removeEvent() " + ex.getMessage());
         }
     }
 
     public static void loadEvents(Boolean isEntertainment) {
-        String sql = "SELECT e.id as eventId, e.title as eventTitle, e.description as eventDescription, e.timeToStart as eventTimeToStart, " +
-                "e.timeToStart as eventTimeToStart, s.id, s.space, s.description, s.area, s.capacity, " +
-                "s.hasSeveralParts, s.firstPartArea, s.secondPartArea, te.id as typeId, te.type as typeName, " +
-                "te.isEntertainment " +
+        String sql = "SELECT e.id as eventId, e.title as eventTitle, e.description as eventDescription," +
+                " e.timeToStart as eventTimeToStart,  e.timeToStart as eventTimeToStart, " +
+                "s.id, s.space, s.description, s.area, s.capacity, s.type, s.hasSeveralParts, s.firstPartArea, " +
+                "s.secondPartArea, " +
+                "te.id as typeId, te.type as typeName,  te.isEntertainment " +
                 "FROM events as e, spaces as s, typesOfEvents as te " +
                 "WHERE s.id = e.spaceId AND te.id = e.typeId AND e.id IS NOT NUll";
         try
@@ -127,7 +129,7 @@ public class DataBase {
             }
 
         } catch (SQLException ex) {
-            logger.error(129  + " " + ex.getMessage());
+            logger.error("loadEvents() " + ex.getMessage());
         }
     }
 
@@ -139,9 +141,9 @@ public class DataBase {
             pStatement.setString(1, name);
             pStatement.setBoolean(2, isEntertainment);
             pStatement.execute();
-            getTypesEventList();
+            loadEventTypesList();
         } catch (SQLException ex) {
-            logger.error(172  + " " + ex.getMessage());
+            logger.error("addEventType() " + ex.getMessage());
         }
     }
 
@@ -154,11 +156,11 @@ public class DataBase {
             pStatement.execute();
             EventType.remove(eventType);
         } catch (SQLException ex) {
-            logger.error(184  + " " + ex.getMessage());
+            logger.error("removeEventType() " + ex.getMessage());
         }
     }
 
-    public static void getTypesEventList() {
+    public static void loadEventTypesList() {
         try
         {
             PreparedStatement statement = connection.prepareStatement(
@@ -170,19 +172,19 @@ public class DataBase {
                 Integer id = answer.getInt("id");
                 String name = answer.getString("type");
                 boolean isEntertainment = answer.getBoolean("isEntertainment");
-                EventType.getInstant(id, name, isEntertainment);
+                EventType.getInstance(id, name, isEntertainment);
             }
         } catch (SQLException ex) {
-            logger.error(158  + " " + ex.getMessage());
+            logger.error("loadEventTypesList() " + ex.getMessage());
         }
     }
 
     public static void addSpace(String space, String description, Integer area,
-                                Integer capacity, Boolean hasSeveralParts, Integer[] partsArea) {
+                                Integer capacity, Boolean hasSeveralParts, Integer[] partsArea, String type) {
         try {
             PreparedStatement pStatement = connection.prepareStatement(
                     "INSERT OR REPLACE INTO spaces(space, description, area, capacity, hasSeveralParts," +
-                            " firstPartArea, secondPartArea) VALUES (?, ?, ?, ?, ?, ?, ?)"
+                            " firstPartArea, secondPartArea, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
             );
             pStatement.setString(1, space);
             pStatement.setString(2, description);
@@ -191,10 +193,11 @@ public class DataBase {
             pStatement.setInt(5, hasSeveralParts ? 1 : 0);
             pStatement.setInt(6, partsArea[0]);
             pStatement.setInt(7, partsArea[1]);
+            pStatement.setString(8, type);
             pStatement.execute();
-            getSpacesList();
+            loadSpacesList(null);
         } catch (SQLException ex) {
-            logger.error(194  + " " + ex.getMessage());
+            logger.error("addSpace() " + ex.getMessage());
         }
     }
 
@@ -207,22 +210,27 @@ public class DataBase {
             pStatement.execute();
             Space.remove(space);
         } catch (SQLException ex) {
-            logger.error(206  + " " + ex.getMessage());
+            logger.error("removeSpace() " + ex.getMessage());
         }
     }
 
-    public static void getSpacesList() {
+    public static void loadSpacesList(String type) {
+        String sql = "SELECT * FROM spaces";
         try {
-            PreparedStatement pStatement = connection.prepareStatement(
-                    "SELECT * FROM spaces"
-            );
+            PreparedStatement pStatement;
+            if (type == null) {
+                pStatement = connection.prepareStatement(sql);
+            } else {
+                pStatement = connection.prepareStatement(sql+ " WHERE type = ?");
+                pStatement.setString(1, type);
+            }
             pStatement.execute();
             ResultSet answer = pStatement.getResultSet();
             while (answer.next()) {
                 parseSpace(answer);
             }
         } catch (SQLException ex) {
-            logger.error(200  + " " + ex.getMessage());
+            logger.error("loadSpacesList() " + ex.getMessage());
         }
     }
 
@@ -234,9 +242,9 @@ public class DataBase {
             pStatement.setString(1, type);
             pStatement.setString(2, description);
             pStatement.execute();
-            loadTypeTaskList();
+            loadTaskTypeList();
         } catch (SQLException ex) {
-            logger.error(288  + " " + ex.getMessage());
+            logger.error("addTaskType() " + ex.getMessage());
         }
     }
 
@@ -249,11 +257,11 @@ public class DataBase {
             pStatement.execute();
             TaskType.remove(taskType);
         } catch (SQLException ex) {
-            logger.error(291  + " " + ex.getMessage());
+            logger.error("removeTaskType() " + ex.getMessage());
         }
     }
 
-    public static void loadTypeTaskList() {
+    public static void loadTaskTypeList() {
         try {
             PreparedStatement pStatement = connection.prepareStatement(
                     "SELECT * FROM typesOfTasks"
@@ -266,7 +274,7 @@ public class DataBase {
                 TaskType.getInstance(id, name, description);
             }
         } catch (SQLException ex) {
-            logger.error(265 + " " + ex.getMessage());
+            logger.error("loadTaskTypeList() " + ex.getMessage());
         }
     }
 
@@ -274,7 +282,7 @@ public class DataBase {
                                Long deadline, Status status) {
         try {
             PreparedStatement pStatement = connection.prepareStatement(
-                    "INSERT OR REPLACE INTO tasks(timeOfReg, typeId, eventId, spaceId, deadline, status) " +
+                    "INSERT OR REPLACE INTO tasks(time_reg, typeId, eventId, spaceId, deadline, status) " +
                             "VALUES (?, ?, ?, ?, ?, ?)"
             );
             pStatement.setLong(1, timeOfReg);
@@ -284,9 +292,9 @@ public class DataBase {
             pStatement.setLong(5, deadline);
             pStatement.setString(6, status.getName());
             pStatement.execute();
-            getTasksList(status.getName().equalsIgnoreCase("К выполнению"), type.getName());
+            loadTasksList(status.getName().equalsIgnoreCase("К выполнению"), type.getName());
         } catch (SQLException ex) {
-            logger.error(284  + " " + ex.getMessage());
+            logger.error("addTask() " + ex.getMessage());
         }
     }
 
@@ -299,7 +307,7 @@ public class DataBase {
             pStatement.execute();
             Task.remove(task);
         } catch (SQLException ex) {
-            logger.error(294  + " " + ex.getMessage());
+            logger.error("removeTask() " + ex.getMessage());
         }
     }
 
@@ -312,16 +320,18 @@ public class DataBase {
             pStatement.setInt(2, task.getId());
             pStatement.execute();
         } catch (SQLException ex) {
-            logger.error(214  + " " + ex.getMessage());
+            logger.error("changeTaskStatus() " + ex.getMessage());
         }
     }
 
-    public static void getTasksList(boolean isExecuted, String typeName) {
-        String sql = "SELECT t.id as taskId, t.timeOfReg as taskReg, t.deadline, t.status, " +
-                "       tt.id as taskTypeId, tt.type as taskTypeName, tt.description as taskTypeDescription, " +
-                "       e.id as eventId, e.title as eventTitle, e.description as eventDescription, e.timeToStart as eventTimeToStart, " +
-                "       s.id, s.space, s.description, s.area, s.capacity, s.hasSeveralParts, s.firstPartArea, s.secondPartArea, " +
-                "       te.id as typeId, te.type as typeName, te.isEntertainment " +
+    public static void loadTasksList(boolean isExecuted, String typeName) {
+        String sql = "SELECT t.id as taskId, t.time_reg as taskReg, t.deadline, t.status, " +
+                "tt.id as taskTypeId, tt.type as taskTypeName, tt.description as taskTypeDescription, " +
+                "e.id as eventId, e.title as eventTitle, e.description as eventDescription, " +
+                "e.timeToStart as eventTimeToStart, " +
+                "s.id, s.space, s.description, s.area, s.capacity, s.hasSeveralParts, s.firstPartArea," +
+                " s.secondPartArea, s.type, " +
+                "te.id as typeId, te.type as typeName, te.isEntertainment " +
                 "FROM tasks as t, typesOfTasks as tt, " +
                 "     events as e, spaces as s, typesOfEvents as te " +
                 "WHERE t.typeId = tt.id AND t.eventId = e.id AND t.spaceId = s.id " +
@@ -354,11 +364,11 @@ public class DataBase {
                     continue;
                 }
                 Event event = parseEvent(answer, null);
-                Task.getInstant(taskId, timeOfReg, event, type, deadline, status);
+                Task.getInstance(taskId, timeOfReg, event, type, deadline, status);
 
             }
         } catch (SQLException ex) {
-            logger.error(266  + " " + ex.getMessage());
+            logger.error("loadTasksList() " + ex.getMessage());
         }
     }
 
@@ -366,7 +376,7 @@ public class DataBase {
                                   Long timeOfEnd, Space space, Integer halfOfSpace, String comment) {
         try {
             PreparedStatement pStatement = connection.prepareStatement(
-                    "INSERT OR REPLACE INTO booking(timeOfReg, eventId, timeOfStart, timeOfEnd, spaceId, " +
+                    "INSERT OR REPLACE INTO booking(time_reg, eventId, timeOfStart, timeOfEnd, spaceId, " +
                             "halfOfSpace, comment) VALUES (?, ?, ?, ?, ?, ?, ?)"
             );
             pStatement.setLong(1, timeOfReg);
@@ -377,9 +387,9 @@ public class DataBase {
             pStatement.setInt(6, halfOfSpace);
             pStatement.setString(7, comment);
             pStatement.execute();
-            getBookingList(space);
+            loadBookingList(space);
         } catch (SQLException ex) {
-            logger.error(284  + " " + ex.getMessage());
+            logger.error("addBooking() " + ex.getMessage());
         }
     }
 
@@ -392,15 +402,15 @@ public class DataBase {
             pStatement.execute();
             Booking.remove(booking);
         } catch (SQLException ex) {
-            logger.error(394  + " " + ex.getMessage());
+            logger.error("removeBooking() " + ex.getMessage());
         }
     }
 
     // для Места
-    public static void getBookingList(Space space) {
-        String sql = "SELECT b.id as bookingId, b.timeOfReg as bookingReg, b.timeOfStart as bookingStart, b.timeOfEnd, b.halfOfSpace, b.comment, " +
+    public static void loadBookingList(Space space) {
+        String sql = "SELECT b.id as bookingId, b.time_reg as bookingReg, b.timeOfStart as bookingStart, b.timeOfEnd, b.halfOfSpace, b.comment, " +
                 "e.id as eventId, e.title as eventTitle, e.description as eventDescription, e.timeToStart as eventTimeToStart, " +
-                "s.id, s.space, s.description, s.area, s.capacity, s.hasSeveralParts, s.firstPartArea, s.secondPartArea, " +
+                "s.id, s.space, s.description, s.area, s.capacity, s.hasSeveralParts, s.firstPartArea, s.secondPartArea, s.type, " +
                 "te.id as typeId, te.type as typeName, te.isEntertainment " +
                 "FROM booking as b, events as e, typesOfEvents as te, spaces as s " +
                 "WHERE b.eventId = e.id AND e.spaceId = s.id " +
@@ -425,18 +435,18 @@ public class DataBase {
                     space = parseSpace(answer);
                     Event event = parseEvent(answer, space);
 
-                    Booking.getInstant(id, timeOfReg, event, timeOfStart, timeOfEnd, space, halfOfSpace, comment);
+                    Booking.getInstance(id, timeOfReg, event, timeOfStart, timeOfEnd, space, halfOfSpace, comment);
                 }
             }
         } catch (SQLException ex) {
-            logger.error(447 + " " + ex.getMessage());
+            logger.error("loadBookingList() " + ex.getMessage());
         }
     }
 
     // для Мероприятия
     public static ArrayList<Booking> getBookingList(Space space, Event event) {
         ArrayList<Booking> result = new ArrayList<>();
-        String sql = "SELECT b.id, b.timeOfReg, b.timeOfStart, b.timeOfEnd, b.halfOfSpace, b.comment, " +
+        String sql = "SELECT b.id, b.time_reg, b.timeOfStart, b.timeOfEnd, b.halfOfSpace, b.comment, " +
                 "FROM booking as b, events as e, typesOfEvents as te " +
                 "WHERE b.eventId = ? AND b.spaceId = e.spaceId = ? AND e.typeId = te.id";
         try {
@@ -452,10 +462,10 @@ public class DataBase {
                 Integer halfOfSpace = answer.getInt("halfOfSpace");
                 String comment = answer.getString("comment");
 
-                result.add(Booking.getInstant(id, timeOfReg, event, timeOfStart, timeOfEnd, space, halfOfSpace, comment));
+                result.add(Booking.getInstance(id, timeOfReg, event, timeOfStart, timeOfEnd, space, halfOfSpace, comment));
             }
         } catch (SQLException ex) {
-            logger.error(474 + " " + ex.getMessage());
+            logger.error("getBookingList() " + ex.getMessage());
         }
         return result;
     }
@@ -476,8 +486,196 @@ public class DataBase {
             result[1] = String.valueOf(answer.next());
             result[2] = answer.getString("role");
         } catch (SQLException ex) {
-            logger.error(287 + " " + ex.getMessage());
+            logger.error("loginEmployee() " + ex.getMessage());
         }
         return result;
+    }
+
+    public static void addCoterie(String title, Long start_time, CoterieType type, Space coterieSpace,
+                                  Teacher teacher, Long[][] schedule) {
+        try {
+            PreparedStatement pStatement = connection.prepareStatement(
+                    "INSERT OR REPLACE INTO coteries(title, start_time, typeId, spaceId, teacherId, " +
+                            "monday_start, monday_end, tuesday_start, tuesday_end, wednesday_start, wednesday_end, " +
+                            "thursday_start, thursday_end, friday_start, friday_end, saturday_start, saturday_end, " +
+                            "sunday_start, sunday_end) " +
+                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            );
+            pStatement.setString(1, title);
+            pStatement.setLong(2, start_time);
+            pStatement.setInt(3, type.getId());
+            pStatement.setInt(4, coterieSpace.getId());
+            pStatement.setInt(5, teacher.getId());
+            for (int arrI = 0, dbI = 6; arrI < schedule.length; arrI++) {
+                pStatement.setLong(dbI, schedule[arrI][dbI++]);
+                pStatement.setLong(dbI, schedule[arrI][dbI++]);
+            }
+            pStatement.execute();
+            loadCoterie();
+        } catch (SQLException ex) {
+            logger.error("addCoterie() " + ex.getMessage());
+        }
+    }
+
+    public static void removeCoterie(Coterie coterie) {
+        try {
+            PreparedStatement pStatement = connection.prepareStatement(
+                    "DELETE FROM coteries WHERE id=?"
+            );
+            pStatement.setInt(1, coterie.getId());
+            pStatement.execute();
+            Coterie.remove(coterie);
+        } catch (SQLException ex) {
+            logger.error("removeCoterie() " + ex.getMessage());
+        }
+    }
+
+    public static void loadCoterie() {
+        String sql = "SELECT c.id as coterieId, c.title as coterieTitle, c.start_time as coterieStartTime, " +
+                "monday_start, monday_end, tuesday_start, tuesday_end, wednesday_start, wednesday_end, " +
+                "thursday_start, thursday_end, friday_start, friday_end, saturday_start, saturday_end, sunday_start, " +
+                "sunday_end, " +
+                "ct.id as typeId, ct.title as typeTitle, ct.description as typeDescription, " +
+                "s.id, s.space, s.description, s.area, s.capacity, s.type, s.hasSeveralParts, s.firstPartArea, " +
+                "s.secondPartArea, " +
+                "e.id as teacherId, e.first_name, e.last_name, e.patronymic " +
+                "FROM coteries as c, typesOfCoteries as ct, spaces as s , employees as e " +
+                "WHERE c.typeId = ct.id AND c.spaceId = s.id AND c.teacherId = e.id";
+        try
+        {
+            PreparedStatement pStatement;
+            pStatement = connection.prepareStatement(sql);
+            ResultSet answer = pStatement.executeQuery();
+            while (answer.next()) {
+                Integer id = answer.getInt("coterieId");
+                String title = answer.getString("coterieTitle");
+                Long timeStart = answer.getLong("coterieStartTime");
+
+                Integer typeId = answer.getInt("typeId");
+                String typeTitle = answer.getString("typeTitle");
+                String description = answer.getString("typeDescription");
+                CoterieType type = CoterieType.getInstance(typeId, typeTitle, description);
+
+                Space space = parseSpace(answer);
+
+                Integer teacherId = answer.getInt("teacherId");
+                String firstName = answer.getString("first_name");
+                String lastName = answer.getString("last_name");
+                String patronymic = answer.getString("patronymic");
+                Teacher teacher = Teacher.getInstance(teacherId, firstName, lastName, patronymic);
+                Long[][] schedule = new Long[][]{
+                        {answer.getLong("monday_start"), answer.getLong("monday_end")}, // monday
+                        {answer.getLong("tuesday_start"), answer.getLong("tuesday_end")}, // tuesday
+                        {answer.getLong("wednesday_start"), answer.getLong("wednesday_end")}, // wednesday
+                        {answer.getLong("thursday_start"), answer.getLong("thursday_end")}, // thursday
+                        {answer.getLong("friday_start"), answer.getLong("friday_end")}, // friday
+                        {answer.getLong("saturday_start"), answer.getLong("saturday_end")}, // saturday
+                        {answer.getLong("sunday_start"), answer.getLong("sunday_end")} // sunday
+                };
+                Coterie.getInstance(id, title, timeStart, type, space, teacher, schedule);
+            }
+        } catch (SQLException ex) {
+            logger.error("loadCoterie() " + ex.getMessage());
+        }
+    }
+
+    public static void addCoterieType(String title, String description) {
+        try {
+            PreparedStatement pStatement = connection.prepareStatement(
+                    "INSERT OR REPLACE INTO typesOfCoteries(title, description) VALUES (?, ?)"
+            );
+            pStatement.setString(1, title);
+            pStatement.setString(2, description);
+            pStatement.execute();
+            loadCoterieTypesList();
+        } catch (SQLException ex) {
+            logger.error("addCoterieType() " + ex.getMessage());
+        }
+    }
+
+    public static void removeCoterieType(CoterieType coterieType) {
+        try {
+            PreparedStatement pStatement = connection.prepareStatement(
+                    "DELETE FROM typesOfCoteries WHERE id=?"
+            );
+            pStatement.setInt(1, coterieType.getId());
+            pStatement.execute();
+            CoterieType.remove(coterieType);
+        } catch (SQLException ex) {
+            logger.error("removeCoterieType() " + ex.getMessage());
+        }
+    }
+
+    public static void loadCoterieTypesList() {
+        try
+        {
+            PreparedStatement pStatement = connection.prepareStatement(
+                    "SELECT * FROM typesOfCoteries"
+            );
+            ResultSet answer = pStatement.executeQuery();
+            while (answer.next())
+            {
+                Integer id = answer.getInt("id");
+                String title = answer.getString("title");
+                String description = answer.getString("description");
+                CoterieType.getInstance(id, title, description);
+            }
+        } catch (SQLException ex) {
+            logger.error("loadCoterieTypesList() " + ex.getMessage());
+        }
+    }
+
+    public static void addTeacher(String login, String password, String first_name, String last_name,
+                                  String patronymic) {
+        try {
+            PreparedStatement pStatement = connection.prepareStatement(
+                    "INSERT OR REPLACE INTO employees(login, password, first_name, last_name, patronymic, role)" +
+                            " VALUES (?, ?, ?, ?, ?, ?)"
+            );
+            pStatement.setString(1, login);
+            pStatement.setString(2, password);
+            pStatement.setString(3, first_name);
+            pStatement.setString(4, last_name);
+            pStatement.setString(5, patronymic);
+            pStatement.setString(6, "teacher");
+            pStatement.execute();
+            loadCoterieTypesList();
+        } catch (SQLException ex) {
+            logger.error("addTeacher() " + ex.getMessage());
+        }
+    }
+
+    public static void removeTeacher(Teacher teacher) {
+        try {
+            PreparedStatement pStatement = connection.prepareStatement(
+                    "DELETE FROM employees WHERE id=? AND role='teacher'"
+            );
+            pStatement.setInt(1, teacher.getId());
+            pStatement.execute();
+            Teacher.remove(teacher);
+        } catch (SQLException ex) {
+            logger.error("removeTeacher() " + ex.getMessage());
+        }
+    }
+
+    public static void loadEmployeeList(String role) {
+        try
+        {
+            PreparedStatement pStatement = connection.prepareStatement(
+                    "SELECT * FROM employees WHERE role=?"
+            );
+            pStatement.setString(1, role);
+            ResultSet answer = pStatement.executeQuery();
+            while (answer.next())
+            {
+                Integer id = answer.getInt("id");
+                String firstName = answer.getString("first_name");
+                String lastName = answer.getString("last_name");
+                String patronymic = answer.getString("patronymic");
+                Teacher.getInstance(id, firstName, lastName, patronymic);
+            }
+        } catch (SQLException ex) {
+            logger.error("loadEmployeeList() " + ex.getMessage());
+        }
     }
 }

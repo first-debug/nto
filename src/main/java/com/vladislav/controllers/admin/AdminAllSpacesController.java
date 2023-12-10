@@ -5,16 +5,15 @@ import com.vladislav.controllers.AdminDesktopController;
 import com.vladislav.controllers.EventTablesController;
 import com.vladislav.models.DataBase;
 import com.vladislav.models.Space;
-import com.vladislav.models.Task;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
@@ -25,10 +24,11 @@ import java.util.ResourceBundle;
 
 public class AdminAllSpacesController extends EventTablesController implements Initializable {
 
+    private FilteredList<Space> filteredSpaceList;
+    @FXML
+    private ChoiceBox<String> filter;
     @FXML
     private TableView<Space> tableOfSpaces;
-    @FXML
-    private TableColumn<Space, IntegerProperty> idColumn;
     @FXML
     private TableColumn<Space, StringProperty> nameColumn;
     @FXML
@@ -37,6 +37,8 @@ public class AdminAllSpacesController extends EventTablesController implements I
     private TableColumn<Space, IntegerProperty> areaColumn;
     @FXML
     private TableColumn<Space, IntegerProperty> capacityColumn;
+    @FXML
+    private TableColumn<Space, String> typeColumn;
 
     @FXML
     public void switchToPrimary() throws IOException {
@@ -44,15 +46,47 @@ public class AdminAllSpacesController extends EventTablesController implements I
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        ArrayList<String> spaceTypeList = new ArrayList<String>(){{
+            add("Все");
+            add("Для мероприятий");
+            add("Для кружков");
+        }};
+        filter.setValue("Все");
+        filter.setItems(FXCollections.observableList(spaceTypeList));
+        filter.valueProperty().addListener((observable, oldValue, newValue) -> filteredSpaceList.setPredicate(space -> {
+            boolean result = false;
+            String type = space.getType();
+            if (newValue == null || newValue.isEmpty() || newValue.equals("Все")) result = true;
+            else {
+                switch (newValue) {
+                    case "Для мероприятий":
+                        result = type.equals("event");
+                        break;
+                    case "Для кружков":
+                        result = type.equals("coterie");
+                        break;
+                }
+            }
+            tableOfSpaces.refresh();
+            return result;
+        }));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         areaColumn.setCellValueFactory(new PropertyValueFactory<>("area"));
         capacityColumn.setCellValueFactory(new PropertyValueFactory<>("capacity"));
+        typeColumn.setCellValueFactory(cell -> {
+            switch (cell.getValue().getType()) {
+                case "event":
+                    return new SimpleStringProperty("Для событий");
+                case "coterie":
+                    return new SimpleStringProperty("Для кружков");
+            }
+            return new SimpleStringProperty("error");
+        });
 
 
-        DataBase.getSpacesList();
-        FilteredList<Space> filteredSpaceList = new FilteredList<>(FXCollections.observableArrayList(Space.objectsList));
+        DataBase.loadSpacesList(null);
+        filteredSpaceList= new FilteredList<>(FXCollections.observableArrayList(Space.objectsList));
         tableOfSpaces.setItems(filteredSpaceList);
     }
 }

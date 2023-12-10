@@ -3,7 +3,10 @@ package com.vladislav.controllers.admin;
 import com.vladislav.App;
 import com.vladislav.controllers.AdminDesktopController;
 import com.vladislav.controllers.Controller;
-import com.vladislav.models.*;
+import com.vladislav.models.Booking;
+import com.vladislav.models.DataBase;
+import com.vladislav.models.Event;
+import com.vladislav.models.Space;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
@@ -11,12 +14,7 @@ import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 
@@ -491,13 +489,13 @@ public class AdminCreateNewBookingController extends Controller implements Initi
             Calendar calendarStart = Calendar.getInstance();
             calendarStart.setTime(new Date(booking.getTimeOfStart()));
             dateStartInput.setValue(calendarStart.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-            hoursStart.setValue(String.valueOf(calendarStart.get(Calendar.HOUR)));
+            hoursStart.setValue(String.valueOf(calendarStart.get(Calendar.HOUR_OF_DAY)));
             minutesStart.setValue(String.valueOf(calendarStart.get(Calendar.MINUTE)));
 
             Calendar calendarEnd = Calendar.getInstance();
-            calendarEnd.setTime(new Date(booking.getTimeOfStart()));
+            calendarEnd.setTime(new Date(booking.getTimeOfEnd()));
             dateEndInput.setValue(calendarEnd.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-            hoursEnd.setValue(String.valueOf(calendarEnd.get(Calendar.HOUR)));
+            hoursEnd.setValue(String.valueOf(calendarEnd.get(Calendar.HOUR_OF_DAY)));
             minutesEnd.setValue(String.valueOf(calendarEnd.get(Calendar.MINUTE)));
 
             spacesTable.getSelectionModel().select(booking.getSpace());
@@ -529,7 +527,7 @@ public class AdminCreateNewBookingController extends Controller implements Initi
         capacityColumn.setCellValueFactory(new PropertyValueFactory<>("capacity"));
         firstAreaColumn.setCellValueFactory(new PropertyValueFactory<>("firstArea"));
         secondAreaColumn.setCellValueFactory(new PropertyValueFactory<>("secondArea"));
-        DataBase.getSpacesList();
+        DataBase.loadSpacesList("event");
         filteredSpacesList = new FilteredList<>(Space.objectsList, p -> true);
         spacesTable.setItems(filteredSpacesList);
 
@@ -548,7 +546,7 @@ public class AdminCreateNewBookingController extends Controller implements Initi
         bookingStartColumn.setCellValueFactory(new PropertyValueFactory<>("timeOfStartString"));
         bookingEndColumn.setCellValueFactory(new PropertyValueFactory<>("timeOfEndString"));
         halfOfSpaceColumn.setCellValueFactory(new PropertyValueFactory<>("halfOfSpace"));
-        DataBase.getBookingList(null);
+        DataBase.loadBookingList(null);
         FilteredList<Booking> filteredBookingList = new FilteredList<>(Booking.objectsList, p -> true);
         bookingTable.setItems(filteredBookingList);
     }

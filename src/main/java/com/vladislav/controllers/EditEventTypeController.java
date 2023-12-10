@@ -4,17 +4,18 @@ import com.vladislav.App;
 import com.vladislav.models.DataBase;
 import com.vladislav.models.EventType;
 import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class EditEventTypeController extends Controller implements Initializable {
@@ -150,7 +151,7 @@ public class EditEventTypeController extends Controller implements Initializable
 
         typeEventColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         isEntertainmentColumn.setCellValueFactory(new PropertyValueFactory<>("isEntertainmentString"));
-        DataBase.getTypesEventList();
+        DataBase.loadEventTypesList();
         FilteredList<EventType> typesList = new FilteredList<>(EventType.objectsList, p -> true);
         typeEventTable.setItems(typesList);
     }

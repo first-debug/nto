@@ -1,18 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-
-<VBox alignment="TOP_CENTER" maxHeight="1080.0" maxWidth="1920.0" minHeight="600.0" minWidth="960.0" prefHeight="650.0" prefWidth="980.0" spacing="20.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+<?import javafx.scene.text.Text?>
+<VBox alignment="TOP_CENTER" prefHeight="650.0" prefWidth="1080.0" spacing="20.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
    <MenuBar fx:id="menuBar" prefHeight="17.0" prefWidth="552.0">
       <Menu mnemonicParsing="false" text="Файл">
          <MenuItem mnemonicParsing="false" onAction="#exit" text="Выход" />
@@ -26,23 +19,36 @@
          <Font size="30.0" />
       </font>
    </Label>
-   <HBox alignment="CENTER" prefHeight="440.0" prefWidth="920.0">
-      <opaqueInsets>
-         <Insets />
-      </opaqueInsets>
-      <VBox.margin>
-         <Insets />
-      </VBox.margin>
-      <TableView fx:id="tableOfSpaces" accessibleHelp="Нет событий" prefHeight="440.0" prefWidth="951.0">
-         <columns>
-            <TableColumn fx:id="idColumn" prefWidth="79.0" text="ID" />
-            <TableColumn fx:id="nameColumn" prefWidth="192.0" text="Название" />
-            <TableColumn fx:id="descriptionColumn" prefWidth="445.0" text="Описнание" />
-            <TableColumn fx:id="areaColumn" prefWidth="125.0" text="Площадь" />
-            <TableColumn fx:id="capacityColumn" prefWidth="109.0" text="Вместимость" />
-         </columns>
-      </TableView>
-   </HBox>
+   <VBox prefHeight="467.0" prefWidth="1080.0">
+      <HBox alignment="CENTER_LEFT" prefHeight="31.0" prefWidth="1080.0" spacing="20.0">
+         <padding>
+            <Insets bottom="5.0" left="70.0" right="5.0" top="5.0"/>
+         </padding>
+         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Фильтр:">
+            <font>
+               <Font size="16.0"/>
+            </font>
+         </Text>
+         <ChoiceBox fx:id="filter"/>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="440.0" prefWidth="920.0">
+         <opaqueInsets>
+            <Insets/>
+         </opaqueInsets>
+         <VBox.margin>
+            <Insets/>
+         </VBox.margin>
+         <TableView fx:id="tableOfSpaces" accessibleHelp="Нет событий" prefHeight="440.0" prefWidth="951.0">
+            <columns>
+               <TableColumn fx:id="nameColumn" prefWidth="182.0" text="Название"/>
+               <TableColumn fx:id="descriptionColumn" prefWidth="416.0" text="Описнание"/>
+               <TableColumn fx:id="areaColumn" prefWidth="118.0" text="Площадь"/>
+               <TableColumn fx:id="capacityColumn" prefWidth="97.0" text="Вместимость"/>
+               <TableColumn fx:id="typeColumn" prefWidth="137.0" text="Тип событий"/>
+            </columns>
+         </TableView>
+      </HBox>
+   </VBox>
    <HBox alignment="CENTER" prefHeight="0.0" prefWidth="600.0">
       <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="200.0">
          <opaqueInsets>

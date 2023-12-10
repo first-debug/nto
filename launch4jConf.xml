@@ -15,7 +15,7 @@
   <manifest></manifest>
   <icon>C:\Users\vladi\IdeaProjects\nto\src\main\resources\com\vladislav\icon.ico</icon>
   <jre>
-    <path>%JAVA_HOME%;%PATH%;c:\Program Files\java\jre-1.8;c:\Program Files (x86)\java\jre-1.8</path>
+    <path>%JAVA_HOME%;%PATH%;c:\Program Files\java\jre-1.8;c:\Program Files (x86)\java\jre-1.8;jre-1.8</path>
     <requiresJdk>false</requiresJdk>
     <requires64Bit>false</requires64Bit>
     <minVersion>1.7</minVersion>

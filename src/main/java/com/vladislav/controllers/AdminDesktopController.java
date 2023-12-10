@@ -40,6 +40,11 @@ public class AdminDesktopController extends Controller {
     void toAddBooking() {
         App.setRoot("createNewBooking", new AdminCreateNewBookingController());
     }
+
+    @FXML
+    void toEditCoteries() {
+        App.setRoot("editCoteries", new AdminEditCoteriesController());
+    }
 }
 
 

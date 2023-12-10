@@ -32,22 +32,11 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
-
-<VBox alignment="TOP_CENTER" prefHeight="457.0" prefWidth="506.0" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<VBox alignment="TOP_CENTER" prefHeight="457.0" prefWidth="506.0" spacing="20.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
    <MenuBar fx:id="menuBar" prefHeight="17.0" prefWidth="552.0">
       <Menu mnemonicParsing="false" text="Файл">
          <MenuItem mnemonicParsing="false" onAction="#close" text="Закрыть" />
@@ -56,7 +45,7 @@
          <MenuItem mnemonicParsing="false" onAction="#showDocumentation" text="О приложении" />
       </Menu>
    </MenuBar>
-   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Редактирование видов мероприятий">
+   <Text strokeType="OUTSIDE" strokeWidth="0.0">
       <font>
          <Font size="19.0" />
       </font>
@@ -127,8 +116,8 @@
       <VBox prefHeight="295.0" prefWidth="234.0" spacing="5.0">
          <TableView fx:id="typeTaskTable" prefHeight="259.0" prefWidth="187.0">
             <columns>
-               <TableColumn fx:id="typeTaskColumn" prefWidth="83.0" text="Вид" />
-               <TableColumn fx:id="descriptionColumn" prefWidth="149.0" text="Описание" />
+               <TableColumn fx:id="typeTaskColumn" prefWidth="104.0" text="Вид" />
+               <TableColumn fx:id="descriptionColumn" prefWidth="128.0" text="Описание" />
             </columns>
          </TableView>
          <Text fx:id="warningType" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Нужно выбрать тип!" visible="false" wrappingWidth="119.13671875" />

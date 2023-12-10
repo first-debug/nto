@@ -131,9 +131,8 @@ public class AdminAllTasksController extends EventTablesController implements In
         timeRegColumn.setCellValueFactory(new PropertyValueFactory<>("timeOfRegName"));
 
 
-        DataBase.getTasksList(false, null);
+        DataBase.loadTasksList(false, null);
         FilteredList<Task> filteredTaskList = new FilteredList<>(Task.objectsList, p -> true);
         tableOfTasks.setItems(filteredTaskList);
-
     }
 }

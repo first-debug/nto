@@ -1,6 +1,9 @@
 package com.vladislav.controllers;
 
-import com.vladislav.models.*;
+import com.vladislav.models.DataBase;
+import com.vladislav.models.Status;
+import com.vladislav.models.Task;
+import com.vladislav.models.TaskType;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -49,7 +52,7 @@ public class SEDesktopController extends Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        DataBase.loadTypeTaskList();
+        DataBase.loadTaskTypeList();
         ArrayList<String> taskTypeStringsList = new ArrayList<>();
         taskTypeStringsList.add("Все");
         TaskType.objectsList.forEach(f -> taskTypeStringsList.add(f.getName()));
@@ -120,7 +123,7 @@ public class SEDesktopController extends Controller implements Initializable {
                 }
             }
         });
-        DataBase.getTasksList(true, null);
+        DataBase.loadTasksList(true, null);
         filteredTaskList = new FilteredList<>(Task.objectsList);
         tableOfTasks.setItems(filteredTaskList);
     }

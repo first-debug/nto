@@ -28,7 +28,7 @@ public class EventType {
         objectsId.add(id);
     }
 
-    public static EventType getInstant(Integer id, String name, boolean isEntertainment) {
+    public static EventType getInstance(Integer id, String name, boolean isEntertainment) {
         int objectIndex = objectsId.indexOf(id);
         if (objectIndex == -1) {
             return new EventType(id, name, isEntertainment);

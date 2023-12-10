@@ -26,7 +26,7 @@ public class Booking {
     private final StringProperty comment;
 
     private Booking(Integer id, Long timeOfReg, Event event, Long timeOfStart,
-                   Long timeOfEnd, Space space, Integer halfOfSpace, String comment) {
+                    Long timeOfEnd, Space space, Integer halfOfSpace, String comment) {
         this.id = id;
         this.timeOfReg = timeOfReg;
         this.timeOfRegString = new SimpleStringProperty(dateFormat.format(new Date(timeOfReg)));
@@ -42,8 +42,8 @@ public class Booking {
         objectsId.add(id);
     }
 
-    public static Booking getInstant(Integer id, Long timeOfReg, Event event, Long timeOfStart,
-                                     Long timeOfEnd, Space space, Integer halfOfSpace, String comment) {
+    public static Booking getInstance(Integer id, Long timeOfReg, Event event, Long timeOfStart,
+                                      Long timeOfEnd, Space space, Integer halfOfSpace, String comment) {
         int objectIndex = objectsId.indexOf(id);
         if (objectIndex == -1) {
             return new Booking(id, timeOfReg, event, timeOfStart,

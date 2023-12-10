@@ -41,8 +41,8 @@ public class Task {
         objectsId.add(id);
     }
 
-    public static Task getInstant(Integer id, Long timeOfReg, Event event,
-                                  TaskType type, Long deadline, Status status) {
+    public static Task getInstance(Integer id, Long timeOfReg, Event event,
+                                   TaskType type, Long deadline, Status status) {
         int objectIndex = objectsId.indexOf(id);
         if (objectIndex == -1) {
             return new Task(id, timeOfReg, event, type, deadline, status);

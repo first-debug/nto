@@ -22,38 +22,51 @@ public class Space {
     private final IntegerProperty firstArea;
     private final IntegerProperty secondArea;
     private final FilteredList<Booking> bookingList;
+    private final StringProperty type;
 
     private Space(Integer id, String name, String description, Integer area,
-                 Integer capacity, Boolean hasSeveralParts, Integer[] partsArea) {
+                  Integer capacity, Boolean hasSeveralParts, Integer[] partsArea, String type) {
         this.id = new SimpleIntegerProperty(id);
         this.name = new SimpleStringProperty(name);
         this.description = new SimpleStringProperty(description);
-        this.area = new SimpleIntegerProperty(area);
-        this.capacity = new SimpleIntegerProperty(capacity);
-        this.hasSeveralParts = new SimpleBooleanProperty(hasSeveralParts);
-        this.partsArea = partsArea;
-        this.firstArea = new SimpleIntegerProperty(partsArea[0]);
-        this.secondArea = new SimpleIntegerProperty(partsArea[0]);
-        this.bookingList = new FilteredList<>(Booking.objectsList, p -> p.getSpace().equals(this));
+        if (type.equals("event")) {
+            this.area = new SimpleIntegerProperty(area);
+            this.capacity = new SimpleIntegerProperty(capacity);
+            this.hasSeveralParts = new SimpleBooleanProperty(hasSeveralParts);
+            this.partsArea = partsArea;
+            this.firstArea = new SimpleIntegerProperty(partsArea[0]);
+            this.secondArea = new SimpleIntegerProperty(partsArea[0]);
+            this.bookingList = new FilteredList<>(Booking.objectsList, p -> p.getSpace().equals(this));
+        } else {
+            this.area = new SimpleIntegerProperty(area == null ? 0 : area);
+            this.capacity = new SimpleIntegerProperty(capacity == null ? 0 : capacity);
+            this.hasSeveralParts = new SimpleBooleanProperty(false);
+            this.partsArea = new Integer[0];
+            this.firstArea = new SimpleIntegerProperty(0);
+            this.secondArea = new SimpleIntegerProperty(0);
+            this.bookingList = new FilteredList<>(Booking.objectsList, p -> p.getSpace().equals(this));
+        }
+        this.type = new SimpleStringProperty(type);
         objectsList.add(this);
         objectsId.add(id);
     }
 
-    public static Space getInstant(Integer id, String name, String description, Integer area,
-                                   Integer capacity, Boolean hasSeveralParts, Integer[] partsArea) {
+    public static Space getInstance(Integer id, String name, String description, Integer area,
+                                    Integer capacity, Boolean hasSeveralParts, Integer[] partsArea, String type) {
         int objectIndex = objectsId.indexOf(id);
         if (objectIndex == -1) {
-            return new Space(id, name, description, area, capacity, hasSeveralParts, partsArea);
+            return new Space(id, name, description, area, capacity, hasSeveralParts, partsArea, type);
         } else {
             objectsList.forEach(f -> {
                 if (f.getId().equals(id)) {
                     f.setName(name);
                     f.setDescription(description);
-                    f.setArea(area);
-                    f.setCapacity(capacity);
-                    f.setHasSeveralParts(hasSeveralParts);
-                    f.setFirstArea(partsArea[0]);
-                    f.setFirstArea(partsArea[1]);
+                    f.setArea(area == null ? 0 : area);
+                    f.setCapacity(capacity == null ? 0 : capacity);
+                    f.setHasSeveralParts(hasSeveralParts != null && hasSeveralParts);
+                    f.setFirstArea(area == null ? 0 : partsArea[0]);
+                    f.setFirstArea(area == null ? 0 : partsArea[1]);
+                    f.setType(type);
                     return;
                 }
             });
@@ -168,6 +181,18 @@ public class Space {
 
     public void setSecondArea(int secondArea) {
         this.secondArea.set(secondArea);
+    }
+
+    public String getType() {
+        return type.get();
+    }
+
+    public StringProperty typeProperty() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type.set(type);
     }
 
     @Override

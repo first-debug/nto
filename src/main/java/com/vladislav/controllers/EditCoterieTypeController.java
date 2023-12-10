@@ -1,7 +1,9 @@
 package com.vladislav.controllers;
 
 import com.vladislav.App;
+import com.vladislav.models.CoterieType;
 import com.vladislav.models.DataBase;
+import com.vladislav.models.Event;
 import com.vladislav.models.TaskType;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
@@ -18,7 +20,7 @@ import javafx.scene.text.Text;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class EditTasksTypeController extends Controller implements Initializable {
+public class EditCoterieTypeController extends Controller implements Initializable {
 
     @FXML
     private TextField nameInput;
@@ -33,13 +35,22 @@ public class EditTasksTypeController extends Controller implements Initializable
     private Text warningDescription;
 
     @FXML
-    private TableView<TaskType> typeTaskTable;
+    private TableView<CoterieType> typeTaskTable;
 
     @FXML
-    private TableColumn<TaskType, StringProperty> typeTaskColumn;
+    private TableColumn<CoterieType, StringProperty> typeTaskColumn;
 
     @FXML
-    private TableColumn<TaskType, StringProperty> descriptionColumn;
+    private TableColumn<CoterieType, StringProperty> descriptionColumn;
+
+//    @FXML
+//    private TableColumn<Event, String> spaceColumn;
+//
+//    @FXML
+//    private TableColumn<Event, StringProperty> startColumn;
+//
+//    @FXML
+//    private TableColumn<Event, String> typeColumn;
 
     @FXML
     private Text warningType;
@@ -66,8 +77,8 @@ public class EditTasksTypeController extends Controller implements Initializable
     @FXML
     void edit() {
         hideWarnings();
-        TableView.TableViewSelectionModel<TaskType> selectionModel = typeTaskTable.getSelectionModel();
-        ObservableList<TaskType> taskTypeList = selectionModel.getSelectedItems();
+        TableView.TableViewSelectionModel<CoterieType> selectionModel = typeTaskTable.getSelectionModel();
+        ObservableList<CoterieType> taskTypeList = selectionModel.getSelectedItems();
 
         if (taskTypeList == null || taskTypeList.isEmpty()) {
             warningType.setText("Нужно выбрать тип!");
@@ -80,7 +91,7 @@ public class EditTasksTypeController extends Controller implements Initializable
             return;
         }
 
-        TaskType type = taskTypeList.get(0);
+        CoterieType type = taskTypeList.get(0);
         nameInput.setText(type.getName());
         descriptionInput.setText(type.getDescription());
     }
@@ -88,16 +99,16 @@ public class EditTasksTypeController extends Controller implements Initializable
     @FXML
     void delete() {
         hideWarnings();
-        TableView.TableViewSelectionModel<TaskType> selectionModel = typeTaskTable.getSelectionModel();
-        ObservableList<TaskType> taskTypeList = selectionModel.getSelectedItems();
+        TableView.TableViewSelectionModel<CoterieType> selectionModel = typeTaskTable.getSelectionModel();
+        ObservableList<CoterieType> coterieTypeList = selectionModel.getSelectedItems();
 
-        if (taskTypeList == null || taskTypeList.isEmpty()) {
+        if (coterieTypeList == null || coterieTypeList.isEmpty()) {
             warningType.setText("Нужно выбрать тип!");
             warningType.setVisible(true);
             return;
         }
-        for (TaskType type : taskTypeList) {
-            DataBase.removeTaskType(type);
+        for (CoterieType type : coterieTypeList) {
+            DataBase.removeCoterieType(type);
         }
     }
 
@@ -117,7 +128,7 @@ public class EditTasksTypeController extends Controller implements Initializable
             flag = false;
         }
         if (!flag) return;
-        DataBase.addTaskType(type, description);
+        DataBase.addCoterieType(type, description);
         successfulSaving.setVisible(true);
     }
 
@@ -131,7 +142,7 @@ public class EditTasksTypeController extends Controller implements Initializable
         typeTaskColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         DataBase.loadTaskTypeList();
-        FilteredList<TaskType> taskTypeList = new FilteredList<>(TaskType.objectsList, p -> true);
-        typeTaskTable.setItems(taskTypeList);
+        FilteredList<CoterieType> coterieTypeList = new FilteredList<>(CoterieType.objectsList, p -> true);
+        typeTaskTable.setItems(coterieTypeList);
     }
 }

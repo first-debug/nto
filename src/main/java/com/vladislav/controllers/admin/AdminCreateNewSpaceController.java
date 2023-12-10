@@ -5,8 +5,8 @@ import com.vladislav.controllers.AdminDesktopController;
 import com.vladislav.controllers.Controller;
 import com.vladislav.models.DataBase;
 import com.vladislav.models.Space;
-import com.vladislav.models.TaskType;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,9 +15,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class AdminCreateNewSpaceController extends Controller implements Initializable {
@@ -27,6 +29,9 @@ public class AdminCreateNewSpaceController extends Controller implements Initial
 
     @FXML
     private Text warningTitle;
+
+    @FXML
+    private ChoiceBox<String> typeInput;
 
     @FXML
     private TextArea descriptionInput;
@@ -80,10 +85,16 @@ public class AdminCreateNewSpaceController extends Controller implements Initial
     private TableColumn<Space, IntegerProperty> capacityColumn;
 
     @FXML
+    private TableColumn<Space, String> typeColumn;
+
+    @FXML
     private Text warningSpace;
 
     @FXML
     private Text successfulSaving;
+
+    @FXML
+    private HBox eventProperty;
 
     void showPartAreaInputs(boolean value) {
         String style = "-fx-fill:" + (value ? "black" : "grey");
@@ -114,6 +125,7 @@ public class AdminCreateNewSpaceController extends Controller implements Initial
     @FXML
     void cleanForm() {
         titleInput.setText(null);
+        typeInput.getSelectionModel().clearSelection();
         descriptionInput.setText(null);
         areaInput.setText(null);
         capacityInput.setText(null);
@@ -149,20 +161,23 @@ public class AdminCreateNewSpaceController extends Controller implements Initial
         if (selectedSpaces.size() == 1) {
             Space space = selectedSpaces.get(0);
             titleInput.setText(space.getName());
+            typeInput.getSelectionModel().select(space.getType().equals("event") ? 0 : 1);
             descriptionInput.setText(space.getDescription());
-            areaInput.setText(space.getArea().toString());
-            capacityInput.setText(space.getCapacity().toString());
-            Integer[] partsArea = space.getPartsArea();
-            if (partsArea.length != 0) {
-                onlyOneEvent.setSelected(false);
-                showPartAreaInputs(true);
-                oneOrTwo.setSelected(true);
-                firstArea.setText(partsArea[0].toString());
-                secondArea.setText(partsArea[1].toString());
-            } else {
-                onlyOneEvent.setSelected(true);
-                showPartAreaInputs(false);
-                oneOrTwo.setSelected(false);
+            if (space.getType().equals("event")) {
+                areaInput.setText(space.getArea().toString());
+                capacityInput.setText(space.getCapacity().toString());
+                Integer[] partsArea = space.getPartsArea();
+                if (partsArea.length != 0) {
+                    onlyOneEvent.setSelected(false);
+                    showPartAreaInputs(true);
+                    oneOrTwo.setSelected(true);
+                    firstArea.setText(partsArea[0].toString());
+                    secondArea.setText(partsArea[1].toString());
+                } else {
+                    onlyOneEvent.setSelected(true);
+                    showPartAreaInputs(false);
+                    oneOrTwo.setSelected(false);
+                }
             }
         }
     }
@@ -182,6 +197,7 @@ public class AdminCreateNewSpaceController extends Controller implements Initial
         String areaStr = areaInput.getText();
         String capStr = capacityInput.getText();
         Boolean isOnlyOne = onlyOneEvent.isSelected();
+        String type = typeInput.getValue();
 
         boolean flag = true;
         if (title == null || title.isEmpty())
@@ -198,8 +214,10 @@ public class AdminCreateNewSpaceController extends Controller implements Initial
 
         DataBase.addSpace(title, description, areaStr.isEmpty() ? -1 : Integer.parseInt(areaStr),
                 capStr.isEmpty() ? -1 : Integer.parseInt(capStr), isOnlyOne,
-                isOnlyOne ? new Integer[]{-1, -1} : new Integer[]{firstArea.getText().isEmpty() ? -1 : Integer.parseInt(firstArea.getText()),
-                        secondArea.getText().isEmpty() ? -1 : Integer.parseInt(secondArea.getText())});
+                isOnlyOne ? new Integer[]{-1, -1} : new Integer[]{
+                        firstArea.getText().isEmpty() ? 0 : Integer.parseInt(firstArea.getText()),
+                        secondArea.getText().isEmpty() ? 0 : Integer.parseInt(secondArea.getText())},
+                type);
         successfulSaving.setVisible(true);
     }
 
@@ -210,11 +228,28 @@ public class AdminCreateNewSpaceController extends Controller implements Initial
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        ArrayList<String> spaceTypeList = new ArrayList<String>(){{
+            add("Для мероприятий");
+            add("Для кружков");
+        }};
+        typeInput.valueProperty().addListener((observable, oldValue, newValue) -> {
+            eventProperty.setVisible(newValue.equals("Для мероприятий"));
+        });
+        typeInput.setItems(FXCollections.observableList(spaceTypeList));
         spaceColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         areaColumn.setCellValueFactory(new PropertyValueFactory<>("area"));
         capacityColumn.setCellValueFactory(new PropertyValueFactory<>("capacity"));
-        DataBase.getSpacesList();
+        typeColumn.setCellValueFactory(cell -> {
+            switch (cell.getValue().getType()) {
+                case "event":
+                    return new SimpleStringProperty("Для событий");
+                case "coterie":
+                    return new SimpleStringProperty("Для кружков");
+            }
+            return new SimpleStringProperty("error");
+        });
+        DataBase.loadSpacesList(null);
         FilteredList<Space> filteredSpacesList = new FilteredList<>(Space.objectsList, p -> true);
         spacesTable.setItems(filteredSpacesList);
     }

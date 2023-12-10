@@ -38,7 +38,7 @@ public class Event {
         objectsId.add(id);
     }
 
-    public static Event getInstant(Integer id, String title, String description, Space space, Long timeToStart, EventType eventType) {
+    public static Event getInstance(Integer id, String title, String description, Space space, Long timeToStart, EventType eventType) {
         int objectIndex = objectsId.indexOf(id);
         if (objectIndex == -1) {
             return new Event(id, title, description, space, timeToStart, eventType);
