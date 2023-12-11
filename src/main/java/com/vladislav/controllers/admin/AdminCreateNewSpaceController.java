@@ -197,16 +197,14 @@ public class AdminCreateNewSpaceController extends Controller implements Initial
         String areaStr = areaInput.getText();
         String capStr = capacityInput.getText();
         Boolean isOnlyOne = onlyOneEvent.isSelected();
-        String type = typeInput.getValue();
+        String type = typeInput.getValue().equals("Для мероприятий") ? "event" : "coteries";
 
         boolean flag = true;
-        if (title == null || title.isEmpty())
-        {
+        if (title == null || title.isEmpty()) {
             warningTitle.setVisible(true);
             flag = false;
         }
-        if (description == null || description.isEmpty())
-        {
+        if (description == null || description.isEmpty()) {
             warningDescription.setVisible(true);
             flag = false;
         }
@@ -228,7 +226,7 @@ public class AdminCreateNewSpaceController extends Controller implements Initial
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        ArrayList<String> spaceTypeList = new ArrayList<String>(){{
+        ArrayList<String> spaceTypeList = new ArrayList<String>() {{
             add("Для мероприятий");
             add("Для кружков");
         }};

@@ -25,7 +25,7 @@ public class Teacher {
     }
 
     public static Teacher getInstance(Integer id, String firstName, String lastName,
-                               String patronymic) {
+                                      String patronymic) {
         int objectIndex = objectsId.indexOf(id);
         if (objectIndex == -1) {
             return new Teacher(id, firstName, lastName, patronymic);
@@ -55,35 +55,35 @@ public class Teacher {
         return firstName.get();
     }
 
-    public StringProperty firstNameProperty() {
-        return firstName;
-    }
-
     public void setFirstName(String firstName) {
         this.firstName.set(firstName);
+    }
+
+    public StringProperty firstNameProperty() {
+        return firstName;
     }
 
     public String getLastName() {
         return lastName.get();
     }
 
-    public StringProperty lastNameProperty() {
-        return lastName;
-    }
-
     public void setLastName(String lastName) {
         this.lastName.set(lastName);
+    }
+
+    public StringProperty lastNameProperty() {
+        return lastName;
     }
 
     public String getPatronymic() {
         return patronymic.get();
     }
 
-    public StringProperty patronymicProperty() {
-        return patronymic;
-    }
-
     public void setPatronymic(String patronymic) {
         this.patronymic.set(patronymic);
+    }
+
+    public StringProperty patronymicProperty() {
+        return patronymic;
     }
 }

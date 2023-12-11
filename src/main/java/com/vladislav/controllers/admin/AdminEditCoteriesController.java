@@ -25,6 +25,7 @@ import java.util.*;
 public class AdminEditCoteriesController extends Controller implements Initializable {
 
     SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+    String separator = null;
 
     @FXML
     private TextField titleInput;
@@ -71,8 +72,8 @@ public class AdminEditCoteriesController extends Controller implements Initializ
     @FXML
     private TableColumn<Coterie, StringProperty> coteriesColumn;
 
-    @FXML
-    private TableColumn<Coterie, StringProperty> coteriesDescriptionColumn;
+//    @FXML
+//    private TableColumn<Coterie, StringProperty> coteriesDescriptionColumn;
 
     @FXML
     private TableColumn<Coterie, String> spaceColumn;
@@ -151,32 +152,48 @@ public class AdminEditCoteriesController extends Controller implements Initializ
         if (text != null && !text.isEmpty()) {
             int hour;
             int minute;
-            if (text.matches("\\d\\d:\\d\\d")) {
+            if (text.matches("\\d\\d\\D\\d\\d")) {
                 hour = Integer.parseInt(text.substring(0, 2));
                 minute = Integer.parseInt(text.substring(3, 5));
-            } else if (text.matches("\\d:\\d\\d")) {
+                if (separator == null) {
+                    separator = String.valueOf(text.charAt(2));
+                    if (separator.equals(".")) separator = "\\.";
+                } else field.setText(hour + (separator.equals("\\.") ? "." : separator) + minute);
+            } else if (text.matches("\\d\\D\\d\\d")) {
                 hour = Integer.parseInt(text.substring(0, 1));
                 minute = Integer.parseInt(text.substring(2, 4));
-            } else if (text.matches("\\d\\d:\\d")) {
+                if (separator == null) {
+                    separator = String.valueOf(text.charAt(1));
+                    if (separator.equals(".")) separator = "\\.";
+                } else field.setText(hour + (separator.equals("\\.") ? "." : separator) + minute);
+            } else if (text.matches("\\d\\d\\D\\d")) {
                 hour = Integer.parseInt(text.substring(0, 2));
                 minute = Integer.parseInt(text.substring(3, 4));
-            } else if (text.matches("\\d:\\d")) {
+                if (separator == null) {
+                    separator = String.valueOf(text.charAt(2));
+                    if (separator.equals(".")) separator = "\\.";
+                } else field.setText(hour + (separator.equals("\\.") ? "." : separator) + minute);
+            } else if (text.matches("\\d\\D\\d")) {
                 hour = Integer.parseInt(text.substring(0, 1));
                 minute = Integer.parseInt(text.substring(2, 3));
+                if (separator == null) {
+                    separator = String.valueOf(text.charAt(1));
+                    if (separator.equals(".")) separator = "\\.";
+                } else field.setText(hour + (separator.equals("\\.") ? "." : separator) + minute);
             } else {
                 warningDate.setText("Введите корректное время!");
                 warningDate.setVisible(true);
                 return false;
             }
-            if (hour < 24 && minute < 60 && 0 < hour && 0 < minute) {
+            if (hour < 24 && minute < 60 && 0 < hour && 0 <= minute) {
                 return true;
             }
             warningDate.setText("Введите корректное время!");
             warningDate.setVisible(true);
             return false;
-            }
-        return true;
         }
+        return true;
+    }
 
     @FXML
     void checkMonStart() {
@@ -361,13 +378,11 @@ public class AdminEditCoteriesController extends Controller implements Initializ
         };
 
         boolean flag = true;
-        if (title == null || title.isEmpty())
-        {
+        if (title == null || title.isEmpty()) {
             warningTitle.setVisible(true);
             flag = false;
         }
-        if (teacher == null)
-        {
+        if (teacher == null) {
 //            warningTeacher.setVisible(true);
             flag = false;
         }
@@ -380,8 +395,7 @@ public class AdminEditCoteriesController extends Controller implements Initializ
             warningSpace.setVisible(true);
             flag = false;
         }
-        try
-        {
+        try {
             if (date.toString().split("-").length != 3) {
                 warningDate.setText("Дату нужно ввести в другом формате");
                 warningDate.setVisible(true);
@@ -395,8 +409,7 @@ public class AdminEditCoteriesController extends Controller implements Initializ
             int day = Integer.parseInt(dateSet[2]);
             dateBuilder.setDate(year, month - 1, day);
             timeToStart = dateBuilder.build();
-        } catch (NullPointerException ex)
-        {
+        } catch (NullPointerException ex) {
             warningDate.setText("Что-то пошло не так, попробуйте снова!");
             warningDate.setVisible(true);
             flag = false;
@@ -418,13 +431,13 @@ public class AdminEditCoteriesController extends Controller implements Initializ
                 schedule[j][1] = -1L;
             } else {
                 if (!scheduleTimes[i + 1].isEmpty()) {
-                    String[] time = scheduleTimes[i].split(":");
+                    String[] time = scheduleTimes[i].split(separator);
                     cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(time[0]));
                     cal.set(Calendar.MINUTE, Integer.parseInt(time[1]));
                     long startTime = cal.getTimeInMillis();
 
 
-                    time = scheduleTimes[i + 1].split(":");
+                    time = scheduleTimes[i + 1].split(separator);
                     cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(time[0]));
                     cal.set(Calendar.MINUTE, Integer.parseInt(time[1]));
                     long endTime = cal.getTimeInMillis();
@@ -495,7 +508,7 @@ public class AdminEditCoteriesController extends Controller implements Initializ
         spacesTable.setItems(spaceList);
 
         coteriesColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
-        coteriesDescriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+//        coteriesDescriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         spaceColumn.setCellValueFactory(cell -> cell.getValue().getSpace().nameProperty());
         startColumn.setCellValueFactory(cell -> cell.getValue().stringTimeProperty());
         typeColumn.setCellValueFactory(cell -> cell.getValue().getType().nameProperty());

@@ -6,7 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
-public class LoginForSEController extends Controller{
+public class LoginForSEController extends Controller {
 
     @FXML
     private TextField loginInput;
@@ -21,8 +21,7 @@ public class LoginForSEController extends Controller{
     private Text warningPassword;
 
     @FXML
-    void hideWarnings()
-    {
+    void hideWarnings() {
         warningLogin.setVisible(false);
         warningLogin.setText(null);
 

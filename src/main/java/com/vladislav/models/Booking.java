@@ -14,16 +14,16 @@ public class Booking {
     public final static ArrayList<Integer> objectsId = new ArrayList<>();
 
     private final Integer id;
-    private Long timeOfReg;
     private final StringProperty timeOfRegString;
     private final Property<Event> event;
-    private Long timeOfStart;
     private final StringProperty timeOfStartString;
-    private Long timeOfEnd;
     private final StringProperty timeOfEndString;
     private final Property<Space> space;
     private final IntegerProperty halfOfSpace; // от 1 до 3; 1-первая, 2-вторая, 3-полностью
     private final StringProperty comment;
+    private Long timeOfReg;
+    private Long timeOfStart;
+    private Long timeOfEnd;
 
     private Booking(Integer id, Long timeOfReg, Event event, Long timeOfStart,
                     Long timeOfEnd, Space space, Integer halfOfSpace, String comment) {
@@ -79,51 +79,59 @@ public class Booking {
     }
 
     public void setTimeOfReg(Long timeOfReg) {
-        this.timeOfReg= timeOfReg;
+        this.timeOfReg = timeOfReg;
     }
 
     public Event getEvent() {
         return event.getValue();
     }
 
-    public Property<Event> eventProperty() {
-        return event;
-    }
-
     public void setEvent(Event event) {
         this.event.setValue(event);
+    }
+
+    public Property<Event> eventProperty() {
+        return event;
     }
 
     public Long getTimeOfStart() {
         return timeOfStart;
     }
 
+    public void setTimeOfStart(Long timeOfStart) {
+        this.timeOfStart = timeOfStart;
+    }
+
     public Long getTimeOfEnd() {
         return timeOfEnd;
+    }
+
+    public void setTimeOfEnd(Long timeOfEnd) {
+        this.timeOfEnd = timeOfEnd;
     }
 
     public Space getSpace() {
         return space.getValue();
     }
 
-    public Property<Space> spaceProperty() {
-        return space;
-    }
-
     public void setSpace(Space space) {
         this.space.setValue(space);
+    }
+
+    public Property<Space> spaceProperty() {
+        return space;
     }
 
     public String getComment() {
         return comment.get();
     }
 
-    public StringProperty commentProperty() {
-        return comment;
-    }
-
     public void setComment(String comment) {
         this.comment.set(comment);
+    }
+
+    public StringProperty commentProperty() {
+        return comment;
     }
 
     public Integer getHalfOfSpace() {
@@ -138,43 +146,35 @@ public class Booking {
         return timeOfRegString.get();
     }
 
-    public StringProperty timeOfRegStringProperty() {
-        return timeOfRegString;
-    }
-
     public void setTimeOfRegString(String timeOfRegString) {
         this.timeOfRegString.set(timeOfRegString);
     }
 
-    public void setTimeOfStart(Long timeOfStart) {
-        this.timeOfStart = timeOfStart;
+    public StringProperty timeOfRegStringProperty() {
+        return timeOfRegString;
     }
 
     public String getTimeOfStartString() {
         return timeOfStartString.get();
     }
 
-    public StringProperty timeOfStartStringProperty() {
-        return timeOfStartString;
-    }
-
     public void setTimeOfStartString(String timeOfStartString) {
         this.timeOfStartString.set(timeOfStartString);
     }
 
-    public void setTimeOfEnd(Long timeOfEnd) {
-        this.timeOfEnd = timeOfEnd;
+    public StringProperty timeOfStartStringProperty() {
+        return timeOfStartString;
     }
 
     public String getTimeOfEndString() {
         return timeOfEndString.get();
     }
 
-    public StringProperty timeOfEndStringProperty() {
-        return timeOfEndString;
-    }
-
     public void setTimeOfEndString(String timeOfEndString) {
         this.timeOfEndString.set(timeOfEndString);
+    }
+
+    public StringProperty timeOfEndStringProperty() {
+        return timeOfEndString;
     }
 }

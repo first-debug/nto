@@ -3,3 +3,4 @@
 target/
 out/
 solution/
+log4j2.xml

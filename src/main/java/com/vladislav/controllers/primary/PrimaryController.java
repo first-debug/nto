@@ -1,9 +1,6 @@
 package com.vladislav.controllers.primary;
 
-import java.io.IOException;
-
 import com.vladislav.App;
-
 import com.vladislav.controllers.Controller;
 import javafx.fxml.FXML;
 

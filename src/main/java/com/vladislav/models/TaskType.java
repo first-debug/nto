@@ -52,16 +52,16 @@ public class TaskType {
         return name.getValue();
     }
 
+    public void setName(String name) {
+        this.name.set(name);
+    }
+
     public StringProperty nameProperty() {
         return name;
     }
 
     public String getDescription() {
         return description.getValue();
-    }
-
-    public void setName(String name) {
-        this.name.set(name);
     }
 
     public void setDescription(String description) {

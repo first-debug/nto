@@ -22,6 +22,7 @@ import java.util.Objects;
 public class App extends Application {
 
     public static Logger logger;
+    public static SimpleDateFormat dateFormat;
     private static Scene scene;
     private static Stage newStageWindow;
     private static Controller newStageController;
@@ -29,34 +30,9 @@ public class App extends Application {
     private static DataBase dataBase;
     private static Image appIcon;
 
-    public static SimpleDateFormat dateFormat;
-
-	public static void main(String[] args) {
+    public static void main(String[] args) {
         logger = LoggerFactory.getLogger(App.class);
         launch();
-    }
-
-    @Override
-    public void start(Stage stage) {
-        try {
-            dataBase = new DataBase();
-            dateFormat = new SimpleDateFormat("HH:mm dd.MM.yyyy");
-            appIcon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("icon.png")));
-            scene = new Scene(loadFXML("primary", new PrimaryController()), 1240, 650);
-            stage.setMinWidth(960);
-            stage.setMinHeight(600);
-            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            stage.setMaxWidth(screenSize.width);
-            stage.setMaxHeight(screenSize.height);
-            App.stage = stage;
-            stage.setScene(scene);
-            stage.setTitle("Мероприятия Культурного центра");
-            stage.getIcons().add(appIcon);
-            stage.setOnCloseRequest(event -> exit());
-            stage.show();
-        } catch (Exception ex) {
-            logger.error(54 + " " + ex.getMessage());
-        }
     }
 
     public static void setRoot(String fxml, Controller controller) {
@@ -82,7 +58,8 @@ public class App extends Application {
             newStageWindow.setTitle(title);
             newStageWindow.setScene(new Scene(parent, width, height));
             newStageWindow.getIcons().add(appIcon);
-            newStageWindow.show();}
+            newStageWindow.show();
+        }
     }
 
     public static void newWindow(String fxml, Controller controller, String title) {
@@ -94,29 +71,49 @@ public class App extends Application {
     }
 
     private static Parent loadFXML(String fxml, Controller controller) {
-        try 
-        {
+        try {
             URL fxmlFile = App.class.getResource("UIMarkups/" + fxml + ".fxml");
             FXMLLoader fxmlLoader = new FXMLLoader(fxmlFile);
             fxmlLoader.setController(controller);
-            return fxmlLoader.load(); 
+            return fxmlLoader.load();
         } catch (IllegalStateException | IOException ex) {
             logger.error("A nonexistent FXML-file is specified: " + fxml);
             ex.printStackTrace();
             return null;
-        }   
+        }
     }
 
-    public static void changeWindowSize(int width, int height)
-    {
+    public static void changeWindowSize(int width, int height) {
         stage.setWidth(width);
         stage.setHeight(height);
     }
 
-    public static void exit()
-    {
+    public static void exit() {
         dataBase.closeConnection();
         if (newStageWindow != null) closeSecondWindow();
         Platform.exit();
+    }
+
+    @Override
+    public void start(Stage stage) {
+        try {
+            dataBase = new DataBase();
+            dateFormat = new SimpleDateFormat("HH:mm dd.MM.yyyy");
+            appIcon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("icon.png")));
+            scene = new Scene(loadFXML("primary", new PrimaryController()), 1240, 650);
+            stage.setMinWidth(960);
+            stage.setMinHeight(600);
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            stage.setMaxWidth(screenSize.width);
+            stage.setMaxHeight(screenSize.height);
+            App.stage = stage;
+            stage.setScene(scene);
+            stage.setTitle("Мероприятия Культурного центра");
+            stage.getIcons().add(appIcon);
+            stage.setOnCloseRequest(event -> exit());
+            stage.show();
+        } catch (Exception ex) {
+            logger.error(54 + " " + ex.getMessage());
+        }
     }
 }

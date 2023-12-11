@@ -14,7 +14,6 @@ public class Task {
     public final static ArrayList<Integer> objectsId = new ArrayList<>();
 
     private final Integer id;
-    private Long timeOfReg;
     private final StringProperty timeOfRegString;
     private final Property<TaskType> type;
     private final Property<Event> event;
@@ -22,10 +21,11 @@ public class Task {
     private final LongProperty deadline;
     private final StringProperty deadlineString;
     private final StringProperty description;
+    private Long timeOfReg;
     private Status status;
 
     private Task(Integer id, Long timeOfReg, Event event,
-                TaskType type, Long deadline, Status status) {
+                 TaskType type, Long deadline, Status status) {
 
         this.id = id;
         this.timeOfReg = timeOfReg;
@@ -78,8 +78,16 @@ public class Task {
         return timeOfReg;
     }
 
+    public void setTimeOfReg(Long timeOfReg) {
+        this.timeOfReg = timeOfReg;
+    }
+
     public Event getEvent() {
         return event.getValue();
+    }
+
+    public void setEvent(Event event) {
+        this.event.setValue(event);
     }
 
     public Property<Event> EventProperty() {
@@ -90,12 +98,20 @@ public class Task {
         return type.getValue();
     }
 
+    public void setType(TaskType type) {
+        this.type.setValue(type);
+    }
+
     public Property<TaskType> TaskTypeProperty() {
         return type;
     }
 
     public Space getSpace() {
         return space.getValue();
+    }
+
+    public void setSpace(Space space) {
+        this.space.setValue(space);
     }
 
     public Property<Space> SpaceProperty() {
@@ -106,56 +122,40 @@ public class Task {
         return deadline.get();
     }
 
-    public String getDeadlineString() {
-        return deadlineString.get();
-    }
-
-    public String getDescription() {
-        return description.get();
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public String getTimeOfRegName() {
-        return timeOfRegString.get();
-    }
-
-    public void setTimeOfReg(Long timeOfReg) {
-        this.timeOfReg = timeOfReg;
-    }
-
-    public void setTimeOfRegString(String timeOfRegString) {
-        this.timeOfRegString.set(timeOfRegString);
-    }
-
-    public void setType(TaskType type) {
-        this.type.setValue(type);
-    }
-
-    public void setEvent(Event event) {
-        this.event.setValue(event);
-    }
-
-    public void setSpace(Space space) {
-        this.space.setValue(space);
-    }
-
     public void setDeadline(long deadline) {
         this.deadline.set(deadline);
+    }
+
+    public String getDeadlineString() {
+        return deadlineString.get();
     }
 
     public void setDeadlineString(String deadlineString) {
         this.deadlineString.set(deadlineString);
     }
 
+    public String getDescription() {
+        return description.get();
+    }
+
     public void setDescription(String description) {
         this.description.set(description);
     }
 
+    public Status getStatus() {
+        return status;
+    }
+
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public String getTimeOfRegName() {
+        return timeOfRegString.get();
+    }
+
+    public void setTimeOfRegString(String timeOfRegString) {
+        this.timeOfRegString.set(timeOfRegString);
     }
 
     @Override

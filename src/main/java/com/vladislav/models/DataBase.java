@@ -2,7 +2,6 @@ package com.vladislav.models;
 
 
 import java.sql.*;
-import java.util.ArrayList;
 
 import static com.vladislav.App.logger;
 
@@ -10,27 +9,14 @@ public class DataBase {
     private static Connection connection = null;
 
     public DataBase() {
-        try
-        {
+        try {
             // костыль для запуска с помощью .bat
             // для работы костыля "jdbc:sqlite:src/main/resources/com/vladislav/db.db"
             connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/com/vladislav/db.db");
             connection.setAutoCommit(true);
-        }
-        catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             logger.error("DataBase() " + ex.getMessage());
         }
-    }
-
-    public void closeConnection() {
-        try {
-			if (connection != null) {
-                connection.close();
-            }
-		} catch (SQLException ex) {
-            logger.error("closeConnection() " + ex.getMessage());
-		}
     }
 
     private static Event parseEvent(ResultSet answer, Space space) {
@@ -114,8 +100,7 @@ public class DataBase {
                 "te.id as typeId, te.type as typeName,  te.isEntertainment " +
                 "FROM events as e, spaces as s, typesOfEvents as te " +
                 "WHERE s.id = e.spaceId AND te.id = e.typeId AND e.id IS NOT NUll";
-        try
-        {
+        try {
             PreparedStatement pStatement;
             if (isEntertainment == null) {
                 pStatement = connection.prepareStatement(sql);
@@ -161,14 +146,12 @@ public class DataBase {
     }
 
     public static void loadEventTypesList() {
-        try
-        {
+        try {
             PreparedStatement statement = connection.prepareStatement(
                     "SELECT * FROM typesOfEvents"
             );
             ResultSet answer = statement.executeQuery();
-            while (answer.next())
-            {
+            while (answer.next()) {
                 Integer id = answer.getInt("id");
                 String name = answer.getString("type");
                 boolean isEntertainment = answer.getBoolean("isEntertainment");
@@ -221,7 +204,7 @@ public class DataBase {
             if (type == null) {
                 pStatement = connection.prepareStatement(sql);
             } else {
-                pStatement = connection.prepareStatement(sql+ " WHERE type = ?");
+                pStatement = connection.prepareStatement(sql + " WHERE type = ?");
                 pStatement.setString(1, type);
             }
             pStatement.execute();
@@ -336,17 +319,21 @@ public class DataBase {
                 "     events as e, spaces as s, typesOfEvents as te " +
                 "WHERE t.typeId = tt.id AND t.eventId = e.id AND t.spaceId = s.id " +
                 "  AND e.spaceId = s.id AND e.typeId = te.id";
-        try
-        {
+        try {
             PreparedStatement pStatement = connection.prepareStatement(sql);
             ResultSet answer = pStatement.executeQuery();
-            while (answer.next())
-            {
+            while (answer.next()) {
                 Status status = null;
                 switch (answer.getString("status")) {
-                    case "Создана": status = Status.CREATED; break;
-                    case "К выполнению": status = Status.EXECUTED; break;
-                    case "Выполнена": status = Status.COMPLETED; break;
+                    case "Создана":
+                        status = Status.CREATED;
+                        break;
+                    case "К выполнению":
+                        status = Status.EXECUTED;
+                        break;
+                    case "Выполнена":
+                        status = Status.COMPLETED;
+                        break;
                 }
                 assert status != null;
                 if (isExecuted && !status.equals(Status.EXECUTED)) {
@@ -443,33 +430,6 @@ public class DataBase {
         }
     }
 
-    // для Мероприятия
-    public static ArrayList<Booking> getBookingList(Space space, Event event) {
-        ArrayList<Booking> result = new ArrayList<>();
-        String sql = "SELECT b.id, b.time_reg, b.timeOfStart, b.timeOfEnd, b.halfOfSpace, b.comment, " +
-                "FROM booking as b, events as e, typesOfEvents as te " +
-                "WHERE b.eventId = ? AND b.spaceId = e.spaceId = ? AND e.typeId = te.id";
-        try {
-            PreparedStatement pStatement = connection.prepareStatement(sql);
-            pStatement.setInt(1, event.getId());
-            pStatement.setInt(2, space.getId());
-            ResultSet answer = pStatement.executeQuery();
-            while (answer.next()) {
-                Integer id = answer.getInt("id");
-                Long timeOfReg = answer.getLong("timeOfReg");
-                Long timeOfStart = answer.getLong("timeOfStart");
-                Long timeOfEnd = answer.getLong("timeOfEnd");
-                Integer halfOfSpace = answer.getInt("halfOfSpace");
-                String comment = answer.getString("comment");
-
-                result.add(Booking.getInstance(id, timeOfReg, event, timeOfStart, timeOfEnd, space, halfOfSpace, comment));
-            }
-        } catch (SQLException ex) {
-            logger.error("getBookingList() " + ex.getMessage());
-        }
-        return result;
-    }
-
     public static String[] loginEmployee(String login, String password) {
         String[] result = new String[3];
         try {
@@ -507,8 +467,8 @@ public class DataBase {
             pStatement.setInt(4, coterieSpace.getId());
             pStatement.setInt(5, teacher.getId());
             for (int arrI = 0, dbI = 6; arrI < schedule.length; arrI++) {
-                pStatement.setLong(dbI, schedule[arrI][dbI++]);
-                pStatement.setLong(dbI, schedule[arrI][dbI++]);
+                pStatement.setLong(dbI++, schedule[arrI][0]);
+                pStatement.setLong(dbI++, schedule[arrI][1]);
             }
             pStatement.execute();
             loadCoterie();
@@ -541,8 +501,7 @@ public class DataBase {
                 "e.id as teacherId, e.first_name, e.last_name, e.patronymic " +
                 "FROM coteries as c, typesOfCoteries as ct, spaces as s , employees as e " +
                 "WHERE c.typeId = ct.id AND c.spaceId = s.id AND c.teacherId = e.id";
-        try
-        {
+        try {
             PreparedStatement pStatement;
             pStatement = connection.prepareStatement(sql);
             ResultSet answer = pStatement.executeQuery();
@@ -607,14 +566,12 @@ public class DataBase {
     }
 
     public static void loadCoterieTypesList() {
-        try
-        {
+        try {
             PreparedStatement pStatement = connection.prepareStatement(
                     "SELECT * FROM typesOfCoteries"
             );
             ResultSet answer = pStatement.executeQuery();
-            while (answer.next())
-            {
+            while (answer.next()) {
                 Integer id = answer.getInt("id");
                 String title = answer.getString("title");
                 String description = answer.getString("description");
@@ -659,15 +616,13 @@ public class DataBase {
     }
 
     public static void loadEmployeeList(String role) {
-        try
-        {
+        try {
             PreparedStatement pStatement = connection.prepareStatement(
                     "SELECT * FROM employees WHERE role=?"
             );
             pStatement.setString(1, role);
             ResultSet answer = pStatement.executeQuery();
-            while (answer.next())
-            {
+            while (answer.next()) {
                 Integer id = answer.getInt("id");
                 String firstName = answer.getString("first_name");
                 String lastName = answer.getString("last_name");
@@ -676,6 +631,16 @@ public class DataBase {
             }
         } catch (SQLException ex) {
             logger.error("loadEmployeeList() " + ex.getMessage());
+        }
+    }
+
+    public void closeConnection() {
+        try {
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (SQLException ex) {
+            logger.error("closeConnection() " + ex.getMessage());
         }
     }
 }

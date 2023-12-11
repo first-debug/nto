@@ -1,105 +1,96 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
-
-<VBox alignment="TOP_CENTER" maxHeight="1080.0" maxWidth="1920.0" minHeight="600.0" minWidth="960.0" prefHeight="650.0" prefWidth="980.0" spacing="20.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
-   <MenuBar fx:id="menuBar" prefHeight="17.0" prefWidth="552.0">
-      <Menu mnemonicParsing="false" text="Файл">
-         <MenuItem mnemonicParsing="false" onAction="#exit" text="Выход" />
-      </Menu>
-      <Menu mnemonicParsing="false" text="Помощь">
-         <MenuItem mnemonicParsing="false" onAction="#showDocumentation" text="О приложении" />
-      </Menu>
-   </MenuBar>
-   <Label alignment="CENTER" text="Заявки к выполнению" textAlignment="CENTER">
-      <font>
-         <Font size="30.0" />
-      </font>
-   </Label>
-   <VBox alignment="CENTER" prefHeight="423.0" prefWidth="980.0" spacing="10.0">
-      <padding>
-         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-      </padding>
-      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
-         <padding>
-            <Insets bottom="10.0" left="40.0" right="10.0" top="10.0" />
-         </padding>
-         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Фильтр:">
-            <font>
-               <Font size="16.0" />
-            </font>
-         </Text>
-         <ChoiceBox fx:id="filter" />
-      </HBox>
-      <HBox alignment="CENTER" prefHeight="417.0" prefWidth="920.0">
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-         <VBox.margin>
-            <Insets left="20.0" right="20.0" />
-         </VBox.margin>
-         <TableView fx:id="tableOfTasks" accessibleHelp="Нет событий" prefHeight="374.0" prefWidth="883.0">
-            <columns>
-               <TableColumn fx:id="nameColumn" prefWidth="123.0" text="Вид работы" />
-               <TableColumn fx:id="statusColumn" prefWidth="86.0" text="Статус" />
-               <TableColumn fx:id="eventColumn" prefWidth="153.0" text="Мероприятие" />
-               <TableColumn fx:id="spaceColumn" prefWidth="147.0" text="Место проведения" />
-               <TableColumn fx:id="deadlineColumn" prefWidth="145.0" text="Срок выполнения" />
-               <TableColumn fx:id="descriptionColumn" prefWidth="228.0" text="Описание" />
-            </columns>
-         </TableView>
-      </HBox>
-   </VBox>
-   <HBox alignment="CENTER" prefHeight="0.0" prefWidth="600.0" spacing="370.0">
-      <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="200.0">
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-         <HBox.margin>
-            <Insets bottom="5.0" />
-         </HBox.margin>
-         <padding>
-            <Insets bottom="5.0" left="5.0" />
-         </padding>
-         <Button mnemonicParsing="false" onAction="#switchToPrimary" text="Назад">
-            <font>
-               <Font size="14.0" />
-            </font>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<VBox xmlns:fx="http://javafx.com/fxml" alignment="TOP_CENTER" maxHeight="1080.0" maxWidth="1920.0" minHeight="600.0" minWidth="960.0"
+      prefHeight="650.0" prefWidth="980.0" spacing="20.0" xmlns="http://javafx.com/javafx">
+    <MenuBar fx:id="menuBar" prefHeight="17.0" prefWidth="552.0">
+        <Menu mnemonicParsing="false" text="Файл">
+            <MenuItem mnemonicParsing="false" onAction="#exit" text="Выход"/>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Помощь">
+            <MenuItem mnemonicParsing="false" onAction="#showDocumentation" text="О приложении"/>
+        </Menu>
+    </MenuBar>
+    <Label alignment="CENTER" text="Заявки к выполнению" textAlignment="CENTER">
+        <font>
+            <Font size="30.0"/>
+        </font>
+    </Label>
+    <VBox alignment="CENTER" prefHeight="423.0" prefWidth="980.0" spacing="10.0">
+        <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+        </padding>
+        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+            <padding>
+                <Insets bottom="10.0" left="40.0" right="10.0" top="10.0"/>
+            </padding>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Фильтр:">
+                <font>
+                    <Font size="16.0"/>
+                </font>
+            </Text>
+            <ChoiceBox fx:id="filter"/>
+        </HBox>
+        <HBox alignment="CENTER" prefHeight="417.0" prefWidth="920.0">
+            <opaqueInsets>
+                <Insets/>
+            </opaqueInsets>
+            <VBox.margin>
+                <Insets left="20.0" right="20.0"/>
+            </VBox.margin>
+            <TableView fx:id="tableOfTasks" accessibleHelp="Нет событий" prefHeight="374.0" prefWidth="883.0">
+                <columns>
+                    <TableColumn fx:id="nameColumn" prefWidth="123.0" text="Вид работы"/>
+                    <TableColumn fx:id="statusColumn" prefWidth="86.0" text="Статус"/>
+                    <TableColumn fx:id="eventColumn" prefWidth="153.0" text="Мероприятие"/>
+                    <TableColumn fx:id="spaceColumn" prefWidth="147.0" text="Место проведения"/>
+                    <TableColumn fx:id="deadlineColumn" prefWidth="145.0" text="Срок выполнения"/>
+                    <TableColumn fx:id="descriptionColumn" prefWidth="228.0" text="Описание"/>
+                </columns>
+            </TableView>
+        </HBox>
+    </VBox>
+    <HBox alignment="CENTER" prefHeight="0.0" prefWidth="600.0" spacing="370.0">
+        <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="200.0">
+            <opaqueInsets>
+                <Insets/>
+            </opaqueInsets>
             <HBox.margin>
-               <Insets />
+                <Insets bottom="5.0"/>
             </HBox.margin>
-         </Button>
-      </HBox>
-      <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0">
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-         <HBox.margin>
-            <Insets bottom="5.0" />
-         </HBox.margin>
-         <padding>
-            <Insets bottom="5.0" right="5.0" />
-         </padding>
-         <Button mnemonicParsing="false" onAction="#markCompleted" text="Отметить завершённой">
-            <font>
-               <Font size="14.0" />
-            </font>
+            <padding>
+                <Insets bottom="5.0" left="5.0"/>
+            </padding>
+            <Button mnemonicParsing="false" onAction="#switchToPrimary" text="Назад">
+                <font>
+                    <Font size="14.0"/>
+                </font>
+                <HBox.margin>
+                    <Insets/>
+                </HBox.margin>
+            </Button>
+        </HBox>
+        <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0">
+            <opaqueInsets>
+                <Insets/>
+            </opaqueInsets>
             <HBox.margin>
-               <Insets />
+                <Insets bottom="5.0"/>
             </HBox.margin>
-         </Button>
-      </HBox>
-   </HBox>
+            <padding>
+                <Insets bottom="5.0" right="5.0"/>
+            </padding>
+            <Button mnemonicParsing="false" onAction="#markCompleted" text="Отметить завершённой">
+                <font>
+                    <Font size="14.0"/>
+                </font>
+                <HBox.margin>
+                    <Insets/>
+                </HBox.margin>
+            </Button>
+        </HBox>
+    </HBox>
 </VBox>

@@ -11,7 +11,6 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -146,55 +145,13 @@ public class AdminCreateNewBookingController extends Controller implements Initi
             Calendar timeToEnd = null;
             boolean flag = true;
             try {
-                if (dateStart.toString().split("-").length != 3) {
-                    warningDateStart.setText("Дата или время заняты!");
-                    warningDateStart.setVisible(true);
-                    flag = false;
-                }
-
-                Calendar.Builder dateBuilder = new Calendar.Builder();
-                String[] dateSet = dateStart.toString().split("-");
-                int year = Integer.parseInt(dateSet[0]);
-                int month = Integer.parseInt(dateSet[1]);
-                int day = Integer.parseInt(dateSet[2]);
-                int hour;
-                if (hoursStart.getValue() == null) hour = 0;
-                else hour = Integer.parseInt(hoursStart.getValue());
-                int minute;
-                if (minutesStart.getValue() == null) minute = 0;
-                else minute = Integer.parseInt(minutesStart.getValue());
-                dateBuilder.setDate(year, month - 1, day);
-                dateBuilder.setTimeOfDay(hour, minute, 0);
-                timeToStart = dateBuilder.build();
+                if (dateStart.toString().split("-").length != 3 |
+                        dateEnd.toString().split("-").length != 3) throw new NullPointerException();
+                timeToStart = parseDate(dateStart, hoursStart.getValue(), minutesStart.getValue());
+                timeToEnd = parseDate(dateEnd, hoursEnd.getValue(), minutesEnd.getValue());
             } catch (NullPointerException ex) {
                 warningDateStart.setText("Дата или время заняты!");
                 warningDateStart.setVisible(true);
-                flag = false;
-            }
-            try {
-                if (dateEnd.toString().split("-").length != 3) {
-                    warningDateEnd.setText("Дата или время заняты!");
-                    warningDateEnd.setVisible(true);
-                    flag = false;
-                }
-
-                Calendar.Builder dateBuilder = new Calendar.Builder();
-                String[] dateSet = dateEnd.toString().split("-");
-                int year = Integer.parseInt(dateSet[0]);
-                int month = Integer.parseInt(dateSet[1]);
-                int day = Integer.parseInt(dateSet[2]);
-                int hour;
-                if (hoursEnd.getValue() == null) hour = 0;
-                else hour = Integer.parseInt(hoursEnd.getValue());
-                int minute;
-                if (minutesEnd.getValue() == null) minute = 0;
-                else minute = Integer.parseInt(minutesEnd.getValue());
-                dateBuilder.setDate(year, month - 1, day);
-                dateBuilder.setTimeOfDay(hour, minute, 0);
-                timeToEnd = dateBuilder.build();
-            } catch (NullPointerException ex) {
-                warningDateEnd.setText("Дата или время заняты!");
-                warningDateEnd.setVisible(true);
                 flag = false;
             }
             if (!flag) return;
@@ -223,25 +180,8 @@ public class AdminCreateNewBookingController extends Controller implements Initi
             Calendar timeToStart = null;
             boolean flag = true;
             try {
-                if (dateStart.toString().split("-").length != 3) {
-                    warningDateStart.setVisible(true);
-                    flag = false;
-                }
-
-                Calendar.Builder dateBuilder = new Calendar.Builder();
-                String[] dateSet = dateStart.toString().split("-");
-                int year = Integer.parseInt(dateSet[0]);
-                int month = Integer.parseInt(dateSet[1]);
-                int day = Integer.parseInt(dateSet[2]);
-                int hour;
-                if (hoursStart.getValue() == null) hour = 0;
-                else hour = Integer.parseInt(hoursStart.getValue());
-                int minute;
-                if (minutesStart.getValue() == null) minute = 0;
-                else minute = Integer.parseInt(minutesStart.getValue());
-                dateBuilder.setDate(year, month - 1, day);
-                dateBuilder.setTimeOfDay(hour, minute, 0);
-                timeToStart = dateBuilder.build();
+                if (dateStart.toString().split("-").length != 3) throw new NullPointerException();
+                timeToStart = parseDate(dateStart, hoursStart.getValue(), minutesStart.getValue());
             } catch (NullPointerException ex) {
                 warningDateStart.setVisible(true);
                 flag = false;
@@ -261,26 +201,8 @@ public class AdminCreateNewBookingController extends Controller implements Initi
             Calendar timeToEnd = null;
             boolean flag = true;
             try {
-                if (dateEnd.toString().split("-").length != 3) {
-                    warningDateEnd.setText("Дата или время заняты!");
-                    warningDateEnd.setVisible(true);
-                    flag = false;
-                }
-
-                Calendar.Builder dateBuilder = new Calendar.Builder();
-                String[] dateSet = dateEnd.toString().split("-");
-                int year = Integer.parseInt(dateSet[0]);
-                int month = Integer.parseInt(dateSet[1]);
-                int day = Integer.parseInt(dateSet[2]);
-                int hour;
-                if (hoursEnd.getValue() == null) hour = 0;
-                else hour = Integer.parseInt(hoursEnd.getValue());
-                int minute;
-                if (minutesEnd.getValue() == null) minute = 0;
-                else minute = Integer.parseInt(minutesEnd.getValue());
-                dateBuilder.setDate(year, month - 1, day);
-                dateBuilder.setTimeOfDay(hour, minute, 0);
-                timeToEnd = dateBuilder.build();
+                if (dateEnd.toString().split("-").length != 3) throw new NullPointerException();
+                timeToEnd = parseDate(dateEnd, hoursEnd.getValue(), minutesEnd.getValue());
             } catch (NullPointerException ex) {
                 warningDateEnd.setText("Дата или время заняты!");
                 warningDateEnd.setVisible(true);
@@ -345,12 +267,12 @@ public class AdminCreateNewBookingController extends Controller implements Initi
     }
 
     @FXML
-    void fixFirstHalf(ActionEvent event) {
+    void fixFirstHalf() {
         if (!isSecond.isSelected() && !isFirst.isSelected()) isFirst.setSelected(true);
     }
 
     @FXML
-    void fixSecondHalf(ActionEvent event) {
+    void fixSecondHalf() {
         if (!isSecond.isSelected() && !isFirst.isSelected()) isSecond.setSelected(true);
     }
 
@@ -384,8 +306,7 @@ public class AdminCreateNewBookingController extends Controller implements Initi
         ObservableList<Space> spaceList = selectedSpaces.getSelectedItems();
 
         boolean flag = true;
-        if (comment == null || comment.isEmpty())
-        {
+        if (comment == null || comment.isEmpty()) {
             warningDescription.setVisible(true);
             flag = false;
         }
@@ -399,58 +320,14 @@ public class AdminCreateNewBookingController extends Controller implements Initi
         }
         if (isIsFirst && isIsSecond) spaceParts = 3;
         else spaceParts = isIsFirst ? 1 : 2;
-        try
-        {
-            if (dateStart.toString().split("-").length != 3) {
-                warningDateStart.setText("Нужно ввести корректную дату и время!");
-                warningDateStart.setVisible(true);
-                flag = false;
-            }
-
-            Calendar.Builder dateBuilder = new Calendar.Builder();
-            String[] dateSet = dateStart.toString().split("-");
-            int year = Integer.parseInt(dateSet[0]);
-            int month = Integer.parseInt(dateSet[1]);
-            int day = Integer.parseInt(dateSet[2]);
-            int hour;
-            if (hoursStart.getValue() == null) hour = 0;
-            else hour = Integer.parseInt(hoursStart.getValue());
-            int minute;
-            if (minutesStart.getValue() == null) minute = 0;
-            else minute = Integer.parseInt(minutesStart.getValue());
-            dateBuilder.setDate(year, month - 1, day);
-            dateBuilder.setTimeOfDay(hour, minute, 0);
-            timeToStart = dateBuilder.build();
+        try {
+            if (dateStart.toString().split("-").length != 3 |
+                    dateEnd.toString().split("-").length != 3) throw new NullPointerException();
+            timeToStart = parseDate(dateStart, hoursStart.getValue(), minutesStart.getValue());
+            timeToEnd = parseDate(dateEnd, hoursEnd.getValue(), minutesEnd.getValue());
         } catch (NullPointerException ex) {
             warningDateStart.setText("Нужно ввести корректную дату и время!");
             warningDateStart.setVisible(true);
-            flag = false;
-        }
-        try
-        {
-            if (dateEnd.toString().split("-").length != 3) {
-                warningDateEnd.setText("Нужно ввести корректную дату и время!");
-                warningDateEnd.setVisible(true);
-                flag = false;
-            }
-
-            Calendar.Builder dateBuilder = new Calendar.Builder();
-            String[] dateSet = dateEnd.toString().split("-");
-            int year = Integer.parseInt(dateSet[0]);
-            int month = Integer.parseInt(dateSet[1]);
-            int day = Integer.parseInt(dateSet[2]);
-            int hour;
-            if (hoursEnd.getValue() == null) hour = 0;
-            else hour = Integer.parseInt(hoursEnd.getValue());
-            int minute;
-            if (minutesEnd.getValue() == null) minute = 0;
-            else minute = Integer.parseInt(minutesEnd.getValue());
-            dateBuilder.setDate(year, month - 1, day);
-            dateBuilder.setTimeOfDay(hour, minute, 0);
-            timeToEnd = dateBuilder.build();
-        } catch (NullPointerException ex) {
-            warningDateEnd.setText("Нужно ввести корректную дату и время!");
-            warningDateEnd.setVisible(true);
             flag = false;
         }
         if (!flag) return;
@@ -528,7 +405,7 @@ public class AdminCreateNewBookingController extends Controller implements Initi
         firstAreaColumn.setCellValueFactory(new PropertyValueFactory<>("firstArea"));
         secondAreaColumn.setCellValueFactory(new PropertyValueFactory<>("secondArea"));
         DataBase.loadSpacesList("event");
-        filteredSpacesList = new FilteredList<>(Space.objectsList, p -> true);
+        filteredSpacesList = new FilteredList<>(Space.objectsList, p -> p.getType().equals("event"));
         spacesTable.setItems(filteredSpacesList);
 
         eventColumn.setCellValueFactory(new PropertyValueFactory<>("title"));

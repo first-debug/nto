@@ -36,103 +36,109 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<VBox alignment="TOP_CENTER" prefHeight="457.0" prefWidth="506.0" spacing="20.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
-   <MenuBar fx:id="menuBar" prefHeight="17.0" prefWidth="552.0">
-      <Menu mnemonicParsing="false" text="Файл">
-         <MenuItem mnemonicParsing="false" onAction="#close" text="Закрыть" />
-      </Menu>
-      <Menu mnemonicParsing="false" text="Помощь">
-         <MenuItem mnemonicParsing="false" onAction="#showDocumentation" text="О приложении" />
-      </Menu>
-   </MenuBar>
-   <Text strokeType="OUTSIDE" strokeWidth="0.0">
-      <font>
-         <Font size="19.0" />
-      </font>
-   </Text>
-   <HBox alignment="CENTER" prefHeight="295.0" prefWidth="444.0" spacing="20.0">
-      <VBox prefHeight="295.0" prefWidth="215.0" spacing="20.0">
-         <VBox prefHeight="60.0" prefWidth="215.0">
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Название">
-               <font>
-                  <Font size="15.0" />
-               </font>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </Text>
-            <TextField fx:id="nameInput" promptText="Название">
-               <font>
-                  <Font size="13.0" />
-               </font>
-               <VBox.margin>
-                  <Insets bottom="5.0" top="5.0" />
-               </VBox.margin>
-            </TextField>
-            <Text fx:id="warningTitle" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Нужно ввести название!" visible="false" />
-         </VBox>
-         <VBox prefHeight="131.0" prefWidth="215.0">
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Описание">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Text>
-            <TextArea fx:id="descriptionInput" prefHeight="79.0" prefWidth="215.0" promptText="Описание">
-               <font>
-                  <Font size="13.0" />
-               </font>
-               <VBox.margin>
-                  <Insets bottom="5.0" top="5.0" />
-               </VBox.margin>
-            </TextArea>
-            <Text id="warning-text" fx:id="warningDescription" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Нужно ввести описание!" visible="false" />
-         </VBox>
-         <HBox alignment="TOP_CENTER" prefHeight="62.0" prefWidth="197.0" spacing="20.0" visible="false">
-            <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0">
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Развлекательный">
-                  <font>
-                     <Font size="15.0" />
-                  </font>
-               </Text>
-               <Text id="warning-text" fx:id="warningEntertainment" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Нужно выбрать!" wrappingWidth="136.400390625" />
+<VBox xmlns:fx="http://javafx.com/fxml" alignment="TOP_CENTER" prefHeight="457.0" prefWidth="506.0" spacing="20.0"
+      xmlns="http://javafx.com/javafx">
+    <MenuBar fx:id="menuBar" prefHeight="17.0" prefWidth="552.0">
+        <Menu mnemonicParsing="false" text="Файл">
+            <MenuItem mnemonicParsing="false" onAction="#close" text="Закрыть"/>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Помощь">
+            <MenuItem mnemonicParsing="false" onAction="#showDocumentation" text="О приложении"/>
+        </Menu>
+    </MenuBar>
+    <Text strokeType="OUTSIDE" strokeWidth="0.0">
+        <font>
+            <Font size="19.0"/>
+        </font>
+    </Text>
+    <HBox alignment="CENTER" prefHeight="295.0" prefWidth="444.0" spacing="20.0">
+        <VBox prefHeight="295.0" prefWidth="215.0" spacing="20.0">
+            <VBox prefHeight="60.0" prefWidth="215.0">
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Название">
+                    <font>
+                        <Font size="15.0"/>
+                    </font>
+                    <VBox.margin>
+                        <Insets/>
+                    </VBox.margin>
+                </Text>
+                <TextField fx:id="nameInput" promptText="Название">
+                    <font>
+                        <Font size="13.0"/>
+                    </font>
+                    <VBox.margin>
+                        <Insets bottom="5.0" top="5.0"/>
+                    </VBox.margin>
+                </TextField>
+                <Text fx:id="warningTitle" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;"
+                      text="Нужно ввести название!" visible="false"/>
             </VBox>
-            <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
-               <RadioButton fx:id="yesCheck" mnemonicParsing="false" text="Да">
-                  <font>
-                     <Font size="15.0" />
-                  </font>
-               </RadioButton>
-               <RadioButton fx:id="noCheck" mnemonicParsing="false" text="Нет">
-                  <font>
-                     <Font size="15.0" />
-                  </font>
-               </RadioButton>
+            <VBox prefHeight="131.0" prefWidth="215.0">
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Описание">
+                    <font>
+                        <Font size="15.0"/>
+                    </font>
+                </Text>
+                <TextArea fx:id="descriptionInput" prefHeight="79.0" prefWidth="215.0" promptText="Описание">
+                    <font>
+                        <Font size="13.0"/>
+                    </font>
+                    <VBox.margin>
+                        <Insets bottom="5.0" top="5.0"/>
+                    </VBox.margin>
+                </TextArea>
+                <Text id="warning-text" fx:id="warningDescription" strokeType="OUTSIDE" strokeWidth="0.0"
+                      style="-fx-fill: red;" text="Нужно ввести описание!" visible="false"/>
             </VBox>
-         </HBox>
-      </VBox>
-      <VBox prefHeight="295.0" prefWidth="234.0" spacing="5.0">
-         <TableView fx:id="typeTaskTable" prefHeight="259.0" prefWidth="187.0">
-            <columns>
-               <TableColumn fx:id="typeTaskColumn" prefWidth="104.0" text="Вид" />
-               <TableColumn fx:id="descriptionColumn" prefWidth="128.0" text="Описание" />
-            </columns>
-         </TableView>
-         <Text fx:id="warningType" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Нужно выбрать тип!" visible="false" wrappingWidth="119.13671875" />
-         <HBox alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="187.0" spacing="5.0">
-            <Button mnemonicParsing="false" onAction="#edit" text="Изменить" />
-            <Button mnemonicParsing="false" onAction="#delete" text="Удалить" />
-         </HBox>
-      </VBox>
-   </HBox>
-   <HBox alignment="CENTER_LEFT" prefHeight="44.0" prefWidth="447.0" spacing="20.0">
-      <padding>
-         <Insets left="20.0" />
-      </padding>
-      <Button mnemonicParsing="false" onAction="#save" text="Сохранить" />
-      <Button mnemonicParsing="false" onAction="#cleanForm" text="Очистить" />
-      <Text fx:id="successfulSaving" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: green;" text="Сохранено!" visible="false" />
-   </HBox>
+            <HBox alignment="TOP_CENTER" prefHeight="62.0" prefWidth="197.0" spacing="20.0" visible="false">
+                <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+                    <HBox.margin>
+                        <Insets/>
+                    </HBox.margin>
+                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Развлекательный">
+                        <font>
+                            <Font size="15.0"/>
+                        </font>
+                    </Text>
+                    <Text id="warning-text" fx:id="warningEntertainment" strokeType="OUTSIDE" strokeWidth="0.0"
+                          style="-fx-fill: red;" text="Нужно выбрать!" wrappingWidth="136.400390625"/>
+                </VBox>
+                <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+                    <RadioButton fx:id="yesCheck" mnemonicParsing="false" text="Да">
+                        <font>
+                            <Font size="15.0"/>
+                        </font>
+                    </RadioButton>
+                    <RadioButton fx:id="noCheck" mnemonicParsing="false" text="Нет">
+                        <font>
+                            <Font size="15.0"/>
+                        </font>
+                    </RadioButton>
+                </VBox>
+            </HBox>
+        </VBox>
+        <VBox prefHeight="295.0" prefWidth="234.0" spacing="5.0">
+            <TableView fx:id="typeTaskTable" prefHeight="259.0" prefWidth="187.0">
+                <columns>
+                    <TableColumn fx:id="typeTaskColumn" prefWidth="104.0" text="Вид"/>
+                    <TableColumn fx:id="descriptionColumn" prefWidth="128.0" text="Описание"/>
+                </columns>
+            </TableView>
+            <Text fx:id="warningType" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;"
+                  text="Нужно выбрать тип!" visible="false" wrappingWidth="119.13671875"/>
+            <HBox alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="187.0" spacing="5.0">
+                <Button mnemonicParsing="false" onAction="#edit" text="Изменить"/>
+                <Button mnemonicParsing="false" onAction="#delete" text="Удалить"/>
+            </HBox>
+        </VBox>
+    </HBox>
+    <HBox alignment="CENTER_LEFT" prefHeight="44.0" prefWidth="447.0" spacing="20.0">
+        <padding>
+            <Insets left="20.0"/>
+        </padding>
+        <Button mnemonicParsing="false" onAction="#save" text="Сохранить"/>
+        <Button mnemonicParsing="false" onAction="#cleanForm" text="Очистить"/>
+        <Text fx:id="successfulSaving" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: green;" text="Сохранено!"
+              visible="false"/>
+    </HBox>
 </VBox>

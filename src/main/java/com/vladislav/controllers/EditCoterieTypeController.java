@@ -3,8 +3,6 @@ package com.vladislav.controllers;
 import com.vladislav.App;
 import com.vladislav.models.CoterieType;
 import com.vladislav.models.DataBase;
-import com.vladislav.models.Event;
-import com.vladislav.models.TaskType;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;

@@ -22,10 +22,7 @@ import javafx.scene.text.Text;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class AdminCreateNewEventController extends Controller implements Initializable {
 
@@ -159,7 +156,8 @@ public class AdminCreateNewEventController extends Controller implements Initial
             typeTable.getSelectionModel().select(event.getType());
             spacesTable.getSelectionModel().select(event.getSpace());
         } else {
-            warningEvent.setVisible(true);}
+            warningEvent.setVisible(true);
+        }
     }
 
     @FXML
@@ -195,6 +193,7 @@ public class AdminCreateNewEventController extends Controller implements Initial
         warningSpace.setVisible(false);
         successfulSaving.setVisible(false);
     }
+
     @FXML
     void save() {
         hideWarnings();
@@ -208,13 +207,11 @@ public class AdminCreateNewEventController extends Controller implements Initial
         ObservableList<Space> spaceList = selectedSpaces.getSelectedItems();
 
         boolean flag = true;
-        if (title == null || title.isEmpty())
-        {
+        if (title == null || title.isEmpty()) {
             warningTitle.setVisible(true);
             flag = false;
         }
-        if (description == null || description.isEmpty())
-        {
+        if (description == null || description.isEmpty()) {
             warningDescription.setVisible(true);
             flag = false;
         }
@@ -226,12 +223,8 @@ public class AdminCreateNewEventController extends Controller implements Initial
             warningSpace.setVisible(true);
             flag = false;
         }
-        try
-        {
-            if (date.toString().split("-").length != 3) {
-                warningDate.setVisible(true);
-                flag = false;
-            }
+        try {
+            if (date.toString().split("-").length != 3) throw new NullPointerException();
 
             Calendar.Builder dateBuilder = new Calendar.Builder();
             String[] dateSet = date.toString().split("-");
@@ -247,18 +240,14 @@ public class AdminCreateNewEventController extends Controller implements Initial
             dateBuilder.setDate(year, month - 1, day);
             dateBuilder.setTimeOfDay(hour, minute, 0);
             timeToStart = dateBuilder.build();
-        } catch (NullPointerException ex)
-        {
+        } catch (NullPointerException ex) {
             warningDate.setVisible(true);
             flag = false;
         }
-//        if (flag && !timeToStart.after(System.currentTimeMillis())) {
-//            Calendar cal = Calendar.getInstance();
-//            cal.setTime(new Date(System.currentTimeMillis()));
-//            App.logger.error(timeToStart + "\n" +  cal);
-//            warningDate.setVisible(true);
-//            return;
-//        }
+        if (flag && timeToStart.before(Calendar.getInstance(new Locale("rus")))) {
+            warningDate.setVisible(true);
+            return;
+        }
         if (!flag) return;
 
         DataBase.addEvent(title, description, spaceList.get(0), timeToStart.getTimeInMillis(), eventTypeList.get(0));
@@ -291,7 +280,7 @@ public class AdminCreateNewEventController extends Controller implements Initial
         FilteredList<Event> filteredEventList = new FilteredList<>(Event.objectsList, p -> true);
         eventsTable.setItems(filteredEventList);
         // ComboBox - часы
-        ObservableList<String> hoursList = FXCollections.observableList(new ArrayList<String>(){{
+        ObservableList<String> hoursList = FXCollections.observableList(new ArrayList<String>() {{
             for (Integer i = 0; i < 24; i++) {
                 if (i < 10) {
                     add('0' + i.toString());
@@ -302,9 +291,9 @@ public class AdminCreateNewEventController extends Controller implements Initial
         hours.setValue(null);
 
         // ComboBox - минуты
-        ObservableList<String> minutesList = FXCollections.observableList(new ArrayList<String>(){{
+        ObservableList<String> minutesList = FXCollections.observableList(new ArrayList<String>() {{
             for (Integer i = 0; i < 60; i++) {
-                if (i < 10){
+                if (i < 10) {
                     add('0' + i.toString());
                 } else add(i.toString());
             }

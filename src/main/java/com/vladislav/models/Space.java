@@ -83,12 +83,20 @@ public class Space {
         return id.get();
     }
 
+    public void setId(int id) {
+        this.id.set(id);
+    }
+
     public IntegerProperty idProperty() {
         return id;
     }
 
     public String getName() {
         return name.get();
+    }
+
+    public void setName(String name) {
+        this.name.set(name);
     }
 
     public StringProperty nameProperty() {
@@ -99,12 +107,20 @@ public class Space {
         return description.get();
     }
 
+    public void setDescription(String description) {
+        this.description.set(description);
+    }
+
     public StringProperty descriptionProperty() {
         return description;
     }
 
     public Integer getArea() {
         return area.get();
+    }
+
+    public void setArea(int area) {
+        this.area.set(area);
     }
 
     public IntegerProperty areaProperty() {
@@ -115,28 +131,12 @@ public class Space {
         return capacity.get();
     }
 
-    public IntegerProperty capacityProperty() {
-        return capacity;
-    }
-
-    public void setId(int id) {
-        this.id.set(id);
-    }
-
-    public void setName(String name) {
-        this.name.set(name);
-    }
-
-    public void setDescription(String description) {
-        this.description.set(description);
-    }
-
-    public void setArea(int area) {
-        this.area.set(area);
-    }
-
     public void setCapacity(int capacity) {
         this.capacity.set(capacity);
+    }
+
+    public IntegerProperty capacityProperty() {
+        return capacity;
     }
 
     public ObservableList<Booking> getBookingList() {
@@ -163,36 +163,36 @@ public class Space {
         return firstArea.get();
     }
 
-    public IntegerProperty firstAreaProperty() {
-        return firstArea;
-    }
-
     public void setFirstArea(int firstArea) {
         this.firstArea.set(firstArea);
+    }
+
+    public IntegerProperty firstAreaProperty() {
+        return firstArea;
     }
 
     public int getSecondArea() {
         return secondArea.get();
     }
 
-    public IntegerProperty secondAreaProperty() {
-        return secondArea;
-    }
-
     public void setSecondArea(int secondArea) {
         this.secondArea.set(secondArea);
+    }
+
+    public IntegerProperty secondAreaProperty() {
+        return secondArea;
     }
 
     public String getType() {
         return type.get();
     }
 
-    public StringProperty typeProperty() {
-        return type;
-    }
-
     public void setType(String type) {
         this.type.set(type);
+    }
+
+    public StringProperty typeProperty() {
+        return type;
     }
 
     @Override

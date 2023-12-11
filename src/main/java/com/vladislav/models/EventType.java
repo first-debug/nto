@@ -18,8 +18,7 @@ public class EventType {
     private final boolean isEntertainment;
     private final StringProperty isEntertainmentString;
 
-    private EventType(Integer id, String name, boolean isEntertainment)
-    {
+    private EventType(Integer id, String name, boolean isEntertainment) {
         this.id = new SimpleIntegerProperty(id);
         this.name = new SimpleStringProperty(name);
         this.isEntertainment = isEntertainment;
@@ -61,6 +60,10 @@ public class EventType {
         return name.getValue();
     }
 
+    public void setName(String name) {
+        this.name.set(name);
+    }
+
     public StringProperty nameProperty() {
         return name;
     }
@@ -71,10 +74,6 @@ public class EventType {
 
     public String getIsEntertainmentString() {
         return isEntertainmentString.get();
-    }
-
-    public void setName(String name) {
-        this.name.set(name);
     }
 
     public void setIsEntertainmentString(boolean isEntertainment) {

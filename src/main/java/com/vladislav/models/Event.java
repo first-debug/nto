@@ -23,8 +23,7 @@ public class Event {
     private final Property<EventType> eventType;
     private final boolean isEntertainment;
 
-    private Event(Integer id, String title, String description, Space space, Long timeToStart, EventType eventType)
-    {
+    private Event(Integer id, String title, String description, Space space, Long timeToStart, EventType eventType) {
 
         this.id = id;
         this.title = new SimpleStringProperty(title);
@@ -62,19 +61,25 @@ public class Event {
         objectsId.remove(event.id);
     }
 
-    public String getTitle()
-    {
+    public String getTitle() {
         return title.get();
     }
 
-    public StringProperty titleProperty()
-    {
+    public void setTitle(String title) {
+        this.title.set(title);
+    }
+
+    public StringProperty titleProperty() {
         return title;
     }
 
     public String getDescription() {
-		return description.get();
-	}
+        return description.get();
+    }
+
+    public void setDescription(String description) {
+        this.description.set(description);
+    }
 
     public StringProperty descriptionProperty() {
         return description;
@@ -84,13 +89,23 @@ public class Event {
         return space.getValue();
     }
 
-    public Long getTimeToStart() {
-		return timeToStart.get();
-	}
+    public void setSpace(Space space) {
+        this.space.setValue(space);
+    }
 
-	public EventType getType() {
-		return eventType.getValue();
-	}
+    public Long getTimeToStart() {
+        return timeToStart.get();
+    }
+
+    public void setTimeToStart(long timeToStart) {
+        this.timeToStart.set(timeToStart);
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm dd.MM.yyyy");
+        this.stringTime.set(format.format(new Date(timeToStart)));
+    }
+
+    public EventType getType() {
+        return eventType.getValue();
+    }
 
     public String getStringTime() {
         return stringTime.get();
@@ -110,24 +125,6 @@ public class Event {
 
     public Integer getId() {
         return id;
-    }
-
-    public void setTitle(String title) {
-        this.title.set(title);
-    }
-
-    public void setDescription(String description) {
-        this.description.set(description);
-    }
-
-    public void setSpace(Space space) {
-        this.space.setValue(space);
-    }
-
-    public void setTimeToStart(long timeToStart) {
-        this.timeToStart.set(timeToStart);
-        SimpleDateFormat format = new SimpleDateFormat("HH:mm dd.MM.yyyy");
-        this.stringTime.set(format.format(new Date(timeToStart)));
     }
 
     public void setEventType(EventType eventType) {

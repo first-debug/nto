@@ -32,306 +32,298 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
-
-<VBox alignment="TOP_CENTER" prefHeight="650.0" prefWidth="1080.0" spacing="20.0" xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml">
-   <MenuBar fx:id="menuBar" prefHeight="17.0" prefWidth="552.0">
-      <Menu mnemonicParsing="false" text="Файл">
-         <MenuItem mnemonicParsing="false" onAction="#exit" text="Выход"/>
-      </Menu>
-      <Menu mnemonicParsing="false" text="Помощь">
-         <MenuItem mnemonicParsing="false" onAction="#showDocumentation" text="О приложении"/>
-      </Menu>
-   </MenuBar>
-   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Добавить кружок">
-      <font>
-         <Font size="30.0"/>
-      </font>
-   </Text>
-   <HBox alignment="CENTER" prefHeight="328.0" prefWidth="1040.0" spacing="5.0">
-      <opaqueInsets>
-         <Insets/>
-      </opaqueInsets>
-      <VBox.margin>
-         <Insets left="20.0" right="20.0"/>
-      </VBox.margin>
-      <VBox prefHeight="457.0" prefWidth="478.0" spacing="15.0">
-         <HBox.margin>
-            <Insets top="29.0"/>
-         </HBox.margin>
-         <padding>
-            <Insets bottom="5.0"/>
-         </padding>
-         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Название" wrappingWidth="138.611328125">
-            <font>
-               <Font size="19.0"/>
-            </font>
-         </Text>
-         <VBox prefHeight="47.0" prefWidth="436.0">
-            <TextField fx:id="titleInput" onKeyReleased="#checkMonStart" onMouseClicked="#hideWarnings"
-                       prefHeight="25.0" prefWidth="321.0" promptText="Название">
-               <cursor>
-                  <Cursor fx:constant="TEXT"/>
-               </cursor>
-               <VBox.margin>
-                  <Insets right="130.0"/>
-               </VBox.margin>
-            </TextField>
-            <Text fx:id="warningTitle" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;"
-                  text="Нужно ввести название!" visible="false"/>
-         </VBox>
-         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Преподаватель" wrappingWidth="177.45947265625">
-            <font>
-               <Font size="19.0"/>
-            </font>
-         </Text>
-         <ComboBox fx:id="teacherBox" promptText="ФИО учителя"/>
-         <HBox alignment="CENTER_LEFT" prefHeight="87.0" prefWidth="557.0">
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Дата начала:" wrappingWidth="121.6708984375">
-               <font>
-                  <Font size="19.0"/>
-               </font>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<VBox xmlns:fx="http://javafx.com/fxml" alignment="TOP_CENTER" prefHeight="650.0" prefWidth="1240.0" spacing="20.0"
+      xmlns="http://javafx.com/javafx">
+    <MenuBar fx:id="menuBar" prefHeight="17.0" prefWidth="552.0">
+        <Menu mnemonicParsing="false" text="Файл">
+            <MenuItem mnemonicParsing="false" onAction="#exit" text="Выход"/>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Помощь">
+            <MenuItem mnemonicParsing="false" onAction="#showDocumentation" text="О приложении"/>
+        </Menu>
+    </MenuBar>
+    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Добавить кружок">
+        <font>
+            <Font size="30.0"/>
+        </font>
+    </Text>
+    <HBox alignment="CENTER" prefHeight="328.0" prefWidth="1040.0" spacing="5.0">
+        <opaqueInsets>
+            <Insets/>
+        </opaqueInsets>
+        <VBox.margin>
+            <Insets left="20.0" right="20.0"/>
+        </VBox.margin>
+        <VBox prefHeight="457.0" prefWidth="478.0" spacing="15.0">
+            <HBox.margin>
+                <Insets top="29.0"/>
+            </HBox.margin>
+            <padding>
+                <Insets bottom="5.0"/>
+            </padding>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Название" wrappingWidth="138.611328125">
+                <font>
+                    <Font size="19.0"/>
+                </font>
             </Text>
-            <VBox alignment="CENTER" prefHeight="83.0" prefWidth="339.0" spacing="10.0">
-               <HBox.margin>
-                  <Insets/>
-               </HBox.margin>
-               <DatePicker fx:id="dateInput" onInputMethodTextChanged="#hideWarnings"
-                           onMouseClicked="#hideWarnings" prefHeight="30.0" prefWidth="233.0"
-                           promptText="Дата"/>
+            <VBox prefHeight="47.0" prefWidth="436.0">
+                <TextField fx:id="titleInput" onKeyReleased="#checkMonStart" onMouseClicked="#hideWarnings"
+                           prefHeight="25.0" prefWidth="321.0" promptText="Название">
+                    <cursor>
+                        <Cursor fx:constant="TEXT"/>
+                    </cursor>
+                    <VBox.margin>
+                        <Insets right="130.0"/>
+                    </VBox.margin>
+                </TextField>
+                <Text fx:id="warningTitle" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;"
+                      text="Нужно ввести название!" visible="false"/>
             </VBox>
-            <VBox alignment="CENTER" prefHeight="83.0" prefWidth="115.0">
-               <Text fx:id="warningDate" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;"
-                     text="Нужно ввести корректную дату и время!" textAlignment="CENTER" visible="false"
-                     wrappingWidth="114.044921875"/>
-            </VBox>
-         </HBox>
-      </VBox>
-      <VBox alignment="TOP_CENTER" prefHeight="431.0" prefWidth="126.0">
-         <HBox.margin>
-            <Insets top="29.0"/>
-         </HBox.margin>
-         <padding>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Преподаватель" wrappingWidth="177.45947265625">
+                <font>
+                    <Font size="19.0"/>
+                </font>
+            </Text>
+            <ComboBox fx:id="teacherBox" promptText="ФИО учителя"/>
+            <HBox alignment="CENTER_LEFT" prefHeight="87.0" prefWidth="557.0">
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Дата начала:" wrappingWidth="121.6708984375">
+                    <font>
+                        <Font size="19.0"/>
+                    </font>
+                </Text>
+                <VBox alignment="CENTER" prefHeight="83.0" prefWidth="339.0" spacing="10.0">
+                    <HBox.margin>
+                        <Insets/>
+                    </HBox.margin>
+                    <DatePicker fx:id="dateInput" onInputMethodTextChanged="#hideWarnings"
+                                onMouseClicked="#hideWarnings" prefHeight="30.0" prefWidth="233.0" promptText="Дата"/>
+                </VBox>
+                <VBox alignment="CENTER" prefHeight="83.0" prefWidth="115.0">
+                    <Text fx:id="warningDate" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;"
+                          text="Нужно ввести корректную дату и время!" textAlignment="CENTER" visible="false"
+                          wrappingWidth="114.044921875"/>
+                </VBox>
+            </HBox>
+        </VBox>
+        <VBox alignment="TOP_CENTER" prefHeight="431.0" prefWidth="126.0">
+            <HBox.margin>
+                <Insets top="29.0"/>
+            </HBox.margin>
+            <padding>
+                <Insets bottom="5.0"/>
+            </padding>
+            <TableView fx:id="typeTable" onMouseClicked="#hideWarnings" prefHeight="360.0">
+                <columns>
+                    <TableColumn fx:id="type" maxWidth="124.0" minWidth="124.0" prefWidth="124.0" text="Виды"/>
+                </columns>
+            </TableView>
+            <Text fx:id="warningType" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;"
+                  text="Нужно выбрать тип!" visible="false"/>
+            <HBox alignment="CENTER">
+                <Button mnemonicParsing="false" onAction="#switchToEditCoterieTypes" text="Редактировать">
+                    <font>
+                        <Font size="13.0"/>
+                    </font>
+                </Button>
+            </HBox>
+        </VBox>
+        <TabPane fx:id="tabPane" prefHeight="460.0" prefWidth="531.0" tabClosingPolicy="UNAVAILABLE">
+            <Tab fx:id="spaceTab" text="Помещения">
+                <VBox alignment="TOP_RIGHT" prefHeight="457.0" prefWidth="427.0">
+                    <padding>
+                        <Insets bottom="5.0"/>
+                    </padding>
+                    <TableView fx:id="spacesTable" onMouseClicked="#hideWarnings" prefHeight="360.0" prefWidth="317.0">
+                        <columns>
+                            <TableColumn fx:id="spaceNameColumn" maxWidth="163.0" minWidth="163.0" prefWidth="163.0"
+                                         text="Название"/>
+                            <TableColumn fx:id="spaceDescriptionColumn" maxWidth="200.0" minWidth="200.0"
+                                         prefWidth="200.0" text="Описание"/>
+                            <TableColumn fx:id="areaColumn" maxWidth="78.0" minWidth="78.0" prefWidth="78.0"
+                                         text="Площадь"/>
+                            <TableColumn fx:id="capacityColumn" maxWidth="88.0" minWidth="88.0" prefWidth="88.0"
+                                         text="Вместимость"/>
+                        </columns>
+                        <columnResizePolicy>
+                            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                        </columnResizePolicy>
+                    </TableView>
+                    <Text fx:id="warningSpace" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;"
+                          text="Нужно выбрать помещение!" visible="false" wrappingWidth="160.13671875"/>
+                    <HBox alignment="CENTER_RIGHT" spacing="5.0">
+                        <Button mnemonicParsing="false" onAction="#switchToEditSpaces" text="Редактировать">
+                            <font>
+                                <Font size="13.0"/>
+                            </font>
+                        </Button>
+                    </HBox>
+                </VBox>
+            </Tab>
+            <Tab fx:id="coterieTab" text="Кружки">
+                <VBox alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="100.0">
+                    <TableView fx:id="coteriesTable" onMouseClicked="#hideWarnings" prefHeight="250.0"
+                               prefWidth="486.0">
+                        <columns>
+                            <TableColumn fx:id="coteriesColumn" maxWidth="150.0" minWidth="150.0" prefWidth="150.0"
+                                         text="Имя"/>
+                            <TableColumn fx:id="spaceColumn" maxWidth="188.0" minWidth="188.0" prefWidth="188.0"
+                                         text="Помещение"/>
+                            <TableColumn fx:id="startColumn" maxWidth="86.0" minWidth="86.0" prefWidth="86.0"
+                                         text="Начало"/>
+                            <TableColumn fx:id="typeColumn" maxWidth="105.0" minWidth="105.0" prefWidth="105.0"
+                                         text="Вид"/>
+                        </columns>
+                        <columnResizePolicy>
+                            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                        </columnResizePolicy>
+                    </TableView>
+                    <Text fx:id="warningCoterie" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;"
+                          visible="false"/>
+                    <HBox alignment="CENTER_RIGHT" spacing="5.0">
+                        <Button mnemonicParsing="false" onAction="#edit" text="Изменить">
+                            <font>
+                                <Font size="13.0"/>
+                            </font>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#delete" text="Удалить">
+                            <font>
+                                <Font size="13.0"/>
+                            </font>
+                        </Button>
+                    </HBox>
+                </VBox>
+            </Tab>
+        </TabPane>
+    </HBox>
+    <HBox alignment="CENTER" prefHeight="130.0" prefWidth="1080.0" spacing="20.0">
+        <VBox alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="100.0" spacing="15.0">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Дни недели">
+                <font>
+                    <Font size="19.0"/>
+                </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Время начала">
+                <font>
+                    <Font size="19.0"/>
+                </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Время окончания">
+                <font>
+                    <Font size="19.0"/>
+                </font>
+            </Text>
+        </VBox>
+        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="17.0">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Понедельник">
+                <font>
+                    <Font size="19.0"/>
+                </font>
+            </Text>
+            <TextField fx:id="monStart" alignment="CENTER" maxWidth="90.0" minWidth="90.0"
+                       onKeyReleased="#checkMonStart" onMouseClicked="#hideWarnings" promptText="чч:мм"/>
+            <TextField fx:id="monEnd" alignment="CENTER" disable="true" maxWidth="90.0" minWidth="90.0"
+                       onMouseClicked="#hideWarnings" promptText="чч:мм"/>
+        </VBox>
+        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="17.0">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Вторник">
+                <font>
+                    <Font size="19.0"/>
+                </font>
+            </Text>
+            <TextField fx:id="tueStart" alignment="CENTER" maxWidth="90.0" minWidth="90.0"
+                       onKeyReleased="#checkTueStart" onMouseClicked="#hideWarnings" promptText="чч:мм"/>
+            <TextField fx:id="tueEnd" alignment="CENTER" disable="true" maxWidth="90.0" minWidth="90.0"
+                       onMouseClicked="#hideWarnings" promptText="чч:мм"/>
+        </VBox>
+        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="17.0">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Среда">
+                <font>
+                    <Font size="19.0"/>
+                </font>
+            </Text>
+            <TextField fx:id="wenStart" alignment="CENTER" maxWidth="90.0" minWidth="90.0"
+                       onKeyReleased="#checkWenStart" onMouseClicked="#hideWarnings" promptText="чч:мм"/>
+            <TextField fx:id="wenEnd" alignment="CENTER" disable="true" maxWidth="90.0" minWidth="90.0"
+                       onMouseClicked="#hideWarnings" promptText="чч:мм"/>
+        </VBox>
+        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="17.0">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Четверг">
+                <font>
+                    <Font size="19.0"/>
+                </font>
+            </Text>
+            <TextField fx:id="thuStart" alignment="CENTER" maxWidth="90.0" minWidth="90.0"
+                       onKeyReleased="#checkThuStart" onMouseClicked="#hideWarnings" promptText="чч:мм"/>
+            <TextField fx:id="thuEnd" alignment="CENTER" disable="true" maxWidth="90.0" minWidth="90.0"
+                       onMouseClicked="#hideWarnings" promptText="чч:мм"/>
+        </VBox>
+        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="17.0">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Пятница">
+                <font>
+                    <Font size="19.0"/>
+                </font>
+            </Text>
+            <TextField fx:id="friStart" alignment="CENTER" maxWidth="90.0" minWidth="90.0"
+                       onKeyReleased="#checkFriStart" onMouseClicked="#hideWarnings" promptText="чч:мм"/>
+            <TextField fx:id="friEnd" alignment="CENTER" disable="true" maxWidth="90.0" minWidth="90.0"
+                       onMouseClicked="#hideWarnings" promptText="чч:мм"/>
+        </VBox>
+        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="17.0">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Суббота">
+                <font>
+                    <Font size="19.0"/>
+                </font>
+            </Text>
+            <TextField fx:id="satStart" alignment="CENTER" maxWidth="90.0" minWidth="90.0"
+                       onKeyReleased="#checkSatStart" onMouseClicked="#hideWarnings" promptText="чч:мм"/>
+            <TextField fx:id="satEnd" alignment="CENTER" disable="true" maxWidth="90.0" minWidth="90.0"
+                       onMouseClicked="#hideWarnings" promptText="чч:мм"/>
+        </VBox>
+        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="17.0">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Воскресенье">
+                <font>
+                    <Font size="19.0"/>
+                </font>
+            </Text>
+            <TextField fx:id="sunStart" alignment="CENTER" maxWidth="90.0" minWidth="90.0"
+                       onKeyReleased="#checkSunStart" onMouseClicked="#hideWarnings" promptText="чч:мм"/>
+            <TextField fx:id="sunEnd" alignment="CENTER" disable="true" maxWidth="90.0" minWidth="90.0"
+                       onMouseClicked="#hideWarnings" promptText="чч:мм"/>
+        </VBox>
+    </HBox>
+    <HBox alignment="CENTER" prefHeight="0.0" prefWidth="960.0" spacing="300.0">
+        <padding>
             <Insets bottom="5.0"/>
-         </padding>
-         <TableView fx:id="typeTable" onMouseClicked="#hideWarnings" prefHeight="360.0">
-            <columns>
-               <TableColumn fx:id="type" maxWidth="124.0" minWidth="124.0" prefWidth="124.0" text="Виды"/>
-            </columns>
-         </TableView>
-         <Text fx:id="warningType" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;"
-               text="Нужно выбрать тип!" visible="false"/>
-         <HBox alignment="CENTER">
-            <Button mnemonicParsing="false" onAction="#switchToEditCoterieTypes" text="Редактировать">
-               <font>
-                  <Font size="13.0"/>
-               </font>
+        </padding>
+        <Button mnemonicParsing="false" onAction="#switchToPrimary" text="Назад">
+            <font>
+                <Font size="14.0"/>
+            </font>
+            <HBox.margin>
+                <Insets/>
+            </HBox.margin>
+        </Button>
+        <HBox alignment="CENTER" prefHeight="30.0" prefWidth="270.0" spacing="20.0">
+            <HBox.margin>
+                <Insets/>
+            </HBox.margin>
+            <Text fx:id="successfulSaving" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: green;"
+                  text="Сохранено!" visible="false"/>
+            <Button mnemonicParsing="false" onAction="#save" text="Добавить">
+                <font>
+                    <Font size="14.0"/>
+                </font>
             </Button>
-         </HBox>
-      </VBox>
-      <TabPane fx:id="tabPane" prefHeight="460.0" prefWidth="531.0" tabClosingPolicy="UNAVAILABLE">
-         <Tab fx:id="spaceTab" text="Помещения">
-            <VBox alignment="TOP_RIGHT" prefHeight="457.0" prefWidth="427.0">
-               <padding>
-                  <Insets bottom="5.0"/>
-               </padding>
-               <TableView fx:id="spacesTable" onMouseClicked="#hideWarnings" prefHeight="360.0"
-                          prefWidth="317.0">
-                  <columns>
-                     <TableColumn fx:id="spaceNameColumn" prefWidth="89.0" text="Название"/>
-                     <TableColumn fx:id="spaceDescriptionColumn" prefWidth="168.0" text="Описание"/>
-                     <TableColumn fx:id="areaColumn" prefWidth="62.0" text="Площадь"/>
-                     <TableColumn fx:id="capacityColumn" prefWidth="84.0" text="Вместимость"/>
-                  </columns>
-                  <columnResizePolicy>
-                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
-                  </columnResizePolicy>
-               </TableView>
-               <Text fx:id="warningSpace" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;"
-                     text="Нужно выбрать помещение!" visible="false" wrappingWidth="160.13671875"/>
-               <HBox alignment="CENTER_RIGHT" spacing="5.0">
-                  <Button mnemonicParsing="false" onAction="#switchToEditSpaces" text="Редактировать">
-                     <font>
-                        <Font size="13.0"/>
-                     </font>
-                  </Button>
-               </HBox>
-            </VBox>
-         </Tab>
-         <Tab fx:id="coterieTab" text="Кружки">
-            <VBox alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="100.0">
-               <TableView fx:id="coteriesTable" onMouseClicked="#hideWarnings" prefHeight="250.0"
-                          prefWidth="486.0">
-                  <columns>
-                     <TableColumn fx:id="coteriesColumn" prefWidth="92.0" text="Имя"/>
-                     <TableColumn fx:id="coteriesDescriptionColumn" prefWidth="133.0" text="Описание"/>
-                     <TableColumn fx:id="spaceColumn" prefWidth="112.0" text="Помещение"/>
-                     <TableColumn fx:id="startColumn" prefWidth="98.0" text="Начало"/>
-                     <TableColumn fx:id="typeColumn" prefWidth="99.0" text="Вид"/>
-                  </columns>
-                  <columnResizePolicy>
-                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
-                  </columnResizePolicy>
-               </TableView>
-               <Text fx:id="warningCoterie" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;"
-                     visible="false"/>
-               <HBox alignment="CENTER_RIGHT" spacing="5.0">
-                  <Button mnemonicParsing="false" onAction="#edit" text="Изменить">
-                     <font>
-                        <Font size="13.0"/>
-                     </font>
-                  </Button>
-                  <Button mnemonicParsing="false" onAction="#delete" text="Удалить">
-                     <font>
-                        <Font size="13.0"/>
-                     </font>
-                  </Button>
-               </HBox>
-            </VBox>
-         </Tab>
-      </TabPane>
-   </HBox>
-   <HBox alignment="CENTER" prefHeight="130.0" prefWidth="1080.0" spacing="20.0">
-      <VBox alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="100.0" spacing="15.0">
-         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Дни недели">
-            <font>
-               <Font size="19.0"/>
-            </font>
-         </Text>
-         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Время начала">
-            <font>
-               <Font size="19.0"/>
-            </font>
-         </Text>
-         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Время окончания">
-            <font>
-               <Font size="19.0"/>
-            </font>
-         </Text>
-      </VBox>
-      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="17.0">
-         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Понедельник">
-            <font>
-               <Font size="19.0"/>
-            </font>
-         </Text>
-         <TextField fx:id="monStart" alignment="CENTER" maxWidth="90.0" minWidth="90.0"
-                    onKeyReleased="#checkMonStart" onMouseClicked="#hideWarnings" promptText="чч:мм"/>
-         <TextField fx:id="monEnd" alignment="CENTER" disable="true" maxWidth="90.0" minWidth="90.0"
-                    onMouseClicked="#hideWarnings" promptText="чч:мм"/>
-      </VBox>
-      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="17.0">
-         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Вторник">
-            <font>
-               <Font size="19.0"/>
-            </font>
-         </Text>
-         <TextField fx:id="tueStart" alignment="CENTER" maxWidth="90.0" minWidth="90.0"
-                    onKeyReleased="#checkTueStart" onMouseClicked="#hideWarnings" promptText="чч:мм"/>
-         <TextField fx:id="tueEnd" alignment="CENTER" disable="true" maxWidth="90.0" minWidth="90.0"
-                    onMouseClicked="#hideWarnings" promptText="чч:мм"/>
-      </VBox>
-      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="17.0">
-         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Среда">
-            <font>
-               <Font size="19.0"/>
-            </font>
-         </Text>
-         <TextField fx:id="wenStart" alignment="CENTER" maxWidth="90.0" minWidth="90.0"
-                    onKeyReleased="#checkWenStart" onMouseClicked="#hideWarnings" promptText="чч:мм"/>
-         <TextField fx:id="wenEnd" alignment="CENTER" disable="true" maxWidth="90.0" minWidth="90.0"
-                    onMouseClicked="#hideWarnings" promptText="чч:мм"/>
-      </VBox>
-      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="17.0">
-         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Четверг">
-            <font>
-               <Font size="19.0"/>
-            </font>
-         </Text>
-         <TextField fx:id="thuStart" alignment="CENTER" maxWidth="90.0" minWidth="90.0"
-                    onKeyReleased="#checkThuStart" onMouseClicked="#hideWarnings" promptText="чч:мм"/>
-         <TextField fx:id="thuEnd" alignment="CENTER" disable="true" maxWidth="90.0" minWidth="90.0"
-                    onMouseClicked="#hideWarnings" promptText="чч:мм"/>
-      </VBox>
-      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="17.0">
-         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Пятница">
-            <font>
-               <Font size="19.0"/>
-            </font>
-         </Text>
-         <TextField fx:id="friStart" alignment="CENTER" maxWidth="90.0" minWidth="90.0"
-                    onKeyReleased="#checkFriStart" onMouseClicked="#hideWarnings" promptText="чч:мм"/>
-         <TextField fx:id="friEnd" alignment="CENTER" disable="true" maxWidth="90.0" minWidth="90.0"
-                    onMouseClicked="#hideWarnings" promptText="чч:мм"/>
-      </VBox>
-      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="17.0">
-         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Суббота">
-            <font>
-               <Font size="19.0"/>
-            </font>
-         </Text>
-         <TextField fx:id="satStart" alignment="CENTER" maxWidth="90.0" minWidth="90.0"
-                    onKeyReleased="#checkSatStart" onMouseClicked="#hideWarnings" promptText="чч:мм"/>
-         <TextField fx:id="satEnd" alignment="CENTER" disable="true" maxWidth="90.0" minWidth="90.0"
-                    onMouseClicked="#hideWarnings" promptText="чч:мм"/>
-      </VBox>
-      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="17.0">
-         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Воскресенье">
-            <font>
-               <Font size="19.0"/>
-            </font>
-         </Text>
-         <TextField fx:id="sunStart" alignment="CENTER" maxWidth="90.0" minWidth="90.0"
-                    onKeyReleased="#checkSunStart" onMouseClicked="#hideWarnings" promptText="чч:мм"/>
-         <TextField fx:id="sunEnd" alignment="CENTER" disable="true" maxWidth="90.0" minWidth="90.0"
-                    onMouseClicked="#hideWarnings" promptText="чч:мм"/>
-      </VBox>
-   </HBox>
-   <HBox alignment="CENTER" prefHeight="0.0" prefWidth="960.0" spacing="300.0">
-      <padding>
-         <Insets bottom="5.0"/>
-      </padding>
-      <Button mnemonicParsing="false" onAction="#switchToPrimary" text="Назад">
-         <font>
-            <Font size="14.0"/>
-         </font>
-         <HBox.margin>
-            <Insets/>
-         </HBox.margin>
-      </Button>
-      <HBox alignment="CENTER" prefHeight="30.0" prefWidth="270.0" spacing="20.0">
-         <HBox.margin>
-            <Insets/>
-         </HBox.margin>
-         <Text fx:id="successfulSaving" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: green;"
-               text="Сохранено!" visible="false"/>
-         <Button mnemonicParsing="false" onAction="#save" text="Добавить">
-            <font>
-               <Font size="14.0"/>
-            </font>
-         </Button>
-         <Button mnemonicParsing="false" onAction="#cleanForm" text="Очистить">
-            <font>
-               <Font size="14.0"/>
-            </font>
-         </Button>
-      </HBox>
-   </HBox>
+            <Button mnemonicParsing="false" onAction="#cleanForm" text="Очистить">
+                <font>
+                    <Font size="14.0"/>
+                </font>
+            </Button>
+        </HBox>
+    </HBox>
 </VBox>

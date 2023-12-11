@@ -44,9 +44,10 @@ public class AdminAllSpacesController extends EventTablesController implements I
     public void switchToPrimary() throws IOException {
         App.setRoot("adminDesktop", new AdminDesktopController());
     }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ArrayList<String> spaceTypeList = new ArrayList<String>(){{
+        ArrayList<String> spaceTypeList = new ArrayList<String>() {{
             add("Все");
             add("Для мероприятий");
             add("Для кружков");
@@ -86,7 +87,7 @@ public class AdminAllSpacesController extends EventTablesController implements I
 
 
         DataBase.loadSpacesList(null);
-        filteredSpaceList= new FilteredList<>(FXCollections.observableArrayList(Space.objectsList));
+        filteredSpaceList = new FilteredList<>(FXCollections.observableArrayList(Space.objectsList));
         tableOfSpaces.setItems(filteredSpaceList);
     }
 }

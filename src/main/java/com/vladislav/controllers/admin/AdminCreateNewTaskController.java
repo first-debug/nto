@@ -236,7 +236,7 @@ public class AdminCreateNewTaskController extends Controller implements Initiali
     @FXML
     private void switchToPrimary() {
         App.setRoot("adminDesktop", new AdminDesktopController());
-}
+    }
 
     @FXML
     void switchToEditEvents() {
@@ -267,7 +267,7 @@ public class AdminCreateNewTaskController extends Controller implements Initiali
         typeTable.setItems(taskTypesList);
 
 
-        tableOfTasks.setRowFactory(row -> new TableRow<Task>(){
+        tableOfTasks.setRowFactory(row -> new TableRow<Task>() {
             @Override
             public void updateItem(Task item, boolean empty) {
                 if (!empty) {

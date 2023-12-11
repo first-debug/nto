@@ -1,21 +1,21 @@
 package com.vladislav.models;
 
-import javafx.beans.property.*;
+import javafx.beans.property.Property;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
-import static com.vladislav.App.dateFormat;
 
 public class Coterie {
     public static ObservableList<Coterie> objectsList = FXCollections.observableArrayList();
     public static ArrayList<Integer> objectsId = new ArrayList<>();
-
     private final Integer id;
     private final StringProperty title;
-    private Long timeStart;
     private final StringProperty stringTime;
     private final Property<CoterieType> type;
     private final Property<Space> space;
@@ -23,6 +23,8 @@ public class Coterie {
     private final StringProperty teacherFirstName;
     private final StringProperty teacherLastName;
     private final StringProperty teacherPatronymic;
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    private Long timeStart;
     private Long[][] schedule;
 
     private Coterie(Integer id, String title, Long timeStart, CoterieType type, Space eventSpace, Teacher teacher, Long[][] schedule) {
@@ -42,7 +44,7 @@ public class Coterie {
     }
 
     public static Coterie getInstance(Integer id, String title, Long timeStart, CoterieType type, Space eventSpace,
-                               Teacher teacher, Long[][] schedule) {
+                                      Teacher teacher, Long[][] schedule) {
         int objectIndex = objectsId.indexOf(id);
         if (objectIndex == -1) {
             return new Coterie(id, title, timeStart, type, eventSpace, teacher, schedule);
@@ -75,21 +77,21 @@ public class Coterie {
         return title.get();
     }
 
-    public StringProperty titleProperty() {
-        return title;
-    }
-
     public void setTitle(String title) {
         this.title.set(title);
     }
 
-    public void setTimeStart(Long timeStart) {
-       this.timeStart = timeStart;
-       this.stringTime.setValue(dateFormat.format(new Date(timeStart)));
+    public StringProperty titleProperty() {
+        return title;
     }
 
     public Long getTimeStart() {
         return timeStart;
+    }
+
+    public void setTimeStart(Long timeStart) {
+        this.timeStart = timeStart;
+        this.stringTime.setValue(dateFormat.format(new Date(timeStart)));
     }
 
     public String getStringTime() {
@@ -131,21 +133,17 @@ public class Coterie {
         return teacherFirstName.get();
     }
 
-    public StringProperty teacherFirstNameProperty() {
-        return teacherFirstName;
-    }
-
     public void setTeacherFirstName(String teacherFirstName) {
         getTeacher().setFirstName(teacherFirstName);
         this.teacherFirstName.set(teacherFirstName);
     }
 
-    public String getTeacherLastName() {
-        return teacherLastName.get();
+    public StringProperty teacherFirstNameProperty() {
+        return teacherFirstName;
     }
 
-    public StringProperty teacherLastNameProperty() {
-        return teacherLastName;
+    public String getTeacherLastName() {
+        return teacherLastName.get();
     }
 
     public void setTeacherLastName(String teacherLastName) {
@@ -153,17 +151,21 @@ public class Coterie {
         this.teacherLastName.set(teacherLastName);
     }
 
-    public String getTeacherPatronymic() {
-        return teacherPatronymic.get();
+    public StringProperty teacherLastNameProperty() {
+        return teacherLastName;
     }
 
-    public StringProperty teacherPatronymicProperty() {
-        return teacherPatronymic;
+    public String getTeacherPatronymic() {
+        return teacherPatronymic.get();
     }
 
     public void setTeacherPatronymic(String teacherPatronymic) {
         getTeacher().setPatronymic(teacherPatronymic);
         this.teacherPatronymic.set(teacherPatronymic);
+    }
+
+    public StringProperty teacherPatronymicProperty() {
+        return teacherPatronymic;
     }
 
     public Long[][] getSchedule() {
