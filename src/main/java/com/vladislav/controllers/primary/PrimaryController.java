@@ -25,4 +25,9 @@ public class PrimaryController extends Controller {
     private void switchToTeaching() {
         App.setRoot("allEvents", new TeachingEventsController());
     }
+
+    @FXML
+    private void switchToLessonsList() {
+        App.setRoot("allLessons", new LessonsController());
+    }
 }

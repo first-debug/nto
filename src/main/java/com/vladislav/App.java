@@ -76,9 +76,12 @@ public class App extends Application {
             FXMLLoader fxmlLoader = new FXMLLoader(fxmlFile);
             fxmlLoader.setController(controller);
             return fxmlLoader.load();
-        } catch (IllegalStateException | IOException ex) {
+        } catch (IOException ex) {
             logger.error("A nonexistent FXML-file is specified: " + fxml);
             ex.printStackTrace();
+            return null;
+        } catch (IllegalStateException ex) {
+            logger.error(ex.getMessage());
             return null;
         }
     }

@@ -11,23 +11,24 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Coterie {
-    public static ObservableList<Coterie> objectsList = FXCollections.observableArrayList();
+public class Lesson {
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+    public static ObservableList<Lesson> objectsList = FXCollections.observableArrayList();
     public static ArrayList<Integer> objectsId = new ArrayList<>();
     private final Integer id;
     private final StringProperty title;
     private final StringProperty stringTime;
-    private final Property<CoterieType> type;
+    private final Property<LessonType> type;
     private final Property<Space> space;
     private final Property<Teacher> teacher;
     private final StringProperty teacherFirstName;
     private final StringProperty teacherLastName;
     private final StringProperty teacherPatronymic;
-    SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
     private Long timeStart;
     private Long[][] schedule;
 
-    private Coterie(Integer id, String title, Long timeStart, CoterieType type, Space eventSpace, Teacher teacher, Long[][] schedule) {
+    private Lesson(Integer id, String title, Long timeStart, LessonType type, Space eventSpace, Teacher teacher, Long[][] schedule) {
         this.id = id;
         this.title = new SimpleStringProperty(title);
         this.timeStart = timeStart;
@@ -43,11 +44,11 @@ public class Coterie {
         objectsId.add(id);
     }
 
-    public static Coterie getInstance(Integer id, String title, Long timeStart, CoterieType type, Space eventSpace,
-                                      Teacher teacher, Long[][] schedule) {
+    public static Lesson getInstance(Integer id, String title, Long timeStart, LessonType type, Space eventSpace,
+                                     Teacher teacher, Long[][] schedule) {
         int objectIndex = objectsId.indexOf(id);
         if (objectIndex == -1) {
-            return new Coterie(id, title, timeStart, type, eventSpace, teacher, schedule);
+            return new Lesson(id, title, timeStart, type, eventSpace, teacher, schedule);
         } else {
             objectsList.forEach(f -> {
                 if (f.getId().equals(id)) {
@@ -64,9 +65,9 @@ public class Coterie {
         }
     }
 
-    public static void remove(Coterie coterie) {
-        objectsList.remove(coterie);
-        objectsId.remove(coterie.id);
+    public static void remove(Lesson lesson) {
+        objectsList.remove(lesson);
+        objectsId.remove(lesson.id);
     }
 
     public Integer getId() {
@@ -102,11 +103,11 @@ public class Coterie {
         return stringTime;
     }
 
-    public CoterieType getType() {
+    public LessonType getType() {
         return type.getValue();
     }
 
-    public void setType(CoterieType type) {
+    public void setType(LessonType type) {
         this.type.setValue(type);
     }
 
@@ -170,6 +171,17 @@ public class Coterie {
 
     public Long[][] getSchedule() {
         return schedule;
+    }
+
+    public StringProperty getScheduleDay(int day) {
+        String text = null;
+        if (schedule[day][0] != -1) {
+            text = timeFormat.format(new Date(schedule[day][0])) + " - " +
+                    timeFormat.format(new Date(schedule[day][1])) + "\n" +
+                    space.getValue().getName() + "\n" +
+                    teacher.getValue().getAbbreviatedName();
+        }
+        return new SimpleStringProperty(text);
     }
 
     public void setSchedule(Long[][] schedule) {

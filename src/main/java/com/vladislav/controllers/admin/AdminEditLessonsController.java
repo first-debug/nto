@@ -3,7 +3,7 @@ package com.vladislav.controllers.admin;
 import com.vladislav.App;
 import com.vladislav.controllers.AdminDesktopController;
 import com.vladislav.controllers.Controller;
-import com.vladislav.controllers.EditCoterieTypeController;
+import com.vladislav.controllers.EditLessonTypeController;
 import com.vladislav.models.*;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
@@ -22,7 +22,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
 
-public class AdminEditCoteriesController extends Controller implements Initializable {
+public class AdminEditLessonsController extends Controller implements Initializable {
 
     SimpleDateFormat format = new SimpleDateFormat("HH:mm");
     String separator = null;
@@ -37,10 +37,10 @@ public class AdminEditCoteriesController extends Controller implements Initializ
     private DatePicker dateInput;
 
     @FXML
-    private TableView<CoterieType> typeTable;
+    private TableView<LessonType> typeTable;
 
     @FXML
-    private TableColumn<CoterieType, StringProperty> type;
+    private TableColumn<LessonType, StringProperty> type;
 
     @FXML
     private TabPane tabPane;
@@ -49,7 +49,7 @@ public class AdminEditCoteriesController extends Controller implements Initializ
     private Tab spaceTab;
 
     @FXML
-    private Tab coterieTab;
+    private Tab lessonTab;
 
     @FXML
     private TableView<Space> spacesTable;
@@ -67,22 +67,22 @@ public class AdminEditCoteriesController extends Controller implements Initializ
     private TableColumn<Space, IntegerProperty> capacityColumn;
 
     @FXML
-    private TableView<Coterie> coteriesTable;
+    private TableView<Lesson> lessonsTable;
 
     @FXML
-    private TableColumn<Coterie, StringProperty> coteriesColumn;
+    private TableColumn<Lesson, StringProperty> lessonColumn;
 
 //    @FXML
-//    private TableColumn<Coterie, StringProperty> coteriesDescriptionColumn;
+//    private TableColumn<Lesson, StringProperty> lessonsDescriptionColumn;
 
     @FXML
-    private TableColumn<Coterie, String> spaceColumn;
+    private TableColumn<Lesson, String> spaceColumn;
 
     @FXML
-    private TableColumn<Coterie, String> startColumn;
+    private TableColumn<Lesson, String> startColumn;
 
     @FXML
-    private TableColumn<Coterie, String> typeColumn;
+    private TableColumn<Lesson, String> typeColumn;
 
     @FXML
     private TextField monStart;
@@ -139,7 +139,7 @@ public class AdminEditCoteriesController extends Controller implements Initializ
     private Text warningType;
 
     @FXML
-    private Text warningCoterie;
+    private Text warningLesson;
 
     @FXML
     private Text warningSpace;
@@ -245,7 +245,7 @@ public class AdminEditCoteriesController extends Controller implements Initializ
         dateInput.setValue(null);
         typeTable.getSelectionModel().clearSelection();
         spacesTable.getSelectionModel().clearSelection();
-        coteriesTable.getSelectionModel().clearSelection();
+        lessonsTable.getSelectionModel().clearSelection();
         monStart.setText(null);
         monEnd.setText(null);
         monEnd.setDisable(true);
@@ -272,38 +272,38 @@ public class AdminEditCoteriesController extends Controller implements Initializ
     @FXML
     void delete() {
         hideWarnings();
-        TableView.TableViewSelectionModel<Coterie> selectionModel = coteriesTable.getSelectionModel();
-        ObservableList<Coterie> coteriesList = selectionModel.getSelectedItems();
+        TableView.TableViewSelectionModel<Lesson> selectionModel = lessonsTable.getSelectionModel();
+        ObservableList<Lesson> lessonsList = selectionModel.getSelectedItems();
 
-        if (coteriesList == null || coteriesList.isEmpty()) {
-            warningCoterie.setText("Нужно выбрать хотя бы один кружок!");
-            warningCoterie.setVisible(true);
+        if (lessonsList == null || lessonsList.isEmpty()) {
+            warningLesson.setText("Нужно выбрать хотя бы один кружок!");
+            warningLesson.setVisible(true);
             return;
         }
-        coteriesList.forEach(DataBase::removeCoterie);
+        lessonsList.forEach(DataBase::removeLesson);
     }
 
     @FXML
     void edit() {
         hideWarnings();
-        TableView.TableViewSelectionModel<Coterie> selectionModel = coteriesTable.getSelectionModel();
-        ObservableList<Coterie> selectedCoteries = selectionModel.getSelectedItems();
-        if (selectedCoteries == null || selectedCoteries.isEmpty()) {
-            warningCoterie.setText("Нужно выбрать кружок!");
-            warningCoterie.setVisible(true);
+        TableView.TableViewSelectionModel<Lesson> selectionModel = lessonsTable.getSelectionModel();
+        ObservableList<Lesson> selectedLessons = selectionModel.getSelectedItems();
+        if (selectedLessons == null || selectedLessons.isEmpty()) {
+            warningLesson.setText("Нужно выбрать кружок!");
+            warningLesson.setVisible(true);
             return;
         }
-        if (selectedCoteries.size() == 1) {
-            Coterie coterie = selectedCoteries.get(0);
-            titleInput.setText(coterie.getTitle());
-            teacherBox.setValue(coterie.getTeacher());
+        if (selectedLessons.size() == 1) {
+            Lesson lesson = selectedLessons.get(0);
+            titleInput.setText(lesson.getTitle());
+            teacherBox.setValue(lesson.getTeacher());
             Calendar calendar = Calendar.getInstance(Locale.UK);
-            calendar.setTime(new Date(coterie.getTimeStart()));
+            calendar.setTime(new Date(lesson.getTimeStart()));
             dateInput.setValue(calendar.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-            typeTable.getSelectionModel().select(coterie.getType());
-            spacesTable.getSelectionModel().select(coterie.getSpace());
+            typeTable.getSelectionModel().select(lesson.getType());
+            spacesTable.getSelectionModel().select(lesson.getSpace());
             tabPane.getSelectionModel().select(spaceTab);
-            Long[][] schedule = coterie.getSchedule();
+            Long[][] schedule = lesson.getSchedule();
             if (schedule[0][0] != -1) {
                 monEnd.setDisable(false);
                 monStart.setText(format.format(new Date(schedule[0][0])));
@@ -340,8 +340,8 @@ public class AdminEditCoteriesController extends Controller implements Initializ
                 sunEnd.setText(format.format(new Date(schedule[6][1])));
             }
         } else {
-            warningCoterie.setText("Нужно выбрать один кружок!");
-            warningCoterie.setVisible(true);
+            warningLesson.setText("Нужно выбрать один кружок!");
+            warningLesson.setVisible(true);
         }
     }
 
@@ -351,7 +351,7 @@ public class AdminEditCoteriesController extends Controller implements Initializ
         warningDate.setText(null);
         warningDate.setVisible(false);
         warningType.setVisible(false);
-        warningCoterie.setVisible(false);
+        warningLesson.setVisible(false);
         warningSpace.setVisible(false);
         successfulSaving.setVisible(false);
     }
@@ -363,10 +363,10 @@ public class AdminEditCoteriesController extends Controller implements Initializ
         Teacher teacher = teacherBox.getValue();
         LocalDate date = dateInput.getValue();
         Calendar timeToStart = null;
-        TableView.TableViewSelectionModel<CoterieType> selectedTypes = typeTable.getSelectionModel();
-        ObservableList<CoterieType> coterieTypeList = selectedTypes.getSelectedItems();
+        TableView.TableViewSelectionModel<LessonType> selectedTypes = typeTable.getSelectionModel();
+        ObservableList<LessonType> lessonTypeList = selectedTypes.getSelectedItems();
         TableView.TableViewSelectionModel<Space> selectedSpaces = spacesTable.getSelectionModel();
-        ObservableList<Space> coterieSpaceList = selectedSpaces.getSelectedItems();
+        ObservableList<Space> lessonSpaceList = selectedSpaces.getSelectedItems();
         String[] scheduleTimes = new String[]{
                 monStart.getText(), monEnd.getText(),
                 tueStart.getText(), tueEnd.getText(),
@@ -386,11 +386,11 @@ public class AdminEditCoteriesController extends Controller implements Initializ
 //            warningTeacher.setVisible(true);
             flag = false;
         }
-        if (coterieTypeList == null || coterieTypeList.isEmpty()) {
+        if (lessonTypeList == null || lessonTypeList.isEmpty()) {
             warningType.setVisible(true);
             flag = false;
         }
-        if (coterieSpaceList == null || coterieSpaceList.isEmpty()) {
+        if (lessonSpaceList == null || lessonSpaceList.isEmpty()) {
             tabPane.getSelectionModel().select(spaceTab);
             warningSpace.setVisible(true);
             flag = false;
@@ -457,14 +457,14 @@ public class AdminEditCoteriesController extends Controller implements Initializ
             }
         }
         if (!flag) return;
-        DataBase.addCoterie(title, timeToStart.getTimeInMillis(), coterieTypeList.get(0), coterieSpaceList.get(0),
+        DataBase.addLesson(title, timeToStart.getTimeInMillis(), lessonTypeList.get(0), lessonSpaceList.get(0),
                 teacher, schedule);
         successfulSaving.setVisible(true);
     }
 
     @FXML
-    void switchToEditCoterieTypes() {
-        App.newWindow("editType", new EditCoterieTypeController(), "Новоый вид кружков", 505, 490);
+    void switchToEditLessonTypes() {
+        App.newWindow("editType", new EditLessonTypeController(), "Новоый вид кружков", 505, 490);
     }
 
     @FXML
@@ -496,7 +496,7 @@ public class AdminEditCoteriesController extends Controller implements Initializ
         teacherBox.setItems(teachersList);
 
         type.setCellValueFactory(new PropertyValueFactory<>("name"));
-        FilteredList<CoterieType> typeList = new FilteredList<>(CoterieType.objectsList);
+        FilteredList<LessonType> typeList = new FilteredList<>(LessonType.objectsList);
         typeTable.setItems(typeList);
 
         spaceNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -507,17 +507,17 @@ public class AdminEditCoteriesController extends Controller implements Initializ
         FilteredList<Space> spaceList = new FilteredList<>(Space.objectsList);
         spacesTable.setItems(spaceList);
 
-        coteriesColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
-//        coteriesDescriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+        lessonColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+//        lessonDescriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         spaceColumn.setCellValueFactory(cell -> cell.getValue().getSpace().nameProperty());
         startColumn.setCellValueFactory(cell -> cell.getValue().stringTimeProperty());
         typeColumn.setCellValueFactory(cell -> cell.getValue().getType().nameProperty());
-        FilteredList<Coterie> coterieList = new FilteredList<>(Coterie.objectsList, p -> true);
-        coteriesTable.setItems(coterieList);
+        FilteredList<Lesson> lessonList = new FilteredList<>(Lesson.objectsList, p -> true);
+        lessonsTable.setItems(lessonList);
 
         DataBase.loadEmployeeList("teacher");
-        DataBase.loadCoterieTypesList();
-        DataBase.loadSpacesList("coterie");
-        DataBase.loadCoterie();
+        DataBase.loadLessonTypesList();
+        DataBase.loadSpacesList("lesson");
+        DataBase.loadLesson();
     }
 }

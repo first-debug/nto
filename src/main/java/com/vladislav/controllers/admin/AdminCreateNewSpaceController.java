@@ -195,9 +195,9 @@ public class AdminCreateNewSpaceController extends Controller implements Initial
         String title = titleInput.getText();
         String description = descriptionInput.getText();
         String areaStr = areaInput.getText();
-        String capStr = capacityInput.getText();
+        String capacity = capacityInput.getText();
         Boolean isOnlyOne = onlyOneEvent.isSelected();
-        String type = typeInput.getValue().equals("Для мероприятий") ? "event" : "coteries";
+        String type = typeInput.getValue().equals("Для мероприятий") ? "event" : "lesson";
 
         boolean flag = true;
         if (title == null || title.isEmpty()) {
@@ -209,11 +209,11 @@ public class AdminCreateNewSpaceController extends Controller implements Initial
             flag = false;
         }
         if (!flag) return;
-
-        DataBase.addSpace(title, description, areaStr.isEmpty() ? -1 : Integer.parseInt(areaStr),
-                capStr.isEmpty() ? -1 : Integer.parseInt(capStr), isOnlyOne,
-                isOnlyOne ? new Integer[]{-1, -1} : new Integer[]{
-                        firstArea.getText().isEmpty() ? 0 : Integer.parseInt(firstArea.getText()),
+        Integer area = areaStr.isEmpty() ? 0 : Integer.parseInt(areaStr);
+        DataBase.addSpace(title, description, area,
+                capacity.isEmpty() ? 0 : Integer.parseInt(capacity), isOnlyOne,
+                isOnlyOne ? new Integer[]{area, -1} : new Integer[]{
+                        firstArea.getText().isEmpty() ? area : Integer.parseInt(firstArea.getText()),
                         secondArea.getText().isEmpty() ? 0 : Integer.parseInt(secondArea.getText())},
                 type);
         successfulSaving.setVisible(true);
@@ -242,7 +242,7 @@ public class AdminCreateNewSpaceController extends Controller implements Initial
             switch (cell.getValue().getType()) {
                 case "event":
                     return new SimpleStringProperty("Для событий");
-                case "coterie":
+                case "lesson":
                     return new SimpleStringProperty("Для кружков");
             }
             return new SimpleStringProperty("error");

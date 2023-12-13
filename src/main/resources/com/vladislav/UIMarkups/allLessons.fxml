@@ -6,42 +6,46 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" maxHeight="1080.0" maxWidth="1920.0" minHeight="600.0" minWidth="960.0" prefHeight="650.0" prefWidth="980.0" spacing="20.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+<VBox alignment="TOP_CENTER" maxHeight="1080.0" maxWidth="1920.0" minHeight="600.0" minWidth="960.0" prefHeight="650.0" prefWidth="1240.0" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
     <MenuBar fx:id="menuBar" prefHeight="17.0" prefWidth="552.0">
         <Menu mnemonicParsing="false" text="Файл">
+            <MenuItem mnemonicParsing="false" onAction="#switchToLoginWindow" text="Вход для сотрудников" />
+            <SeparatorMenuItem mnemonicParsing="false" />
             <MenuItem mnemonicParsing="false" onAction="#exit" text="Выход" />
         </Menu>
         <Menu mnemonicParsing="false" text="Помощь">
             <MenuItem mnemonicParsing="false" onAction="#showDocumentation" text="О приложении" />
         </Menu>
     </MenuBar>
-    <Label alignment="CENTER" prefHeight="45.0" prefWidth="255.0" text="Все заявки" textAlignment="CENTER">
+    <Label fx:id="title" alignment="CENTER" prefHeight="45.0" textAlignment="CENTER">
         <font>
             <Font size="30.0" />
         </font>
     </Label>
-    <HBox alignment="CENTER" prefHeight="440.0" prefWidth="920.0">
+    <HBox alignment="CENTER" prefHeight="472.0" prefWidth="1240.0">
         <opaqueInsets>
             <Insets />
         </opaqueInsets>
         <VBox.margin>
             <Insets />
         </VBox.margin>
-        <TableView fx:id="tableOfTasks" accessibleHelp="Нет событий" prefHeight="440.0" prefWidth="951.0" style="-fx-font-size: 13;">
+        <TableView fx:id="tableOfLessons" accessibleHelp="Нет событий" prefHeight="472.0" prefWidth="1130.0" style="-fx-font-size: 13;">
             <columns>
-                <TableColumn fx:id="timeRegColumn" prefWidth="111.0" text="Время создания" />
-                <TableColumn fx:id="typeColumn" prefWidth="121.0" text="Тип" />
-                <TableColumn fx:id="eventColumn" prefWidth="202.0" text="Мероприятие" />
-                <TableColumn fx:id="spaceColumn" prefWidth="129.0" text="Помещение" />
-                <TableColumn fx:id="deadlineColumn" prefWidth="117.0" text="Срок" />
-                <TableColumn fx:id="descriptionColumn" prefWidth="178.0" text="Описнание" />
-                <TableColumn fx:id="statusColumn" prefWidth="92.0" text="Статус" />
+                <TableColumn fx:id="titleColumn" prefWidth="148.0" text="Кружок" />
+            <TableColumn fx:id="mondayColumn" prefWidth="140.0" text="Понедельник" />
+            <TableColumn fx:id="tuesdayColumn" prefWidth="140.0" text="Вторник" />
+            <TableColumn fx:id="wednesdayColumn" prefWidth="140.0" text="Среда" />
+            <TableColumn fx:id="thursdayColumn" prefWidth="140.0" text="Четверг" />
+            <TableColumn fx:id="fridayColumn" prefWidth="140.0" text="Пятница" />
+            <TableColumn fx:id="saturdayColumn" prefWidth="140.0" text="Суббота" />
+            <TableColumn fx:id="sundayColumn" prefWidth="140.0" text="Воскресенье" />
             </columns>
         </TableView>
     </HBox>

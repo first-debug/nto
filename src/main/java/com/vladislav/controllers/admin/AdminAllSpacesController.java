@@ -64,7 +64,7 @@ public class AdminAllSpacesController extends EventTablesController implements I
                         result = type.equals("event");
                         break;
                     case "Для кружков":
-                        result = type.equals("coterie");
+                        result = type.equals("lesson");
                         break;
                 }
             }
@@ -79,7 +79,7 @@ public class AdminAllSpacesController extends EventTablesController implements I
             switch (cell.getValue().getType()) {
                 case "event":
                     return new SimpleStringProperty("Для событий");
-                case "coterie":
+                case "lesson":
                     return new SimpleStringProperty("Для кружков");
             }
             return new SimpleStringProperty("error");

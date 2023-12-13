@@ -451,11 +451,11 @@ public class DataBase {
         return result;
     }
 
-    public static void addCoterie(String title, Long start_time, CoterieType type, Space coterieSpace,
-                                  Teacher teacher, Long[][] schedule) {
+    public static void addLesson(String title, Long start_time, LessonType type, Space lessonSpace,
+                                 Teacher teacher, Long[][] schedule) {
         try {
             PreparedStatement pStatement = connection.prepareStatement(
-                    "INSERT OR REPLACE INTO coteries(title, start_time, typeId, spaceId, teacherId, " +
+                    "INSERT OR REPLACE INTO lessons(title, start_time, typeId, spaceId, teacherId, " +
                             "monday_start, monday_end, tuesday_start, tuesday_end, wednesday_start, wednesday_end, " +
                             "thursday_start, thursday_end, friday_start, friday_end, saturday_start, saturday_end, " +
                             "sunday_start, sunday_end) " +
@@ -464,34 +464,34 @@ public class DataBase {
             pStatement.setString(1, title);
             pStatement.setLong(2, start_time);
             pStatement.setInt(3, type.getId());
-            pStatement.setInt(4, coterieSpace.getId());
+            pStatement.setInt(4, lessonSpace.getId());
             pStatement.setInt(5, teacher.getId());
             for (int arrI = 0, dbI = 6; arrI < schedule.length; arrI++) {
                 pStatement.setLong(dbI++, schedule[arrI][0]);
                 pStatement.setLong(dbI++, schedule[arrI][1]);
             }
             pStatement.execute();
-            loadCoterie();
+            loadLesson();
         } catch (SQLException ex) {
-            logger.error("addCoterie() " + ex.getMessage());
+            logger.error("addLesson() " + ex.getMessage());
         }
     }
 
-    public static void removeCoterie(Coterie coterie) {
+    public static void removeLesson(Lesson lesson) {
         try {
             PreparedStatement pStatement = connection.prepareStatement(
-                    "DELETE FROM coteries WHERE id=?"
+                    "DELETE FROM lessons WHERE id=?"
             );
-            pStatement.setInt(1, coterie.getId());
+            pStatement.setInt(1, lesson.getId());
             pStatement.execute();
-            Coterie.remove(coterie);
+            Lesson.remove(lesson);
         } catch (SQLException ex) {
-            logger.error("removeCoterie() " + ex.getMessage());
+            logger.error("removeLesson() " + ex.getMessage());
         }
     }
 
-    public static void loadCoterie() {
-        String sql = "SELECT c.id as coterieId, c.title as coterieTitle, c.start_time as coterieStartTime, " +
+    public static void loadLesson() {
+        String sql = "SELECT c.id as lessonId, c.title as lessonTitle, c.start_time as lessonStartTime, " +
                 "monday_start, monday_end, tuesday_start, tuesday_end, wednesday_start, wednesday_end, " +
                 "thursday_start, thursday_end, friday_start, friday_end, saturday_start, saturday_end, sunday_start, " +
                 "sunday_end, " +
@@ -499,21 +499,21 @@ public class DataBase {
                 "s.id, s.space, s.description, s.area, s.capacity, s.type, s.hasSeveralParts, s.firstPartArea, " +
                 "s.secondPartArea, " +
                 "e.id as teacherId, e.first_name, e.last_name, e.patronymic " +
-                "FROM coteries as c, typesOfCoteries as ct, spaces as s , employees as e " +
+                "FROM lessons as c, typesOfLessons as ct, spaces as s , employees as e " +
                 "WHERE c.typeId = ct.id AND c.spaceId = s.id AND c.teacherId = e.id";
         try {
             PreparedStatement pStatement;
             pStatement = connection.prepareStatement(sql);
             ResultSet answer = pStatement.executeQuery();
             while (answer.next()) {
-                Integer id = answer.getInt("coterieId");
-                String title = answer.getString("coterieTitle");
-                Long timeStart = answer.getLong("coterieStartTime");
+                Integer id = answer.getInt("lessonId");
+                String title = answer.getString("lessonTitle");
+                Long timeStart = answer.getLong("lessonStartTime");
 
                 Integer typeId = answer.getInt("typeId");
                 String typeTitle = answer.getString("typeTitle");
                 String description = answer.getString("typeDescription");
-                CoterieType type = CoterieType.getInstance(typeId, typeTitle, description);
+                LessonType type = LessonType.getInstance(typeId, typeTitle, description);
 
                 Space space = parseSpace(answer);
 
@@ -531,54 +531,54 @@ public class DataBase {
                         {answer.getLong("saturday_start"), answer.getLong("saturday_end")}, // saturday
                         {answer.getLong("sunday_start"), answer.getLong("sunday_end")} // sunday
                 };
-                Coterie.getInstance(id, title, timeStart, type, space, teacher, schedule);
+                Lesson.getInstance(id, title, timeStart, type, space, teacher, schedule);
             }
         } catch (SQLException ex) {
-            logger.error("loadCoterie() " + ex.getMessage());
+            logger.error("loadLesson() " + ex.getMessage());
         }
     }
 
-    public static void addCoterieType(String title, String description) {
+    public static void addLessonType(String title, String description) {
         try {
             PreparedStatement pStatement = connection.prepareStatement(
-                    "INSERT OR REPLACE INTO typesOfCoteries(title, description) VALUES (?, ?)"
+                    "INSERT OR REPLACE INTO typesOfLessons(title, description) VALUES (?, ?)"
             );
             pStatement.setString(1, title);
             pStatement.setString(2, description);
             pStatement.execute();
-            loadCoterieTypesList();
+            loadLessonTypesList();
         } catch (SQLException ex) {
-            logger.error("addCoterieType() " + ex.getMessage());
+            logger.error("addLessonType() " + ex.getMessage());
         }
     }
 
-    public static void removeCoterieType(CoterieType coterieType) {
+    public static void removeLessonType(LessonType lessonType) {
         try {
             PreparedStatement pStatement = connection.prepareStatement(
-                    "DELETE FROM typesOfCoteries WHERE id=?"
+                    "DELETE FROM typesOfLessons WHERE id=?"
             );
-            pStatement.setInt(1, coterieType.getId());
+            pStatement.setInt(1, lessonType.getId());
             pStatement.execute();
-            CoterieType.remove(coterieType);
+            LessonType.remove(lessonType);
         } catch (SQLException ex) {
-            logger.error("removeCoterieType() " + ex.getMessage());
+            logger.error("removeLessonType() " + ex.getMessage());
         }
     }
 
-    public static void loadCoterieTypesList() {
+    public static void loadLessonTypesList() {
         try {
             PreparedStatement pStatement = connection.prepareStatement(
-                    "SELECT * FROM typesOfCoteries"
+                    "SELECT * FROM typesOfLessons"
             );
             ResultSet answer = pStatement.executeQuery();
             while (answer.next()) {
                 Integer id = answer.getInt("id");
                 String title = answer.getString("title");
                 String description = answer.getString("description");
-                CoterieType.getInstance(id, title, description);
+                LessonType.getInstance(id, title, description);
             }
         } catch (SQLException ex) {
-            logger.error("loadCoterieTypesList() " + ex.getMessage());
+            logger.error("loadLessonTypesList() " + ex.getMessage());
         }
     }
 
@@ -596,7 +596,7 @@ public class DataBase {
             pStatement.setString(5, patronymic);
             pStatement.setString(6, "teacher");
             pStatement.execute();
-            loadCoterieTypesList();
+            loadLessonTypesList();
         } catch (SQLException ex) {
             logger.error("addTeacher() " + ex.getMessage());
         }

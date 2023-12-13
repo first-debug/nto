@@ -86,4 +86,10 @@ public class Teacher {
     public StringProperty patronymicProperty() {
         return patronymic;
     }
+
+    public String getAbbreviatedName() {
+        return lastName.get() + " " +
+                firstName.get().charAt(0) + ". " +
+                patronymic.get().charAt(0) + ".";
+    }
 }

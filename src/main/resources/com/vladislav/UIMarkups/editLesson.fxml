@@ -125,7 +125,7 @@
             <Text fx:id="warningType" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;"
                   text="Нужно выбрать тип!" visible="false"/>
             <HBox alignment="CENTER">
-                <Button mnemonicParsing="false" onAction="#switchToEditCoterieTypes" text="Редактировать">
+                <Button mnemonicParsing="false" onAction="#switchToEditLessonTypes" text="Редактировать">
                     <font>
                         <Font size="13.0"/>
                     </font>
@@ -164,12 +164,12 @@
                     </HBox>
                 </VBox>
             </Tab>
-            <Tab fx:id="coterieTab" text="Кружки">
+            <Tab fx:id="lessonTab" text="Кружки">
                 <VBox alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="100.0">
-                    <TableView fx:id="coteriesTable" onMouseClicked="#hideWarnings" prefHeight="250.0"
+                    <TableView fx:id="lessonsTable" onMouseClicked="#hideWarnings" prefHeight="250.0"
                                prefWidth="486.0">
                         <columns>
-                            <TableColumn fx:id="coteriesColumn" maxWidth="150.0" minWidth="150.0" prefWidth="150.0"
+                            <TableColumn fx:id="lessonColumn" maxWidth="150.0" minWidth="150.0" prefWidth="150.0"
                                          text="Имя"/>
                             <TableColumn fx:id="spaceColumn" maxWidth="188.0" minWidth="188.0" prefWidth="188.0"
                                          text="Помещение"/>
@@ -182,7 +182,7 @@
                             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
                         </columnResizePolicy>
                     </TableView>
-                    <Text fx:id="warningCoterie" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;"
+                    <Text fx:id="warningLesson" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;"
                           visible="false"/>
                     <HBox alignment="CENTER_RIGHT" spacing="5.0">
                         <Button mnemonicParsing="false" onAction="#edit" text="Изменить">

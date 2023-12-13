@@ -1,7 +1,7 @@
 package com.vladislav.controllers;
 
 import com.vladislav.App;
-import com.vladislav.models.CoterieType;
+import com.vladislav.models.LessonType;
 import com.vladislav.models.DataBase;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
@@ -18,7 +18,7 @@ import javafx.scene.text.Text;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class EditCoterieTypeController extends Controller implements Initializable {
+public class EditLessonTypeController extends Controller implements Initializable {
 
     @FXML
     private TextField nameInput;
@@ -33,13 +33,13 @@ public class EditCoterieTypeController extends Controller implements Initializab
     private Text warningDescription;
 
     @FXML
-    private TableView<CoterieType> typeTaskTable;
+    private TableView<LessonType> typeTaskTable;
 
     @FXML
-    private TableColumn<CoterieType, StringProperty> typeTaskColumn;
+    private TableColumn<LessonType, StringProperty> typeTaskColumn;
 
     @FXML
-    private TableColumn<CoterieType, StringProperty> descriptionColumn;
+    private TableColumn<LessonType, StringProperty> descriptionColumn;
 
 //    @FXML
 //    private TableColumn<Event, String> spaceColumn;
@@ -75,8 +75,8 @@ public class EditCoterieTypeController extends Controller implements Initializab
     @FXML
     void edit() {
         hideWarnings();
-        TableView.TableViewSelectionModel<CoterieType> selectionModel = typeTaskTable.getSelectionModel();
-        ObservableList<CoterieType> taskTypeList = selectionModel.getSelectedItems();
+        TableView.TableViewSelectionModel<LessonType> selectionModel = typeTaskTable.getSelectionModel();
+        ObservableList<LessonType> taskTypeList = selectionModel.getSelectedItems();
 
         if (taskTypeList == null || taskTypeList.isEmpty()) {
             warningType.setText("Нужно выбрать тип!");
@@ -89,7 +89,7 @@ public class EditCoterieTypeController extends Controller implements Initializab
             return;
         }
 
-        CoterieType type = taskTypeList.get(0);
+        LessonType type = taskTypeList.get(0);
         nameInput.setText(type.getName());
         descriptionInput.setText(type.getDescription());
     }
@@ -97,16 +97,16 @@ public class EditCoterieTypeController extends Controller implements Initializab
     @FXML
     void delete() {
         hideWarnings();
-        TableView.TableViewSelectionModel<CoterieType> selectionModel = typeTaskTable.getSelectionModel();
-        ObservableList<CoterieType> coterieTypeList = selectionModel.getSelectedItems();
+        TableView.TableViewSelectionModel<LessonType> selectionModel = typeTaskTable.getSelectionModel();
+        ObservableList<LessonType> lessonTypeList = selectionModel.getSelectedItems();
 
-        if (coterieTypeList == null || coterieTypeList.isEmpty()) {
+        if (lessonTypeList == null || lessonTypeList.isEmpty()) {
             warningType.setText("Нужно выбрать тип!");
             warningType.setVisible(true);
             return;
         }
-        for (CoterieType type : coterieTypeList) {
-            DataBase.removeCoterieType(type);
+        for (LessonType type : lessonTypeList) {
+            DataBase.removeLessonType(type);
         }
     }
 
@@ -126,7 +126,7 @@ public class EditCoterieTypeController extends Controller implements Initializab
             flag = false;
         }
         if (!flag) return;
-        DataBase.addCoterieType(type, description);
+        DataBase.addLessonType(type, description);
         successfulSaving.setVisible(true);
     }
 
@@ -140,7 +140,7 @@ public class EditCoterieTypeController extends Controller implements Initializab
         typeTaskColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         DataBase.loadTaskTypeList();
-        FilteredList<CoterieType> coterieTypeList = new FilteredList<>(CoterieType.objectsList, p -> true);
-        typeTaskTable.setItems(coterieTypeList);
+        FilteredList<LessonType> lessonTypeList = new FilteredList<>(LessonType.objectsList, p -> true);
+        typeTaskTable.setItems(lessonTypeList);
     }
 }

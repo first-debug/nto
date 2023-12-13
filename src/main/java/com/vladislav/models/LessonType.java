@@ -7,15 +7,15 @@ import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 
-public class CoterieType {
-    public static final ObservableList<CoterieType> objectsList = FXCollections.observableArrayList();
+public class LessonType {
+    public static final ObservableList<LessonType> objectsList = FXCollections.observableArrayList();
     public static final ArrayList<Integer> objectsId = new ArrayList<>();
 
     private final Integer id;
     private final StringProperty name;
     private final StringProperty description;
 
-    private CoterieType(Integer id, String name, String description) {
+    private LessonType(Integer id, String name, String description) {
         this.id = id;
         this.name = new SimpleStringProperty(name);
         this.description = new SimpleStringProperty(description);
@@ -23,10 +23,10 @@ public class CoterieType {
         objectsId.add(id);
     }
 
-    public static CoterieType getInstance(Integer id, String name, String description) {
+    public static LessonType getInstance(Integer id, String name, String description) {
         int objectIndex = objectsId.indexOf(id);
         if (objectIndex == -1) {
-            return new CoterieType(id, name, description);
+            return new LessonType(id, name, description);
         } else {
             objectsList.forEach(f -> {
                 if (f.getId().equals(id)) {
@@ -38,7 +38,7 @@ public class CoterieType {
         }
     }
 
-    public static void remove(CoterieType type) {
+    public static void remove(LessonType type) {
         objectsList.remove(type);
         objectsId.remove(type.id);
     }

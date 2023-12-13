@@ -42,8 +42,8 @@ public class AdminDesktopController extends Controller {
     }
 
     @FXML
-    void toEditCoteries() {
-        App.setRoot("editCoteries", new AdminEditCoteriesController());
+    void toEditLessons() {
+        App.setRoot("editLesson", new AdminEditLessonsController());
     }
 }
 
