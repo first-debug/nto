@@ -24,8 +24,8 @@ import java.util.*;
 
 public class AdminEditLessonsController extends Controller implements Initializable {
 
-    SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-    String separator = null;
+    private final SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+    private String separator = null;
 
     @FXML
     private TextField titleInput;
@@ -504,7 +504,7 @@ public class AdminEditLessonsController extends Controller implements Initializa
         areaColumn.setCellValueFactory(new PropertyValueFactory<>("area"));
         capacityColumn.setCellValueFactory(new PropertyValueFactory<>("capacity"));
 //        spaceTypeColumn.setCellValueFactory(cell -> cell.getValue().getType().nameProperty());
-        FilteredList<Space> spaceList = new FilteredList<>(Space.objectsList);
+        FilteredList<Space> spaceList = new FilteredList<>(Space.objectsList, p -> p.getType().equals("lesson"));
         spacesTable.setItems(spaceList);
 
         lessonColumn.setCellValueFactory(new PropertyValueFactory<>("title"));

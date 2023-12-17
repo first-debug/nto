@@ -14,8 +14,8 @@ import java.util.Date;
 public class Lesson {
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
     private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-    public static ObservableList<Lesson> objectsList = FXCollections.observableArrayList();
-    public static ArrayList<Integer> objectsId = new ArrayList<>();
+    public static final ObservableList<Lesson> objectsList = FXCollections.observableArrayList();
+    public static final ArrayList<Integer> objectsId = new ArrayList<>();
     private final Integer id;
     private final StringProperty title;
     private final StringProperty stringTime;

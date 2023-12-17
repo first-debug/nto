@@ -8,7 +8,9 @@ import com.vladislav.models.DataBase;
 import com.vladislav.models.Event;
 import com.vladislav.models.Space;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
@@ -20,6 +22,7 @@ import javafx.scene.text.Text;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -28,74 +31,57 @@ public class AdminCreateNewBookingController extends Controller implements Initi
     private FilteredList<Space> filteredSpacesList;
 
     @FXML
-    private TableView<Booking> bookingTable;
-
+    private TabPane tabPane;
     @FXML
-    private TableColumn<Booking, StringProperty> bookingEndColumn;
-
+    private Tab eventTab;
+    @FXML
+    private TableView<Booking> bookingTable;
     @FXML
     private TableColumn<Booking, StringProperty> timeOfRegColumn;
-
     @FXML
     private TableColumn<Booking, String> eventNameColumn;
-
     @FXML
     private TableColumn<Booking, String> bookingSpaceColumn;
-
-    @FXML
-    private TableColumn<Booking, IntegerProperty> halfOfSpaceColumn;
-
     @FXML
     private TableColumn<Booking, StringProperty> bookingStartColumn;
-
+    @FXML
+    private TableColumn<Booking, StringProperty> bookingEndColumn;
+    @FXML
+    private TableColumn<Booking, String> halfOfSpaceColumn;
     @FXML
     private DatePicker dateStartInput;
-
     @FXML
     private DatePicker dateEndInput;
-
     @FXML
     private TextArea descriptionInput;
-
     @FXML
     private ComboBox<String> hoursEnd;
-
     @FXML
     private ComboBox<String> hoursStart;
-
     @FXML
     private ComboBox<String> minutesEnd;
-
     @FXML
     private ComboBox<String> minutesStart;
-
     @FXML
     private RadioButton isFirst;
-
     @FXML
     private RadioButton isSecond;
-
+    @FXML
+    private Tab spaceTab;
     @FXML
     private TableView<Space> spacesTable;
-
     @FXML
-    private TableColumn<Space, Integer> secondAreaColumn;
-
+    private TableColumn<Space, String> secondAreaColumn;
     @FXML
     private TableColumn<Space, IntegerProperty> capacityColumn;
-
     @FXML
     private TableColumn<Space, IntegerProperty> areaColumn;
-
     @FXML
     private TableColumn<Space, Integer> firstAreaColumn;
-
     @FXML
     private TableColumn<Space, StringProperty> spaceDescriptionColumn;
-
     @FXML
     private TableColumn<Space, StringProperty> spaceNameColumn;
-
     @FXML
     private Text successfulSaving;
 
@@ -134,8 +120,7 @@ public class AdminCreateNewBookingController extends Controller implements Initi
 
     @FXML
     private Text warningSpace;
-
-    @Deprecated // ужно чинить
+    
     @FXML
     private void checkDate() {
         LocalDate dateStart = dateStartInput.getValue();
@@ -311,10 +296,12 @@ public class AdminCreateNewBookingController extends Controller implements Initi
             flag = false;
         }
         if (eventsList == null || eventsList.isEmpty()) {
+            tabPane.getSelectionModel().select(eventTab);
             warningEvent.setVisible(true);
             flag = false;
         }
         if (spaceList == null || spaceList.isEmpty()) {
+            tabPane.getSelectionModel().select(spaceTab);
             warningSpace.setVisible(true);
             flag = false;
         }
@@ -398,12 +385,41 @@ public class AdminCreateNewBookingController extends Controller implements Initi
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // ComboBox - часы
+        ObservableList<String> hoursList = FXCollections.observableList(new ArrayList<String>() {{
+            for (Integer i = 0; i < 24; i++) {
+                if (i < 10) {
+                    add('0' + i.toString());
+                } else add(i.toString());
+            }
+        }});
+        hoursStart.setItems(hoursList);
+        hoursStart.setValue(null);
+        hoursEnd.setItems(hoursList);
+        hoursEnd.setValue(null);
+
+        // ComboBox - минуты
+        ObservableList<String> minutesList = FXCollections.observableList(new ArrayList<String>() {{
+            for (Integer i = 0; i < 60; i++) {
+                if (i < 10) {
+                    add('0' + i.toString());
+                } else add(i.toString());
+            }
+        }});
+        minutesStart.setItems(minutesList);
+        minutesStart.setValue(null);
+        minutesEnd.setItems(minutesList);
+        minutesEnd.setValue(null);
+
         spaceNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         spaceDescriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         areaColumn.setCellValueFactory(new PropertyValueFactory<>("area"));
         capacityColumn.setCellValueFactory(new PropertyValueFactory<>("capacity"));
         firstAreaColumn.setCellValueFactory(new PropertyValueFactory<>("firstArea"));
-        secondAreaColumn.setCellValueFactory(new PropertyValueFactory<>("secondArea"));
+        secondAreaColumn.setCellValueFactory(cell ->
+                new SimpleStringProperty(cell.getValue().getSecondArea() == -1 ?
+                        "Только одна часть" : String.valueOf(cell.getValue().getSecondArea()))
+        );
         DataBase.loadSpacesList("event");
         filteredSpacesList = new FilteredList<>(Space.objectsList, p -> p.getType().equals("event"));
         spacesTable.setItems(filteredSpacesList);
@@ -422,7 +438,9 @@ public class AdminCreateNewBookingController extends Controller implements Initi
         bookingSpaceColumn.setCellValueFactory(cell -> cell.getValue().getSpace().nameProperty());
         bookingStartColumn.setCellValueFactory(new PropertyValueFactory<>("timeOfStartString"));
         bookingEndColumn.setCellValueFactory(new PropertyValueFactory<>("timeOfEndString"));
-        halfOfSpaceColumn.setCellValueFactory(new PropertyValueFactory<>("halfOfSpace"));
+        halfOfSpaceColumn.setCellValueFactory(cell -> new SimpleStringProperty(
+                cell.getValue().getHalfOfSpace() == 3 ? "Полностью" : String.valueOf(cell.getValue().getHalfOfSpace()))
+        );
         DataBase.loadBookingList(null);
         FilteredList<Booking> filteredBookingList = new FilteredList<>(Booking.objectsList, p -> true);
         bookingTable.setItems(filteredBookingList);

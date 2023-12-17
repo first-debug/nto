@@ -41,12 +41,13 @@ public class AdminAllSpacesController extends EventTablesController implements I
     private TableColumn<Space, String> typeColumn;
 
     @FXML
-    public void switchToPrimary() throws IOException {
+    public void switchToPrimary() {
         App.setRoot("adminDesktop", new AdminDesktopController());
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        loginWindowButton.setVisible(false);
         ArrayList<String> spaceTypeList = new ArrayList<String>() {{
             add("Все");
             add("Для мероприятий");

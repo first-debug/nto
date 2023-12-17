@@ -23,79 +23,58 @@ public class AdminCreateNewTaskController extends Controller implements Initiali
 
     @FXML
     private TableColumn<Task, StringProperty> deadlineColumn;
-
     @FXML
     private TableColumn<Task, StringProperty> descriptionColumn;
-
     @FXML
     private TableColumn<Task, String> eventNameColumn;
-
     @FXML
     private TableColumn<Task, String> spaceColumn;
-
     @FXML
     private TableColumn<Task, String> statusColumn;
-
     @FXML
     private TableView<Task> tableOfTasks;
-
     @FXML
     private TableColumn<Task, StringProperty> timeRegColumn;
-
     @FXML
     private TableColumn<Task, String> typeColumn;
-
     @FXML
     private TableView<Event> eventTable;
-
     @FXML
     private TableColumn<Event, StringProperty> eventColumn;
-
     @FXML
-    private TableColumn<Event, StringProperty> startTimeColumn;
-
+    private TableColumn<Event, StringProperty> eventDescriptionColumn;
+    @FXML
+    private TableColumn<Event, String> spaceEventColumn;
+    @FXML
+    private TableColumn<Event, StringProperty> startColumn;
     @FXML
     private TableColumn<Event, String> eventTypeColumn;
-
     @FXML
     private Text warningEvent;
-
     @FXML
     private Text warningTasks;
-
     @FXML
     private RadioButton executed;
-
     @FXML
     private RadioButton noExecuted;
-
     @FXML
     private TableView<TaskType> typeTable;
-
     @FXML
     private TableColumn<TaskType, StringProperty> taskType;
-
     @FXML
     private TableColumn<TaskType, StringProperty> typeDescriptionColumn;
-
     @FXML
     private Text warningType;
-
     @FXML
     private ComboBox<String> minutes;
-
     @FXML
     private RadioButton minutesBefore;
-
     @FXML
     private RadioButton toStartEvent;
-
     @FXML
     private Text successfulSaving;
-
     @FXML
     private TabPane tabPane;
-
     @FXML
     private Tab taskTab;
 
@@ -253,8 +232,12 @@ public class AdminCreateNewTaskController extends Controller implements Initiali
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // eventTable
         eventColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
-        startTimeColumn.setCellValueFactory(new PropertyValueFactory<>("stringTime"));
+        eventDescriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+        spaceEventColumn.setCellValueFactory(cell -> cell.getValue().getSpace().nameProperty());
+        startColumn.setCellValueFactory(new PropertyValueFactory<>("stringTime"));
         eventTypeColumn.setCellValueFactory(cell -> cell.getValue().titleProperty());
+
+
         DataBase.loadEvents(null);
         FilteredList<Event> filteredEventsList = new FilteredList<>(Event.objectsList, t -> true);
         eventTable.setItems(filteredEventsList);
@@ -270,31 +253,33 @@ public class AdminCreateNewTaskController extends Controller implements Initiali
         tableOfTasks.setRowFactory(row -> new TableRow<Task>() {
             @Override
             public void updateItem(Task item, boolean empty) {
-                if (!empty) {
-                    switch (item.getStatus()) {
-                        case CREATED:
-                            setStyle("-fx-background-color: null; " +
-                                    "-fx-border-color: transparent -fx-table-cell-border-color " +
-                                    "-fx-table-cell-border-color transparent; ");
-                            break;
-                        case EXECUTED:
-                            setStyle("-fx-background-color: pink; " +
-                                    "-fx-border-color: transparent -fx-table-cell-border-color " +
-                                    "-fx-table-cell-border-color transparent; ");
-                            break;
-                        case COMPLETED:
-                            setStyle("-fx-background-color: grey; " +
-                                    "-fx-border-color: transparent -fx-table-cell-border-color " +
-                                    "-fx-table-cell-border-color transparent; ");
-                            break;
-                        case OVERDUE:
-                            setStyle("-fx-background-color: red; " +
-                                    "-fx-border-color: transparent -fx-table-cell-border-color " +
-                                    "-fx-table-cell-border-color transparent;");
-                            break;
-                    }
-                    super.updateItem(item, false);
-                }
+//                if (!empty) {
+//                    switch (item.getStatus()) {
+//                        case CREATED:
+//                            setStyle("-fx-background-color: null; " +
+//                                    "-fx-border-color: transparent -fx-table-cell-border-color " +
+//                                    "-fx-table-cell-border-color transparent; ");
+//                            break;
+//                        case EXECUTED:
+//                            setStyle("-fx-background-color: pink; " +
+//                                    "-fx-border-color: transparent -fx-table-cell-border-color " +
+//                                    "-fx-table-cell-border-color transparent; ");
+//                            break;
+//                        case COMPLETED:
+//                            setStyle("-fx-background-color: grey; " +
+//                                    "-fx-border-color: transparent -fx-table-cell-border-color " +
+//                                    "-fx-table-cell-border-color transparent; ");
+//                            break;
+//                        case OVERDUE:
+//                            setStyle("-fx-background-color: red; " +
+//                                    "-fx-border-color: transparent -fx-table-cell-border-color " +
+//                                    "-fx-table-cell-border-color transparent;");
+//                            break;
+//                    }
+//                    super.updateItem(item, false);
+//                }
+                tableOfTasks.getSelectionModel().select(item);
+                tableOfTasks.getSelectionModel().clearSelection();
             }
 
             @Override

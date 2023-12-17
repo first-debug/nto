@@ -45,6 +45,11 @@ public class AdminDesktopController extends Controller {
     void toEditLessons() {
         App.setRoot("editLesson", new AdminEditLessonsController());
     }
+
+    @FXML
+    void toLessons() {
+        App.setRoot("allLessons", new AdminLessonsController());
+    }
 }
 
 

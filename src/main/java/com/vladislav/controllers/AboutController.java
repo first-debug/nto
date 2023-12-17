@@ -17,6 +17,11 @@ public class AboutController extends Controller implements Initializable {
     @FXML
     private Text textArea;
 
+    @FXML
+    private void close() {
+        App.closeSecondWindow();
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {

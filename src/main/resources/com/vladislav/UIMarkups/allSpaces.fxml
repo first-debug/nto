@@ -1,14 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-<VBox xmlns:fx="http://javafx.com/fxml" alignment="TOP_CENTER" prefHeight="650.0" prefWidth="1080.0" spacing="20.0"
-      xmlns="http://javafx.com/javafx">
-    <MenuBar fx:id="menuBar" prefHeight="17.0" prefWidth="552.0">
+
+<VBox alignment="TOP_CENTER" prefHeight="650.0" prefWidth="1080.0" spacing="20.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+    <MenuBar fx:id="menuBar1" prefHeight="17.0" prefWidth="552.0">
         <Menu mnemonicParsing="false" text="Файл">
+            <MenuItem fx:id="loginWindowButton" mnemonicParsing="false" onAction="#switchToLoginWindow"
+                      text="Вход для сотрудников"/>
+            <MenuItem mnemonicParsing="false" onAction="#switchToPrimary" text="Назад"/>
+            <SeparatorMenuItem mnemonicParsing="false"/>
             <MenuItem mnemonicParsing="false" onAction="#exit" text="Выход"/>
         </Menu>
         <Menu mnemonicParsing="false" text="Помощь">
@@ -17,35 +30,35 @@
     </MenuBar>
     <Label alignment="CENTER" prefHeight="45.0" prefWidth="255.0" text="Все помещения" textAlignment="CENTER">
         <font>
-            <Font size="30.0"/>
+            <Font size="30.0" />
         </font>
     </Label>
     <VBox prefHeight="467.0" prefWidth="1080.0">
         <HBox alignment="CENTER_LEFT" prefHeight="31.0" prefWidth="1080.0" spacing="20.0">
             <padding>
-                <Insets bottom="5.0" left="70.0" right="5.0" top="5.0"/>
+                <Insets bottom="5.0" left="70.0" right="5.0" top="5.0" />
             </padding>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Фильтр:">
                 <font>
-                    <Font size="16.0"/>
+                    <Font size="16.0" />
                 </font>
             </Text>
-            <ChoiceBox fx:id="filter"/>
+            <ChoiceBox fx:id="filter" />
         </HBox>
         <HBox alignment="CENTER" prefHeight="440.0" prefWidth="920.0">
             <opaqueInsets>
-                <Insets/>
+                <Insets />
             </opaqueInsets>
             <VBox.margin>
-                <Insets/>
+                <Insets />
             </VBox.margin>
             <TableView fx:id="tableOfSpaces" accessibleHelp="Нет событий" prefHeight="440.0" prefWidth="951.0">
                 <columns>
-                    <TableColumn fx:id="nameColumn" prefWidth="182.0" text="Название"/>
-                    <TableColumn fx:id="descriptionColumn" prefWidth="416.0" text="Описнание"/>
-                    <TableColumn fx:id="areaColumn" prefWidth="118.0" text="Площадь"/>
-                    <TableColumn fx:id="capacityColumn" prefWidth="97.0" text="Вместимость"/>
-                    <TableColumn fx:id="typeColumn" prefWidth="137.0" text="Тип событий"/>
+                    <TableColumn fx:id="nameColumn" prefWidth="182.0" text="Название" />
+                    <TableColumn fx:id="descriptionColumn" prefWidth="416.0" text="Описнание" />
+                    <TableColumn fx:id="areaColumn" prefWidth="118.0" text="Площадь" />
+                    <TableColumn fx:id="capacityColumn" prefWidth="97.0" text="Вместимость" />
+                    <TableColumn fx:id="typeColumn" prefWidth="137.0" text="Тип событий" />
                 </columns>
             </TableView>
         </HBox>
@@ -53,32 +66,32 @@
     <HBox alignment="CENTER" prefHeight="0.0" prefWidth="600.0">
         <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="200.0">
             <opaqueInsets>
-                <Insets/>
+                <Insets />
             </opaqueInsets>
             <HBox.margin>
-                <Insets bottom="5.0" right="90.0"/>
+                <Insets bottom="5.0" right="90.0" />
             </HBox.margin>
             <padding>
-                <Insets bottom="5.0" left="5.0"/>
+                <Insets bottom="5.0" left="5.0" />
             </padding>
             <Button mnemonicParsing="false" onAction="#switchToPrimary" text="Назад">
                 <font>
-                    <Font size="14.0"/>
+                    <Font size="14.0" />
                 </font>
                 <HBox.margin>
-                    <Insets/>
+                    <Insets />
                 </HBox.margin>
             </Button>
         </HBox>
         <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0">
             <opaqueInsets>
-                <Insets/>
+                <Insets />
             </opaqueInsets>
             <HBox.margin>
-                <Insets bottom="5.0" left="90.0"/>
+                <Insets bottom="5.0" left="90.0" />
             </HBox.margin>
             <padding>
-                <Insets bottom="5.0" right="5.0"/>
+                <Insets bottom="5.0" right="5.0" />
             </padding>
         </HBox>
     </HBox>

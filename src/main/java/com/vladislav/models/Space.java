@@ -35,7 +35,7 @@ public class Space {
             this.hasSeveralParts = new SimpleBooleanProperty(hasSeveralParts);
             this.partsArea = partsArea;
             this.firstArea = new SimpleIntegerProperty(partsArea[0]);
-            this.secondArea = new SimpleIntegerProperty(partsArea[0]);
+            this.secondArea = new SimpleIntegerProperty(partsArea[1]);
             this.bookingList = new FilteredList<>(Booking.objectsList, p -> p.getSpace().equals(this));
         } else {
             this.area = new SimpleIntegerProperty(area == null ? 0 : area);
@@ -65,7 +65,7 @@ public class Space {
                     f.setCapacity(capacity == null ? 0 : capacity);
                     f.setHasSeveralParts(hasSeveralParts != null && hasSeveralParts);
                     f.setFirstArea(area == null ? 0 : partsArea[0]);
-                    f.setFirstArea(area == null ? 0 : partsArea[1]);
+                    f.setSecondArea(area == null ? 0 : partsArea[1]);
                     f.setType(type);
                     return;
                 }

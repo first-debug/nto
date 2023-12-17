@@ -26,73 +26,52 @@ public class AdminCreateNewSpaceController extends Controller implements Initial
 
     @FXML
     private TextField titleInput;
-
     @FXML
     private Text warningTitle;
-
+    @FXML
+    private Text warningType;
     @FXML
     private ChoiceBox<String> typeInput;
-
     @FXML
     private TextArea descriptionInput;
-
     @FXML
     private Text warningDescription;
-
     @FXML
     private TextField areaInput;
-
     @FXML
     private TextField capacityInput;
-
     @FXML
     private RadioButton oneOrTwo;
-
     @FXML
     private RadioButton onlyOneEvent;
-
     @FXML
     private Text areaText1;
-
     @FXML
     private TextField firstArea;
-
     @FXML
     private Text areaText2;
-
     @FXML
     private Text areaText3;
-
     @FXML
     private TextField secondArea;
-
     @FXML
     private Text areaText4;
-
     @FXML
     private TableView<Space> spacesTable;
-
     @FXML
     private TableColumn<Space, StringProperty> spaceColumn;
-
     @FXML
     private TableColumn<Space, StringProperty> descriptionColumn;
-
     @FXML
     private TableColumn<Space, IntegerProperty> areaColumn;
-
     @FXML
     private TableColumn<Space, IntegerProperty> capacityColumn;
-
     @FXML
     private TableColumn<Space, String> typeColumn;
-
     @FXML
     private Text warningSpace;
-
     @FXML
     private Text successfulSaving;
-
     @FXML
     private HBox eventProperty;
 
@@ -187,6 +166,7 @@ public class AdminCreateNewSpaceController extends Controller implements Initial
         warningSpace.setVisible(false);
         warningDescription.setVisible(false);
         warningTitle.setVisible(false);
+        warningType.setVisible(false);
     }
 
     @FXML
@@ -197,11 +177,15 @@ public class AdminCreateNewSpaceController extends Controller implements Initial
         String areaStr = areaInput.getText();
         String capacity = capacityInput.getText();
         Boolean isOnlyOne = onlyOneEvent.isSelected();
-        String type = typeInput.getValue().equals("Для мероприятий") ? "event" : "lesson";
+        String type = typeInput.getValue();
 
         boolean flag = true;
         if (title == null || title.isEmpty()) {
             warningTitle.setVisible(true);
+            flag = false;
+        }
+        if (type == null) {
+            warningType.setVisible(true);
             flag = false;
         }
         if (description == null || description.isEmpty()) {
@@ -210,6 +194,7 @@ public class AdminCreateNewSpaceController extends Controller implements Initial
         }
         if (!flag) return;
         Integer area = areaStr.isEmpty() ? 0 : Integer.parseInt(areaStr);
+        type = type.equals("Для мероприятий") ? "event" : "lesson";
         DataBase.addSpace(title, description, area,
                 capacity.isEmpty() ? 0 : Integer.parseInt(capacity), isOnlyOne,
                 isOnlyOne ? new Integer[]{area, -1} : new Integer[]{
@@ -230,9 +215,8 @@ public class AdminCreateNewSpaceController extends Controller implements Initial
             add("Для мероприятий");
             add("Для кружков");
         }};
-        typeInput.valueProperty().addListener((observable, oldValue, newValue) -> {
-            eventProperty.setVisible(newValue.equals("Для мероприятий"));
-        });
+        typeInput.valueProperty().addListener((observable, oldValue, newValue) ->
+                eventProperty.setVisible(newValue == null || newValue.equals("Для мероприятий")));
         typeInput.setItems(FXCollections.observableList(spaceTypeList));
         spaceColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));

@@ -3,11 +3,15 @@ package com.vladislav.controllers;
 import com.vladislav.App;
 import com.vladislav.controllers.primary.PrimaryController;
 import javafx.fxml.FXML;
+import javafx.scene.control.MenuItem;
 
 import java.time.LocalDate;
 import java.util.Calendar;
 
 public class Controller {
+
+    @FXML
+    protected MenuItem loginWindowButton;
 
     @FXML
     private void exit() {

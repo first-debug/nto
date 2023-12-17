@@ -136,7 +136,7 @@
         <padding>
             <Insets left="20.0"/>
         </padding>
-        <Button mnemonicParsing="false" onAction="#save" text="Сохранить"/>
+        <Button mnemonicParsing="false" onAction="#save" text="Добавить"/>
         <Button mnemonicParsing="false" onAction="#cleanForm" text="Очистить"/>
         <Text fx:id="successfulSaving" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: green;" text="Сохранено!"
               visible="false"/>

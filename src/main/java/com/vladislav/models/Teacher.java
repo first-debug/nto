@@ -8,8 +8,8 @@ import javafx.collections.ObservableList;
 import java.util.ArrayList;
 
 public class Teacher {
-    public static ObservableList<Teacher> objectsList = FXCollections.observableArrayList();
-    public static ArrayList<Integer> objectsId = new ArrayList<>();
+    public static final ObservableList<Teacher> objectsList = FXCollections.observableArrayList();
+    public static final ArrayList<Integer> objectsId = new ArrayList<>();
     private final Integer id;
     private final StringProperty firstName;
     private final StringProperty lastName;

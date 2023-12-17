@@ -45,7 +45,7 @@ public class AdminAllTasksController extends EventTablesController implements In
     private TableColumn<Task, String> typeColumn;
 
     @FXML
-    public void switchToPrimary() throws IOException {
+    public void switchToPrimary() {
         App.setRoot("adminDesktop", new AdminDesktopController());
     }
 

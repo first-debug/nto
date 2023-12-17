@@ -43,8 +43,11 @@ public class App extends Application {
         if (newStageWindow == null) {
             Parent parent = loadFXML(fxml, controller);
             newStageWindow = new Stage();
+            newStageWindow.setMinWidth(600);
+            newStageWindow.setMinHeight(400);
             newStageController = controller;
             newStageWindow.setTitle(title);
+            assert parent != null;
             newStageWindow.setScene(new Scene(parent, width, height));
             newStageWindow.getIcons().add(appIcon);
             newStageWindow.show();
@@ -54,8 +57,11 @@ public class App extends Application {
         } else {
             Parent parent = loadFXML(fxml, controller);
             newStageWindow = new Stage();
+            newStageWindow.setMinWidth(600);
+            newStageWindow.setMinHeight(400);
             newStageController = controller;
             newStageWindow.setTitle(title);
+            assert parent != null;
             newStageWindow.setScene(new Scene(parent, width, height));
             newStageWindow.getIcons().add(appIcon);
             newStageWindow.show();
@@ -103,7 +109,9 @@ public class App extends Application {
             dataBase = new DataBase();
             dateFormat = new SimpleDateFormat("HH:mm dd.MM.yyyy");
             appIcon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("icon.png")));
-            scene = new Scene(loadFXML("primary", new PrimaryController()), 1240, 650);
+            Parent parent = loadFXML("primary", new PrimaryController());
+            assert parent != null;
+            scene = new Scene(parent, 1240, 650);
             stage.setMinWidth(960);
             stage.setMinHeight(600);
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();

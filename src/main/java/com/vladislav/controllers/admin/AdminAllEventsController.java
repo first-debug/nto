@@ -6,19 +6,19 @@ import com.vladislav.controllers.EventTablesController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class AdminAllEventsController extends EventTablesController implements Initializable {
 
     @FXML
-    public void switchToPrimary() throws IOException {
+    public void switchToPrimary() {
         App.setRoot("adminDesktop", new AdminDesktopController());
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         createEventsTable(null, "Все меороприятия");
+        loginWindowButton.setVisible(false);
     }
 }
