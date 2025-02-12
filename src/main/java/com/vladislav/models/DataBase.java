@@ -1,12 +1,16 @@
 package com.vladislav.models;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 
-import static com.vladislav.App.logger;
 
+@Repository
 public class DataBase {
     private static Connection connection = null;
+    private static final Logger logger = LoggerFactory.getLogger("application");
 
     public DataBase() {
         try {

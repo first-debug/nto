@@ -123,7 +123,7 @@ public class EditTasksTypeController extends Controller implements Initializable
 
     @FXML
     private void close() {
-        App.closeSecondWindow();
+//        App.closeSecondWindow();
     }
 
     @Override

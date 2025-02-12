@@ -2,40 +2,43 @@ package com.vladislav.controllers;
 
 import com.vladislav.App;
 import com.vladislav.controllers.primary.PrimaryController;
+import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
+import org.springframework.context.ApplicationContext;
 
 import java.time.LocalDate;
 import java.util.Calendar;
 
 public class Controller {
 
+
     @FXML
     protected MenuItem loginWindowButton;
 
     @FXML
-    private void exit() {
-        App.exit();
+    private void exit() throws Exception {
+//        app.stop();
     }
 
     @FXML
     private void closeWindow() {
-        App.closeSecondWindow();
+//        App.closeSecondWindow();
     }
 
     @FXML
     private void showDocumentation() {
-        App.newWindow("about", new AboutController(), "About", 720, 540);
+//        App.newWindow("about", new AboutController(), "About", 720, 540);
     }
 
     @FXML
     private void switchToLoginWindow() {
-        App.setRoot("loginForSE", new LoginForSEController());
+//        App.setRoot("loginForSE", new LoginForSEController());
     }
 
     @FXML
     private void switchToPrimary() {
-        App.setRoot("primary", new PrimaryController());
+//        App.setRoot("primary", new PrimaryController());
     }
 
     protected Calendar parseDate(LocalDate date, String hourString, String minuteString) {

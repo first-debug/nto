@@ -370,17 +370,17 @@ public class AdminCreateNewBookingController extends Controller implements Initi
 
     @FXML
     void switchToEditEvents() {
-        App.setRoot("createNewEvent", new AdminCreateNewEventController());
+//        App.setRoot("createNewEvent", new AdminCreateNewEventController());
     }
 
     @FXML
     void switchToEditSpaces() {
-        App.setRoot("createNewSpace", new AdminCreateNewSpaceController());
+//        App.setRoot("createNewSpace", new AdminCreateNewSpaceController());
     }
 
     @FXML
     void switchToPrimary() {
-        App.setRoot("adminDesktop", new AdminDesktopController());
+//        App.setRoot("adminDesktop", new AdminDesktopController());
     }
 
     @Override

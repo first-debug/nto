@@ -103,19 +103,19 @@ public class AdminCreateNewEventController extends Controller implements Initial
 
     @FXML
     private void switchToPrimary() {
-        App.setRoot("adminDesktop", new AdminDesktopController());
+//        App.setRoot("adminDesktop", new AdminDesktopController());
     }
 
     @FXML
     private void switchToEditEventTypes() {
         hideWarnings();
-        App.newWindow("editEventType", new EditEventTypeController(), "Редактирование видов мероприятий",
-                505, 490);
+//        App.newWindow("editEventType", new EditEventTypeController(), "Редактирование видов мероприятий",
+//                505, 490);
     }
 
     @FXML
     private void switchToEditSpaces() {
-        App.setRoot("createNewSpace", new AdminCreateNewSpaceController());
+//        App.setRoot("createNewSpace", new AdminCreateNewSpaceController());
     }
 
     @FXML

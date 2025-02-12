@@ -4,10 +4,9 @@ import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
-import static com.vladislav.App.dateFormat;
 
 public class Task {
     public final static ObservableList<Task> objectsList = FXCollections.observableArrayList();
@@ -26,7 +25,7 @@ public class Task {
 
     private Task(Integer id, Long timeOfReg, Event event,
                  TaskType type, Long deadline, Status status) {
-
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm dd.MM.yyyy");
         this.id = id;
         this.timeOfReg = timeOfReg;
         this.timeOfRegString = new SimpleStringProperty(dateFormat.format(new Date(this.timeOfReg)));

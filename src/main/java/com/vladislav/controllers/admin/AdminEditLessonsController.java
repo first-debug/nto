@@ -464,17 +464,17 @@ public class AdminEditLessonsController extends Controller implements Initializa
 
     @FXML
     void switchToEditLessonTypes() {
-        App.newWindow("editType", new EditLessonTypeController(), "Новоый вид кружков", 505, 490);
+//        App.newWindow("editType", new EditLessonTypeController(), "Новоый вид кружков", 505, 490);
     }
 
     @FXML
     void switchToEditSpaces() {
-        App.setRoot("createNewSpace", new AdminCreateNewSpaceController());
+//        App.setRoot("createNewSpace", new AdminCreateNewSpaceController());
     }
 
     @FXML
     void switchToPrimary() {
-        App.setRoot("adminDesktop", new AdminDesktopController());
+//        App.setRoot("adminDesktop", new AdminDesktopController());
     }
 
     @Override

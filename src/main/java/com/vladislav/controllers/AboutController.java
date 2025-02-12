@@ -19,7 +19,7 @@ public class AboutController extends Controller implements Initializable {
 
     @FXML
     private void close() {
-        App.closeSecondWindow();
+//        App.closeSecondWindow();
     }
 
     @Override
@@ -31,7 +31,7 @@ public class AboutController extends Controller implements Initializable {
             text.lines().reduce((x, y) -> x + '\n' + y).ifPresent(t -> textArea.setText(t));
             text.close();
         } catch (IOException ex) {
-            App.logger.error(ex.getMessage());
+//            App.logger.error(ex.getMessage());
         }
 
     }

@@ -38,8 +38,8 @@ public class LoginForSEController extends Controller {
 
     @FXML
     void login() {
-        if (loginInput.getText().equalsIgnoreCase("e")) App.setRoot("desktopForSE", new SEDesktopController());
-        if (loginInput.getText().equalsIgnoreCase("a")) App.setRoot("adminDesktop", new AdminDesktopController());
+//        if (loginInput.getText().equalsIgnoreCase("e")) App.setRoot("desktopForSE", new SEDesktopController());
+//        if (loginInput.getText().equalsIgnoreCase("a")) App.setRoot("adminDesktop", new AdminDesktopController());
         boolean flag = true;
 
         String login = loginInput.getText();
@@ -81,7 +81,7 @@ public class LoginForSEController extends Controller {
             return;
         }
         String role = dbAnswer[2];
-        if (role.equals("admin")) App.setRoot("adminDesktop", new AdminDesktopController());
-        else if (role.equals("service")) App.setRoot("desktopForSE", new SEDesktopController());
+//        if (role.equals("admin")) App.setRoot("adminDesktop", new AdminDesktopController());
+//        else if (role.equals("service")) App.setRoot("desktopForSE", new SEDesktopController());
     }
 }

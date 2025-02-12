@@ -132,7 +132,7 @@ public class EditLessonTypeController extends Controller implements Initializabl
 
     @FXML
     private void close() {
-        App.closeSecondWindow();
+//        App.closeSecondWindow();
     }
 
     @Override

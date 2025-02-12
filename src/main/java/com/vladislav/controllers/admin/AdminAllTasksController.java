@@ -46,7 +46,7 @@ public class AdminAllTasksController extends EventTablesController implements In
 
     @FXML
     public void switchToPrimary() {
-        App.setRoot("adminDesktop", new AdminDesktopController());
+//        App.setRoot("adminDesktop", new AdminDesktopController());
     }
 
     @Override

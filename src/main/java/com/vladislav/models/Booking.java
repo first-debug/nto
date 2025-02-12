@@ -4,10 +4,9 @@ import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
-import static com.vladislav.App.dateFormat;
 
 public class Booking {
     public final static ObservableList<Booking> objectsList = FXCollections.observableArrayList();
@@ -27,6 +26,7 @@ public class Booking {
 
     private Booking(Integer id, Long timeOfReg, Event event, Long timeOfStart,
                     Long timeOfEnd, Space space, Integer halfOfSpace, String comment) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm dd.MM.yyyy");
         this.id = id;
         this.timeOfReg = timeOfReg;
         this.timeOfRegString = new SimpleStringProperty(dateFormat.format(new Date(timeOfReg)));

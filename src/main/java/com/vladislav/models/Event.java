@@ -8,11 +8,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static com.vladislav.App.dateFormat;
-
 public class Event {
     public final static ObservableList<Event> objectsList = FXCollections.observableArrayList();
     public final static ArrayList<Integer> objectsId = new ArrayList<>();
+
+//    private final SimpleDateFormat dateFormat = ;
 
     private final Integer id;
     private final StringProperty title;
@@ -32,6 +32,7 @@ public class Event {
         this.timeToStart = new SimpleLongProperty(timeToStart);
         this.eventType = new SimpleObjectProperty<>(eventType);
         this.isEntertainment = eventType.getIsEntertainment();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm dd.MM.yyyy");
         this.stringTime = new SimpleStringProperty(dateFormat.format(new Date(timeToStart)));
         objectsList.add(this);
         objectsId.add(id);

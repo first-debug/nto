@@ -1,7 +1,11 @@
 package com.vladislav;
 
+import javafx.application.Application;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
 public class MainLauncher {
     public static void main(String[] args) {
-        App.main(args);
+        Application.launch(App.class, args);
     }
 }

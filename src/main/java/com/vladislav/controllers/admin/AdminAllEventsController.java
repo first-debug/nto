@@ -13,7 +13,7 @@ public class AdminAllEventsController extends EventTablesController implements I
 
     @FXML
     public void switchToPrimary() {
-        App.setRoot("adminDesktop", new AdminDesktopController());
+//        App.setRoot("adminDesktop", new AdminDesktopController());
     }
 
     @Override

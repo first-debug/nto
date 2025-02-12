@@ -51,7 +51,7 @@ public class AdminLessonsController extends Controller implements Initializable 
 
     @FXML
     public void switchToPrimary() {
-        App.setRoot("adminDesktop", new AdminDesktopController());
+//        App.setRoot("adminDesktop", new AdminDesktopController());
     }
 
     @Override

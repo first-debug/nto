@@ -8,26 +8,26 @@ public class PrimaryController extends Controller {
 
     @FXML
     private void switchToEventsList() {
-        App.setRoot("allEvents", new AllEventsController());
+//        App.setRoot("allEvents", new AllEventsController());
     }
 
     @FXML
     private void switchToEntertainments() {
-        App.setRoot("allEvents", new EntertainmentEventsController());
+//        App.setRoot("allEvents", new EntertainmentEventsController());
     }
 
     @FXML
     private void switchToEducation() {
-        App.setRoot("allEvents", new EducationalEventsController());
+//        App.setRoot("allEvents", new EducationalEventsController());
     }
 
     @FXML
     private void switchToTeaching() {
-        App.setRoot("allEvents", new TeachingEventsController());
+//        App.setRoot("allEvents", new TeachingEventsController());
     }
 
     @FXML
     private void switchToLessonsList() {
-        App.setRoot("allLessons", new LessonsController());
+//        App.setRoot("allLessons", new LessonsController());
     }
 }

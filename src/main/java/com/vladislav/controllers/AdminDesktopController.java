@@ -8,47 +8,47 @@ public class AdminDesktopController extends Controller {
 
     @FXML
     void toEvents() {
-        App.setRoot("allEvents", new AdminAllEventsController());
+//        App.setRoot("allEvents", new AdminAllEventsController());
     }
 
     @FXML
     void toAddEvents() {
-        App.setRoot("createNewEvent", new AdminCreateNewEventController());
+//        App.setRoot("createNewEvent", new AdminCreateNewEventController());
     }
 
     @FXML
     void toTasks() {
-        App.setRoot("allTasks", new AdminAllTasksController());
+//        App.setRoot("allTasks", new AdminAllTasksController());
     }
 
     @FXML
     void toAddTask() {
-        App.setRoot("createNewTask", new AdminCreateNewTaskController());
+//        App.setRoot("createNewTask", new AdminCreateNewTaskController());
     }
 
     @FXML
     void toSpaces() {
-        App.setRoot("allSpaces", new AdminAllSpacesController());
+//        App.setRoot("allSpaces", new AdminAllSpacesController());
     }
 
     @FXML
     void toAddSpace() {
-        App.setRoot("createNewSpace", new AdminCreateNewSpaceController());
+//        App.setRoot("createNewSpace", new AdminCreateNewSpaceController());
     }
 
     @FXML
     void toAddBooking() {
-        App.setRoot("createNewBooking", new AdminCreateNewBookingController());
+//        App.setRoot("createNewBooking", new AdminCreateNewBookingController());
     }
 
     @FXML
     void toEditLessons() {
-        App.setRoot("editLesson", new AdminEditLessonsController());
+//        App.setRoot("editLesson", new AdminEditLessonsController());
     }
 
     @FXML
     void toLessons() {
-        App.setRoot("allLessons", new AdminLessonsController());
+//        App.setRoot("allLessons", new AdminLessonsController());
     }
 }
 

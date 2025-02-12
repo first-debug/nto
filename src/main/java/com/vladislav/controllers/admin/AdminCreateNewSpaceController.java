@@ -206,7 +206,7 @@ public class AdminCreateNewSpaceController extends Controller implements Initial
 
     @FXML
     void switchToPrimary() {
-        App.setRoot("adminDesktop", new AdminDesktopController());
+//        App.setRoot("adminDesktop", new AdminDesktopController());
     }
 
     @Override

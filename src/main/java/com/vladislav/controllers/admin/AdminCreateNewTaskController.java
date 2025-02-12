@@ -214,18 +214,18 @@ public class AdminCreateNewTaskController extends Controller implements Initiali
 
     @FXML
     private void switchToPrimary() {
-        App.setRoot("adminDesktop", new AdminDesktopController());
+//        App.setRoot("adminDesktop", new AdminDesktopController());
     }
 
     @FXML
     void switchToEditEvents() {
-        App.setRoot("createNewEvent", new AdminCreateNewEventController());
+//        App.setRoot("createNewEvent", new AdminCreateNewEventController());
     }
 
     @FXML
     void switchToEditTypes() {
-        App.newWindow("editType", new EditTasksTypeController(), "Редактирование видов заявок",
-                505, 490);
+//        App.newWindow("editType", new EditTasksTypeController(), "Редактирование видов заявок",
+//                505, 490);
     }
 
     @Override

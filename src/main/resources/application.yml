@@ -1,0 +1,6 @@
+ui:
+  title: "Мероприятия Культурного центра"
+  icon: "classpath:com/vladislav/icon.png"
+spring:
+  date:
+    format: "HH:mm dd.MM.yyyy"
