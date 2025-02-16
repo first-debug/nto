@@ -1,6 +1,7 @@
 ui:
   title: "Мероприятия Культурного центра"
-  icon: "classpath:com/vladislav/icon.png"
+  icon: "classpath:com/vladislav/application/icon.png"
 spring:
-  date:
-    format: "HH:mm dd.MM.yyyy"
+  datasource:
+    driver-class-name: org.sqlite.JDBC
+    url: "jdbc:sqlite:src/main/resources/com/vladislav/infrastructure/db.db"
