@@ -7,6 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.sql.*;
 
 
@@ -62,11 +65,11 @@ public class DataBase {
             Boolean hasSeveralParts = answer.getBoolean("hasSeveralParts");
             int firstPartArea = answer.getInt("firstPartArea");
             int secondPartArea = answer.getInt("secondPartArea");
+            String seats = answer.getString("seats");
             return Space.getInstance(spaceId, spaceName, spaceDescription, area, capacity, hasSeveralParts,
-                    new Integer[]{firstPartArea, secondPartArea}, type);
+                    new Integer[]{firstPartArea, secondPartArea}, type, seats);
         } catch (SQLException ex) {
-            logger.error(ex.getMessage());
-            return null;
+            throw new RuntimeException(ex);
         }
     }
 
@@ -173,11 +176,12 @@ public class DataBase {
     }
 
     public static void addSpace(String space, String description, Integer area,
-                                Integer capacity, Boolean hasSeveralParts, Integer[] partsArea, String type) {
+                                Integer capacity, Boolean hasSeveralParts, Integer[] partsArea,
+                                String type, Integer[] seats) {
         try {
             PreparedStatement pStatement = connection.prepareStatement(
                     "INSERT OR REPLACE INTO spaces(space, description, area, capacity, hasSeveralParts," +
-                            " firstPartArea, secondPartArea, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+                            " firstPartArea, secondPartArea, type, seats) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
             );
             pStatement.setString(1, space);
             pStatement.setString(2, description);
@@ -187,9 +191,15 @@ public class DataBase {
             pStatement.setInt(6, partsArea[0]);
             pStatement.setInt(7, partsArea[1]);
             pStatement.setString(8, type);
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            DataOutputStream dataOutput = new DataOutputStream(outputStream);
+            for (int seat : seats) {
+                dataOutput.writeInt(seat);
+            }
+            pStatement.setBytes(9, outputStream.toByteArray());
             pStatement.execute();
             loadSpacesList(null);
-        } catch (SQLException ex) {
+        } catch (SQLException | IOException ex) {
             logger.error(ex.getMessage());
         }
     }
@@ -435,20 +445,15 @@ public class DataBase {
     }
 
     public static String[] loginEmployee(String login, String password) {
-        String[] result = new String[3];
+        String[] result = new String[2];
         try {
             PreparedStatement pStatement = connection.prepareStatement(
-                    "SELECT login FROM employees WHERE login=?");
+                    "SELECT login, role FROM employees WHERE login=? AND password=?");
             pStatement.setString(1, login);
+            pStatement.setString(2, password);
             ResultSet answerLogin = pStatement.executeQuery();
             result[0] = String.valueOf(answerLogin.next());
-
-            pStatement = connection.prepareStatement(
-                    "SELECT password, role FROM employees WHERE password=?");
-            pStatement.setString(1, password);
-            ResultSet answer = pStatement.executeQuery();
-            result[1] = String.valueOf(answer.next());
-            result[2] = answer.getString("role");
+            result[1] = String.valueOf(answerLogin.next());
         } catch (SQLException ex) {
             logger.error(ex.getMessage());
         }

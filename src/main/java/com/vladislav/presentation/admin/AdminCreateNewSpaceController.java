@@ -11,16 +11,23 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class AdminCreateNewSpaceController extends Controller implements Initializable {
@@ -75,6 +82,13 @@ public class AdminCreateNewSpaceController extends Controller implements Initial
     private Text successfulSaving;
     @FXML
     private HBox eventProperty;
+    @FXML
+    private Canvas seatsPlane;
+    @FXML
+    private Tab spacesTab;
+
+    private int seatsPlaneOffsetWidth;
+    private int seatsPlaneOffsetHeight;
 
     public AdminCreateNewSpaceController(@Autowired ApplicationService applicationService) {
         super(applicationService);
@@ -125,7 +139,6 @@ public class AdminCreateNewSpaceController extends Controller implements Initial
         hideWarnings();
         TableView.TableViewSelectionModel<Space> selectionModel = spacesTable.getSelectionModel();
         ObservableList<Space> spaceList = selectionModel.getSelectedItems();
-
         if (spaceList == null || spaceList.isEmpty()) {
             warningSpace.setVisible(true);
             return;
@@ -205,7 +218,7 @@ public class AdminCreateNewSpaceController extends Controller implements Initial
                 isOnlyOne ? new Integer[]{area, -1} : new Integer[]{
                         firstArea.getText().isEmpty() ? area : Integer.parseInt(firstArea.getText()),
                         secondArea.getText().isEmpty() ? 0 : Integer.parseInt(secondArea.getText())},
-                type);
+                type, new Integer[]{});
         successfulSaving.setVisible(true);
     }
 
@@ -214,15 +227,74 @@ public class AdminCreateNewSpaceController extends Controller implements Initial
         applicationService.changeRootStage("adminDesktop", new AdminDesktopController(applicationService));
     }
 
+    private Task<Void> drawSeats(Seat[][] seats) {
+        return new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                int size = Seat.getSizeOfRec();
+                int offsetHeight, offsetWidth;
+                offsetWidth = ((int)seatsPlane.getWidth() - (size * seats[0].length)) / 2;
+                offsetHeight = ((int)seatsPlane.getHeight() - (size * seats.length)) / 2;
+                seatsPlaneOffsetWidth = offsetWidth;
+                seatsPlaneOffsetHeight = offsetHeight;
+
+                GraphicsContext gc = seatsPlane.getGraphicsContext2D();
+                gc.setFill(Color.rgb(192, 192, 192));
+                gc.fillRect(0, 0, seatsPlane.getWidth(), seatsPlane.getHeight());
+                gc.setStroke(Color.BLACK);
+                gc.strokeRect(offsetWidth,
+                        offsetHeight,
+                        seatsPlane.getWidth() - offsetWidth * 2,
+                        seatsPlane.getHeight() - offsetHeight * 2
+                );
+                for (int i = 0; i < seats.length; i++) {
+                    for (int j = 0; j < seats[i].length; j++) {
+                        int status = seats[i][j].getStatus();
+                        switch (status) {
+                            case 1:
+                                gc.setFill(Color.BLUE);
+                                break;
+                            case 2:
+                                gc.setFill(Color.RED);
+                                break;
+                            default:
+                                gc.setFill(Color.rgb(192, 192, 192));
+                                break;
+                        }
+                        gc.fillRect(j * size + offsetWidth, i * size + offsetHeight, size, size);
+                        if (status == 1 || status == 2)
+                            gc.strokeRect(j * size + offsetWidth, i * size + offsetHeight, size, size);
+                    }
+                }
+                return null;
+            }
+        };
+    }
+
+    @FXML
+    private void seatsPlaneClicked(MouseEvent event) {
+        Logger logger = LoggerFactory.getLogger(AdminCreateNewSpaceController.class);
+        double x = event.getX(), y = event.getY();
+        int seatX, seatY;
+        if ((x - seatsPlaneOffsetWidth) / Seat.getSizeOfRec() < 0.0D
+                || x > seatsPlane.getWidth() - 2 * seatsPlaneOffsetWidth)
+            seatX = -1;
+        else
+            seatX = (int)(x - seatsPlaneOffsetWidth) / Seat.getSizeOfRec();
+        if ((y - seatsPlaneOffsetHeight) / Seat.getSizeOfRec() < 0.0D
+                || y > seatsPlane.getHeight() - 2 * seatsPlaneOffsetHeight)
+            seatY = -1;
+        else
+            seatY = (int)(y - seatsPlaneOffsetHeight) / Seat.getSizeOfRec();
+
+        logger.info("{}, {}", seatX, seatY);
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        ArrayList<String> spaceTypeList = new ArrayList<>() {{
-            add("Для мероприятий");
-            add("Для кружков");
-        }};
         typeInput.valueProperty().addListener((observable, oldValue, newValue) ->
                 eventProperty.setVisible(newValue == null || newValue.equals("Для мероприятий")));
-        typeInput.setItems(FXCollections.observableList(spaceTypeList));
+        typeInput.setItems(FXCollections.observableList(Arrays.asList("Для мероприятий", "Для кружков")));
         spaceColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         areaColumn.setCellValueFactory(new PropertyValueFactory<>("area"));
@@ -237,5 +309,52 @@ public class AdminCreateNewSpaceController extends Controller implements Initial
         DataBase.loadSpacesList(null);
         FilteredList<Space> filteredSpacesList = new FilteredList<>(Space.objectsList, p -> true);
         spacesTable.setItems(filteredSpacesList);
+
+        new Thread(drawSeats(Seat.getSeats(filteredSpacesList.get(0).getSeats(),
+                seatsPlane.getHeight(),
+                seatsPlane.getWidth()))).start();
+    }
+}
+
+class Seat {
+    private static int sizeOfRec;
+    // 0 - места нет, 1 - место есть, 2 - место занято, 3 - переход на следующий ряд
+    private int status;
+
+    public Seat(int status) {
+        this.status = status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public static int getSizeOfRec() {
+        return sizeOfRec;
+    }
+
+    public static Seat[][] getSeats(int[][] input, double height, double width) {
+        Seat[][] seats = new Seat[input.length][input[0].length];
+        if (input.length < input[0].length) {
+            sizeOfRec = (int)width / (input[0].length);
+        } else {
+            sizeOfRec = (int)height / (input.length);
+        }
+        for (int i = 0; i < seats.length; i++) {
+            for (int j = 0; j < seats[i].length; j++) {
+                seats[i][j] = new Seat(input[i][j]);
+            }
+        }
+        return seats;
+    }
+
+    @Override
+    public String toString() {
+        return "Seat{" + status +
+                '}';
     }
 }

@@ -1,7 +1,9 @@
 package com.vladislav.application;
 
+import atlantafx.base.theme.CupertinoLight;
 import com.vladislav.application.events.StartApplicationEvent;
 import com.vladislav.infrastructure.DataBase;
+import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +35,10 @@ public class JFXApplication extends javafx.application.Application {
 
     @Override
     public void start(@Autowired Stage primaryWindowStage) {
+        Application.setUserAgentStylesheet(new CupertinoLight().getUserAgentStylesheet());
         context.getBeanFactory().registerSingleton("primaryWindowStage", primaryWindowStage);
-        Platform.runLater(() -> {
-            context.getBeanFactory().registerSingleton("secondWindowStage", new Stage());
-        });
+        Platform.runLater(() ->
+                context.getBeanFactory().registerSingleton("secondWindowStage", new Stage()));
         context.publishEvent(new StartApplicationEvent(primaryWindowStage));
     }
 

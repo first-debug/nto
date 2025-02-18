@@ -4,6 +4,8 @@ import com.vladislav.application.ApplicationService;
 import com.vladislav.infrastructure.DataBase;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -45,7 +47,7 @@ public class LoginForSEController extends Controller {
     void login() {
         if (loginInput.getText().equalsIgnoreCase("e"))
             applicationService.changeRootStage("desktopForSE", new SEDesktopController(applicationService));
-        if (loginInput.getText().equalsIgnoreCase("a"))
+        if (loginInput.getText().equalsIgnoreCase("a") || loginInput.getText().equalsIgnoreCase(""))
             applicationService.changeRootStage("adminDesktop", new AdminDesktopController(applicationService));
         boolean flag = true;
 
@@ -75,22 +77,42 @@ public class LoginForSEController extends Controller {
         if (!flag) return;
 
         String[] dbAnswer = DataBase.loginEmployee(login, password);
-        boolean loginIsCorrect = Boolean.parseBoolean(dbAnswer[0]);
-        boolean passwordIsCorrect = Boolean.parseBoolean(dbAnswer[1]);
-        if (!loginIsCorrect) {
-            warningLogin.setText("Логин неверный!");
-            warningLogin.setVisible(true);
-            return;
-        }
-        if (!passwordIsCorrect) {
-            warningPassword.setText("Пароль неверный!");
+        boolean accountIsCorrect = Boolean.parseBoolean(dbAnswer[0]);
+        if (!accountIsCorrect) {
+            warningPassword.setText("Неверный логин или пароль!");
             warningPassword.setVisible(true);
             return;
         }
-        String role = dbAnswer[2];
+        String role = dbAnswer[1];
         if (role.equals("admin"))
             applicationService.changeRootStage("adminDesktop", new AdminDesktopController(applicationService));
         else if (role.equals("service"))
             applicationService.changeRootStage("desktopForSE", new SEDesktopController(applicationService));
+    }
+
+    @FXML
+    void loginKeyReleased(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            if (loginInput.getText() == null || loginInput.getText().isEmpty()) {
+                warningLogin.setVisible(true);
+                return;
+            }
+            hideWarnings();
+            passwordInput.requestFocus();
+        }
+    }
+
+    @FXML
+    void passwordKeyReleased(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            if (passwordInput.getText() == null || passwordInput.getText().isEmpty()) {
+                warningPassword.setText("Нужно ввести пароль!");
+                warningPassword.setVisible(true);
+                warningLogin.setVisible(true);
+                return;
+            }
+            hideWarnings();
+            login();
+        }
     }
 }

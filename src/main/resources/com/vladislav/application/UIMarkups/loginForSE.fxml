@@ -1,27 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.SeparatorMenuItem?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<VBox alignment="TOP_CENTER" maxHeight="1080.0" maxWidth="1920.0" minHeight="600.0" minWidth="960.0" prefHeight="650.0" prefWidth="980.0" spacing="50.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+<VBox alignment="TOP_CENTER" maxHeight="1080.0" maxWidth="1920.0" minHeight="600.0" minWidth="960.0" prefHeight="650.0" prefWidth="980.0" spacing="50.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
     <MenuBar fx:id="menuBar1" prefHeight="17.0" prefWidth="552.0">
         <Menu mnemonicParsing="false" text="Файл">
-            <MenuItem mnemonicParsing="false" onAction="#switchToPrimary" text="Назад"/>
-            <SeparatorMenuItem mnemonicParsing="false"/>
-            <MenuItem mnemonicParsing="false" onAction="#exit" text="Выход"/>
+            <MenuItem mnemonicParsing="false" onAction="#switchToPrimary" text="Назад" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" onAction="#exit" text="Выход" />
         </Menu>
         <Menu mnemonicParsing="false" text="Помощь">
-            <MenuItem mnemonicParsing="false" onAction="#showDocumentation" text="О приложении"/>
+            <MenuItem mnemonicParsing="false" onAction="#showDocumentation" text="О приложении" />
         </Menu>
     </MenuBar>
     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Вход">
@@ -49,7 +42,7 @@
                 </font>
             </Text>
             <VBox prefHeight="58.0" prefWidth="577.0" spacing="10.0">
-                <TextField fx:id="loginInput" onMouseClicked="#hideWarnings" prefHeight="25.0" prefWidth="437.0" promptText="Логин">
+                <TextField fx:id="loginInput" onKeyReleased="#loginKeyReleased" onMouseClicked="#hideWarnings" prefHeight="25.0" prefWidth="437.0" promptText="Логин">
                     <cursor>
                         <Cursor fx:constant="TEXT" />
                     </cursor>
@@ -60,7 +53,7 @@
                         <Font size="15.0" />
                     </font>
                 </TextField>
-                <Text fx:id="warningLogin" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="1234567890" visible="false" wrappingWidth="427.0">
+                <Text fx:id="warningLogin" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Нужно ввести логин!" visible="false" wrappingWidth="427.0">
                     <VBox.margin>
                         <Insets left="10.0" />
                     </VBox.margin>
@@ -75,7 +68,7 @@
                 </font>
             </Text>
             <VBox prefHeight="55.0" prefWidth="577.0" spacing="10.0">
-                <TextField fx:id="passwordInput" accessibleRole="PASSWORD_FIELD" onMouseClicked="#hideWarnings" prefHeight="25.0" prefWidth="608.0" promptText=" Пароль">
+                <TextField fx:id="passwordInput" accessibleRole="PASSWORD_FIELD" onKeyReleased="#passwordKeyReleased" onMouseClicked="#hideWarnings" prefHeight="25.0" prefWidth="608.0" promptText=" Пароль">
                     <cursor>
                         <Cursor fx:constant="TEXT" />
                     </cursor>
@@ -86,7 +79,7 @@
                         <Font size="15.0" />
                     </font>
                 </TextField>
-                <Text id="warning-text" fx:id="warningPassword" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="1234567890" visible="false" wrappingWidth="427.0">
+                <Text fx:id="warningPassword" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Нужно ввести пароль!" visible="false" wrappingWidth="427.0">
                     <VBox.margin>
                         <Insets left="10.0" />
                     </VBox.margin>

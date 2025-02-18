@@ -23,9 +23,10 @@ public class Space {
     private final IntegerProperty secondArea;
     private final FilteredList<Booking> bookingList;
     private final StringProperty type;
+    private final int[][] seats;
 
     private Space(Integer id, String name, String description, Integer area,
-                  Integer capacity, Boolean hasSeveralParts, Integer[] partsArea, String type) {
+                  Integer capacity, Boolean hasSeveralParts, Integer[] partsArea, String type, String seats) {
         this.id = new SimpleIntegerProperty(id);
         this.name = new SimpleStringProperty(name);
         this.description = new SimpleStringProperty(description);
@@ -37,6 +38,7 @@ public class Space {
             this.firstArea = new SimpleIntegerProperty(partsArea[0]);
             this.secondArea = new SimpleIntegerProperty(partsArea[1]);
             this.bookingList = new FilteredList<>(Booking.objectsList, p -> p.getSpace().equals(this));
+            this.seats = parseSeats(seats);
         } else {
             this.area = new SimpleIntegerProperty(area == null ? 0 : area);
             this.capacity = new SimpleIntegerProperty(capacity == null ? 0 : capacity);
@@ -45,17 +47,40 @@ public class Space {
             this.firstArea = new SimpleIntegerProperty(0);
             this.secondArea = new SimpleIntegerProperty(0);
             this.bookingList = new FilteredList<>(Booking.objectsList, p -> p.getSpace().equals(this));
+            this.seats = null;
         }
         this.type = new SimpleStringProperty(type);
         objectsList.add(this);
         objectsId.add(id);
     }
 
+    private static int[][] parseSeats(String seats) {
+        String trimmedString = seats.substring(1, seats.length() - 1);
+        String[] rows = trimmedString.split(", 3");
+        String[] nums = trimmedString.split(", ");
+        int maxRowLen = 0;
+        for (String row : rows)
+            if (row.length() / 3 > maxRowLen)
+                maxRowLen = row.length() / 3;
+        int[][] result = new int[rows.length][maxRowLen];
+        for (int i = 0, j = 0, k = 0; i < nums.length; i++) {
+            int num = Integer.parseInt(nums[i]);
+            if (num == 3) {
+                j++;
+                k = 0;
+            } else {
+                result[j][k++] = num;
+            }
+        }
+        return result;
+    }
+
     public static Space getInstance(Integer id, String name, String description, Integer area,
-                                    Integer capacity, Boolean hasSeveralParts, Integer[] partsArea, String type) {
+                                    Integer capacity, Boolean hasSeveralParts, Integer[] partsArea,
+                                    String type, String seats) {
         int objectIndex = objectsId.indexOf(id);
         if (objectIndex == -1) {
-            return new Space(id, name, description, area, capacity, hasSeveralParts, partsArea, type);
+            return new Space(id, name, description, area, capacity, hasSeveralParts, partsArea, type, seats);
         } else {
             objectsList.forEach(f -> {
                 if (f.getId().equals(id)) {
@@ -67,7 +92,6 @@ public class Space {
                     f.setFirstArea(area == null ? 0 : partsArea[0]);
                     f.setSecondArea(area == null ? 0 : partsArea[1]);
                     f.setType(type);
-                    return;
                 }
             });
             return objectsList.get(objectIndex);
@@ -194,6 +218,32 @@ public class Space {
     public StringProperty typeProperty() {
         return type;
     }
+
+    public int[][] getSeats() {
+        return seats;
+    }
+
+//    public static int[][] parseSeats(String seats) {
+//        String trimmedString = seats.substring(1, seats.length() - 1);
+//        String[] rows = trimmedString.split(", 3");
+//        String[] nums = trimmedString.split(", ");
+//        int maxRowLen = 0;
+//        for (String row : rows)
+//            if ((row.length() / 3) > maxRowLen){
+//                maxRowLen = row.length() / 3;
+//            }
+//        Seat[][] result = new Seat[rows.length][maxRowLen];
+//        for (int i = 0, j = 0, k = 0; i < nums.length; i++) {
+//            int num = Integer.parseInt(nums[i]);
+//            if (num == 3) {
+//                j++;
+//                k = 0;
+//            } else {
+//                result[j][k++] = new Seat(num);
+//            }
+//        }
+//        return result;
+//    }
 
     @Override
     public String toString() {
