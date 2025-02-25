@@ -38,7 +38,6 @@ public class AboutController extends Controller implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             URL doc = JFXApplication.class.getResource("documentation.txt");
-            assert doc != null;
             BufferedReader text = new BufferedReader(new InputStreamReader((InputStream) doc.getContent()));
             text.lines().reduce((x, y) -> x + '\n' + y).ifPresent(t -> textArea.setText(t));
             text.close();

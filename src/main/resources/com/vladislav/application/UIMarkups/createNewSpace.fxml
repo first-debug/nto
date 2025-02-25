@@ -178,7 +178,7 @@
             </VBox>
         </VBox>
       <TabPane prefHeight="452.0" prefWidth="708.0" tabClosingPolicy="UNAVAILABLE">
-          <Tab text="Список помещений">
+          <Tab onSelectionChanged="#hideWarnings" text="Список помещений">
               <VBox alignment="TOP_RIGHT" prefHeight="452.0" prefWidth="708.0">
                   <padding>
                       <Insets bottom="5.0" />
@@ -210,13 +210,13 @@
                   </HBox>
               </VBox>
          </Tab>
-          <Tab text="Места">
+          <Tab fx:id="seatsTab" onSelectionChanged="#hideWarnings" text="Места">
             <content>
                <Pane prefHeight="200.0" prefWidth="200.0">
                   <children>
                      <BorderPane prefHeight="424.0" prefWidth="709.0">
                         <center>
-                           <Canvas fx:id="seatsPlane" height="379.0" onMouseClicked="#seatsPlaneClicked" width="482.0" BorderPane.alignment="CENTER" />
+                           <Canvas fx:id="seatsPlane" height="412.0" onMouseDragged="#seatsPlaneMouseMoved" onMouseMoved="#seatsPlaneMouseMoved" onMousePressed="#seatsPlaneMousePressed" onMouseReleased="#seatsPlaneMouseReleased" width="592.0" BorderPane.alignment="CENTER" />
                         </center>
                      </BorderPane>
                   </children>

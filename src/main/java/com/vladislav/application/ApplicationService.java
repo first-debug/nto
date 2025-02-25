@@ -34,7 +34,7 @@ public class ApplicationService {
         try {
             applicationContext.publishEvent(new CreateSecondWindowEvent(fxml, controller, title, width, height));
         } catch (Exception e) {
-            logger.error(e.toString());
+            throw new RuntimeException(e);
         }
     }
 
@@ -61,14 +61,5 @@ public class ApplicationService {
             logger.error(ex.getMessage());
             return null;
         }
-    }
-
-    public Parent loadFXML(Controller controller) {
-        String fxmlName = controller
-                    .getClass()
-                    .getSimpleName()
-                    .replace("Controller", "")
-                    .toLowerCase();
-        return loadFXML(fxmlName, controller);
     }
 }

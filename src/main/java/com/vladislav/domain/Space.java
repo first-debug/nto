@@ -55,17 +55,16 @@ public class Space {
     }
 
     private static int[][] parseSeats(String seats) {
-        String trimmedString = seats.substring(1, seats.length() - 1);
-        String[] rows = trimmedString.split(", 3");
-        String[] nums = trimmedString.split(", ");
+        String[] rows = seats.split(" ");
+        char[] nums = seats.toCharArray();
         int maxRowLen = 0;
         for (String row : rows)
-            if (row.length() / 3 > maxRowLen)
-                maxRowLen = row.length() / 3;
+            if (row.length()> maxRowLen)
+                maxRowLen = row.length();
         int[][] result = new int[rows.length][maxRowLen];
         for (int i = 0, j = 0, k = 0; i < nums.length; i++) {
-            int num = Integer.parseInt(nums[i]);
-            if (num == 3) {
+            int num = (nums[i] - 48);
+            if (num == -16) {
                 j++;
                 k = 0;
             } else {

@@ -63,12 +63,12 @@ public class CreateSecondWindowListener implements ApplicationListener<CreateSec
                 try {
                     applicationService.closeSecondWindow();
                 } catch (Exception e) {
-                    throw new RuntimeException(e);
+                    logger.error(e.getMessage(), e);
                 }
             });
             stage.show();
         } catch (Exception ex) {
-            logger.error(ex.getMessage());
+            throw new RuntimeException(ex);
         }
     }
 }

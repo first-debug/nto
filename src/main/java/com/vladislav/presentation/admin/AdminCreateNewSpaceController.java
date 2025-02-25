@@ -32,6 +32,8 @@ import java.util.ResourceBundle;
 
 public class AdminCreateNewSpaceController extends Controller implements Initializable {
 
+    private final Logger logger = LoggerFactory.getLogger(AdminCreateNewSpaceController.class);
+
     @FXML
     private TextField titleInput;
     @FXML
@@ -86,9 +88,18 @@ public class AdminCreateNewSpaceController extends Controller implements Initial
     private Canvas seatsPlane;
     @FXML
     private Tab spacesTab;
+    @FXML
+    private Tab seatsTab;
 
+    private GraphicsContext gc;
     private int seatsPlaneOffsetWidth;
     private int seatsPlaneOffsetHeight;
+    private int[][] primarySeatsArray;
+    private int sizeOfRec;
+    private boolean mouseIsPressedSeatsPlane;
+    private int[] seatsAreaStartCoords;
+    private int[] seatsAreaPreviousCoords;
+    private int typeFillSeats;
 
     public AdminCreateNewSpaceController(@Autowired ApplicationService applicationService) {
         super(applicationService);
@@ -102,6 +113,112 @@ public class AdminCreateNewSpaceController extends Controller implements Initial
         areaText3.setStyle(style);
         secondArea.setDisable(!value);
         areaText4.setStyle(style);
+    }
+
+    private Task<Void> drawSeats(int[][] seats) {
+        return new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                int offsetHeight, offsetWidth;
+                if (seats.length < seats[0].length && seats.length / seatsPlane.getHeight() < seats[0].length / seatsPlane.getWidth()) {
+                    sizeOfRec = (int)seatsPlane.getWidth() / (seats[0].length);
+                } else {
+                    sizeOfRec = (int)seatsPlane.getHeight() / (seats.length);
+                }
+                offsetWidth = ((int)seatsPlane.getWidth() - (sizeOfRec * seats[0].length)) / 2;
+                offsetHeight = ((int)seatsPlane.getHeight() - (sizeOfRec * seats.length)) / 2;
+                seatsPlaneOffsetWidth = offsetWidth;
+                seatsPlaneOffsetHeight = offsetHeight;
+
+                gc.setFill(Color.rgb(192, 192, 192));
+                gc.fillRect(0, 0, seatsPlane.getWidth(), seatsPlane.getHeight());
+                gc.setStroke(Color.BLACK);
+                gc.strokeRect(offsetWidth,
+                        offsetHeight,
+                        seatsPlane.getWidth() - offsetWidth * 2,
+                        seatsPlane.getHeight() - offsetHeight * 2
+                );
+                for (int i = 0; i < seats.length; i++) {
+                    for (int j = 0; j < seats[i].length; j++) {
+                        int status = seats[i][j];
+                        switch (status) {
+                            case 1:
+                                gc.setFill(Color.CYAN);
+                                break;
+                            case 2:
+                                gc.setFill(Color.CORAL);
+                                break;
+                            default:
+                                gc.setFill(Color.rgb(192, 192, 192));
+                                break;
+                        }
+                        gc.fillRect(j * sizeOfRec + offsetWidth, i * sizeOfRec + offsetHeight,
+                                    sizeOfRec, sizeOfRec);
+                        gc.strokeRect(j * sizeOfRec + offsetWidth, i * sizeOfRec + offsetHeight,
+                                    sizeOfRec, sizeOfRec);
+                    }
+                }
+                return null;
+            }
+        };
+    }
+
+    private void fillSeat(int x, int y) {
+        if (primarySeatsArray[y][x] == 1)
+            gc.setFill(Color.CYAN);
+        else if (primarySeatsArray[y][x] == 0)
+            gc.setFill(Color.rgb(192, 192, 192));
+        gc.setStroke(Color.BLACK);
+        gc.fillRect(x * sizeOfRec + seatsPlaneOffsetWidth,
+                y * sizeOfRec + seatsPlaneOffsetHeight, sizeOfRec, sizeOfRec);
+        gc.strokeRect(x * sizeOfRec + seatsPlaneOffsetWidth,
+                y * sizeOfRec + seatsPlaneOffsetHeight, sizeOfRec, sizeOfRec);
+    }
+
+    private int[] getSeatCoordinates(double x, double y) {
+        int[] res = new int[]{0, 0};
+        if ((x - seatsPlaneOffsetWidth) / sizeOfRec < 0.0D
+                || x > (seatsPlane.getWidth() - seatsPlaneOffsetWidth))
+            res[0] = -1;
+        else
+            res[0] = (int)(x - seatsPlaneOffsetWidth) / sizeOfRec;
+        if ((y - seatsPlaneOffsetHeight) / sizeOfRec < 0.0D
+                || y > (seatsPlane.getHeight() - seatsPlaneOffsetHeight))
+            res[1] = -1;
+        else
+            res[1] = (int)(y - seatsPlaneOffsetHeight) / sizeOfRec;
+        return res;
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        gc = seatsPlane.getGraphicsContext2D();
+        typeInput.valueProperty().addListener((observable, oldValue, newValue) ->
+                eventProperty.setVisible(newValue == null || newValue.equals("Для мероприятий")));
+        typeInput.setItems(FXCollections.observableList(Arrays.asList("Для мероприятий", "Для кружков")));
+        spaceColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+        areaColumn.setCellValueFactory(new PropertyValueFactory<>("area"));
+        capacityColumn.setCellValueFactory(new PropertyValueFactory<>("capacity"));
+        typeColumn.setCellValueFactory(cell ->
+                switch (cell.getValue().getType()) {
+                    case "event" -> new SimpleStringProperty("Для событий");
+                    case "lesson" -> new SimpleStringProperty("Для кружков");
+                    default -> new SimpleStringProperty("error");
+                }
+        );
+        DataBase.loadSpacesList(null);
+        FilteredList<Space> filteredSpacesList = new FilteredList<>(Space.objectsList, p ->
+                !DataBase.getOccupiedSpaces().contains(p.getId()));
+        spacesTable.setItems(filteredSpacesList);
+
+        mouseIsPressedSeatsPlane = false;
+        seatsAreaStartCoords = new int[] {-1, -1};
+        primarySeatsArray = new int[20][28];
+        for (int i = 0; i < 20; i++)
+            for (int j = 0; j < 28; j++)
+                primarySeatsArray[i][j] = 0;
+        new Thread(drawSeats(primarySeatsArray)).start();
     }
 
     @FXML
@@ -122,16 +239,24 @@ public class AdminCreateNewSpaceController extends Controller implements Initial
 
     @FXML
     void cleanForm() {
-        titleInput.setText(null);
+        titleInput.setText("");
         typeInput.getSelectionModel().clearSelection();
-        descriptionInput.setText(null);
-        areaInput.setText(null);
-        capacityInput.setText(null);
+        descriptionInput.setText("");
+        areaInput.setText("");
+        capacityInput.setText("");
         onlyOneEvent.setSelected(true);
         showPartAreaInputs(false);
         oneOrTwo.setSelected(false);
         spacesTable.getSelectionModel().clearSelection();
         hideWarnings();
+        primarySeatsArray = new int[20][28];
+        for (int i = 0; i < 20; i++)
+            for (int j = 0; j < 28; j++)
+                primarySeatsArray[i][j] = 0;
+        new Thread(drawSeats(primarySeatsArray)).start();
+        mouseIsPressedSeatsPlane = false;
+        seatsAreaStartCoords = new int[]{-1, -1};
+        seatsAreaPreviousCoords = null;
     }
 
     @FXML
@@ -161,6 +286,9 @@ public class AdminCreateNewSpaceController extends Controller implements Initial
             typeInput.getSelectionModel().select(space.getType().equals("event") ? 0 : 1);
             descriptionInput.setText(space.getDescription());
             if (space.getType().equals("event")) {
+                primarySeatsArray = space.getSeats();
+                new Thread(drawSeats(primarySeatsArray)).start();
+                seatsTab.setDisable(false);
                 areaInput.setText(space.getArea().toString());
                 capacityInput.setText(space.getCapacity().toString());
                 Integer[] partsArea = space.getPartsArea();
@@ -176,15 +304,23 @@ public class AdminCreateNewSpaceController extends Controller implements Initial
                     oneOrTwo.setSelected(false);
                 }
             }
+            else
+                seatsTab.setDisable(true);
         }
     }
 
     @FXML
     void hideWarnings() {
-        warningSpace.setVisible(false);
-        warningDescription.setVisible(false);
-        warningTitle.setVisible(false);
-        warningType.setVisible(false);
+        try {
+            successfulSaving.setVisible(false);
+            warningSpace.setVisible(false);
+            warningDescription.setVisible(false);
+            warningTitle.setVisible(false);
+            warningType.setVisible(false);
+            seatsTab.setDisable(false);
+        } catch (NullPointerException ex) {
+            logger.warn(ex.getMessage());
+        }
     }
 
     @FXML
@@ -194,7 +330,7 @@ public class AdminCreateNewSpaceController extends Controller implements Initial
         String description = descriptionInput.getText();
         String areaStr = areaInput.getText();
         String capacity = capacityInput.getText();
-        Boolean isOnlyOne = onlyOneEvent.isSelected();
+        boolean isOnlyOne = onlyOneEvent.isSelected();
         String type = typeInput.getValue();
 
         boolean flag = true;
@@ -214,11 +350,11 @@ public class AdminCreateNewSpaceController extends Controller implements Initial
         Integer area = areaStr.isEmpty() ? 0 : Integer.parseInt(areaStr);
         type = type.equals("Для мероприятий") ? "event" : "lesson";
         DataBase.addSpace(title, description, area,
-                capacity.isEmpty() ? 0 : Integer.parseInt(capacity), isOnlyOne,
+                capacity.isEmpty() ? 0 : Integer.parseInt(capacity), !isOnlyOne,
                 isOnlyOne ? new Integer[]{area, -1} : new Integer[]{
                         firstArea.getText().isEmpty() ? area : Integer.parseInt(firstArea.getText()),
                         secondArea.getText().isEmpty() ? 0 : Integer.parseInt(secondArea.getText())},
-                type, new Integer[]{});
+                type, primarySeatsArray);
         successfulSaving.setVisible(true);
     }
 
@@ -227,134 +363,60 @@ public class AdminCreateNewSpaceController extends Controller implements Initial
         applicationService.changeRootStage("adminDesktop", new AdminDesktopController(applicationService));
     }
 
-    private Task<Void> drawSeats(Seat[][] seats) {
-        return new Task<>() {
-            @Override
-            protected Void call() throws Exception {
-                int size = Seat.getSizeOfRec();
-                int offsetHeight, offsetWidth;
-                offsetWidth = ((int)seatsPlane.getWidth() - (size * seats[0].length)) / 2;
-                offsetHeight = ((int)seatsPlane.getHeight() - (size * seats.length)) / 2;
-                seatsPlaneOffsetWidth = offsetWidth;
-                seatsPlaneOffsetHeight = offsetHeight;
-
-                GraphicsContext gc = seatsPlane.getGraphicsContext2D();
-                gc.setFill(Color.rgb(192, 192, 192));
-                gc.fillRect(0, 0, seatsPlane.getWidth(), seatsPlane.getHeight());
-                gc.setStroke(Color.BLACK);
-                gc.strokeRect(offsetWidth,
-                        offsetHeight,
-                        seatsPlane.getWidth() - offsetWidth * 2,
-                        seatsPlane.getHeight() - offsetHeight * 2
-                );
-                for (int i = 0; i < seats.length; i++) {
-                    for (int j = 0; j < seats[i].length; j++) {
-                        int status = seats[i][j].getStatus();
-                        switch (status) {
-                            case 1:
-                                gc.setFill(Color.BLUE);
-                                break;
-                            case 2:
-                                gc.setFill(Color.RED);
-                                break;
-                            default:
-                                gc.setFill(Color.rgb(192, 192, 192));
-                                break;
-                        }
-                        gc.fillRect(j * size + offsetWidth, i * size + offsetHeight, size, size);
-                        if (status == 1 || status == 2)
-                            gc.strokeRect(j * size + offsetWidth, i * size + offsetHeight, size, size);
-                    }
-                }
-                return null;
-            }
-        };
+    @FXML
+    private void seatsPlaneMousePressed(MouseEvent event) {
+        int[] coordinates = getSeatCoordinates(event.getX(), event.getY());
+        typeFillSeats = primarySeatsArray[coordinates[1]][coordinates[0]] == 0 ? 1 : 0;
+        if (coordinates[0] == -1 || coordinates[1] == -1)
+            return;
+        if (primarySeatsArray[coordinates[1]][coordinates[0]] == 0)
+            primarySeatsArray[coordinates[1]][coordinates[0]] = 1;
+        else
+            primarySeatsArray[coordinates[1]][coordinates[0]] = 0;
+        fillSeat(coordinates[0], coordinates[1]);
+        seatsAreaStartCoords = coordinates.clone();
+        mouseIsPressedSeatsPlane = true;
     }
 
     @FXML
-    private void seatsPlaneClicked(MouseEvent event) {
-        Logger logger = LoggerFactory.getLogger(AdminCreateNewSpaceController.class);
-        double x = event.getX(), y = event.getY();
-        int seatX, seatY;
-        if ((x - seatsPlaneOffsetWidth) / Seat.getSizeOfRec() < 0.0D
-                || x > seatsPlane.getWidth() - 2 * seatsPlaneOffsetWidth)
-            seatX = -1;
+    private void seatsPlaneMouseMoved(MouseEvent event) {
+        int[] coordinates = getSeatCoordinates(event.getX(), event.getY());
+        if (!mouseIsPressedSeatsPlane || Arrays.equals(seatsAreaPreviousCoords, coordinates))
+            return;
+        if (coordinates[0] == -1 || coordinates[1] == -1)
+            return;
+        // x to right, y to down
+        if (coordinates[0] >= seatsAreaStartCoords[0] && coordinates[1] >= seatsAreaStartCoords[1])
+            for (int i = 0; i <= coordinates[1] - seatsAreaStartCoords[1]; i++)
+                for (int j = 0; j <= coordinates[0] - seatsAreaStartCoords[0]; j++) {
+                    primarySeatsArray[seatsAreaStartCoords[1] + i][seatsAreaStartCoords[0] + j] = typeFillSeats;
+                    fillSeat(seatsAreaStartCoords[0] + j, seatsAreaStartCoords[1] + i);
+                }
+        // x to left, y to down
+        else if (coordinates[0] < seatsAreaStartCoords[0] && coordinates[1] >= seatsAreaStartCoords[1])
+            for (int i = 0; i <= coordinates[1] - seatsAreaStartCoords[1]; i++)
+                for (int j = 0; j <= seatsAreaStartCoords[0] - coordinates[0]; j++) {
+                    primarySeatsArray[seatsAreaStartCoords[1] + i][coordinates[0] + j] = typeFillSeats;
+                    fillSeat(coordinates[0] + j, seatsAreaStartCoords[1] + i);
+                }
+        // x to right, y to up
+        else if (coordinates[0] >= seatsAreaStartCoords[0] && coordinates[1] < seatsAreaStartCoords[1])
+            for (int i = 0; i <= seatsAreaStartCoords[1] - coordinates[1]; i++)
+                for (int j = 0; j <= coordinates[0] - seatsAreaStartCoords[0]; j++) {
+                    primarySeatsArray[coordinates[1] + i][seatsAreaStartCoords[0] + j] = typeFillSeats;
+                    fillSeat(seatsAreaStartCoords[0] + j, coordinates[1] + i);
+                }
         else
-            seatX = (int)(x - seatsPlaneOffsetWidth) / Seat.getSizeOfRec();
-        if ((y - seatsPlaneOffsetHeight) / Seat.getSizeOfRec() < 0.0D
-                || y > seatsPlane.getHeight() - 2 * seatsPlaneOffsetHeight)
-            seatY = -1;
-        else
-            seatY = (int)(y - seatsPlaneOffsetHeight) / Seat.getSizeOfRec();
-
-        logger.info("{}, {}", seatX, seatY);
+            for (int i = 0; i <= seatsAreaStartCoords[1] - coordinates[1]; i++)
+                for (int j = 0; j <= seatsAreaStartCoords[0] - coordinates[0]; j++) {
+                    primarySeatsArray[coordinates[1] + i][coordinates[0] + j] = typeFillSeats;
+                    fillSeat(coordinates[0] + j, coordinates[1] + i);
+                }
+        seatsAreaPreviousCoords = coordinates.clone();
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        typeInput.valueProperty().addListener((observable, oldValue, newValue) ->
-                eventProperty.setVisible(newValue == null || newValue.equals("Для мероприятий")));
-        typeInput.setItems(FXCollections.observableList(Arrays.asList("Для мероприятий", "Для кружков")));
-        spaceColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
-        areaColumn.setCellValueFactory(new PropertyValueFactory<>("area"));
-        capacityColumn.setCellValueFactory(new PropertyValueFactory<>("capacity"));
-        typeColumn.setCellValueFactory(cell ->
-           switch (cell.getValue().getType()) {
-                case "event" -> new SimpleStringProperty("Для событий");
-                case "lesson" -> new SimpleStringProperty("Для кружков");
-                default -> new SimpleStringProperty("error");
-            }
-        );
-        DataBase.loadSpacesList(null);
-        FilteredList<Space> filteredSpacesList = new FilteredList<>(Space.objectsList, p -> true);
-        spacesTable.setItems(filteredSpacesList);
-
-        new Thread(drawSeats(Seat.getSeats(filteredSpacesList.get(0).getSeats(),
-                seatsPlane.getHeight(),
-                seatsPlane.getWidth()))).start();
-    }
-}
-
-class Seat {
-    private static int sizeOfRec;
-    // 0 - места нет, 1 - место есть, 2 - место занято, 3 - переход на следующий ряд
-    private int status;
-
-    public Seat(int status) {
-        this.status = status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public static int getSizeOfRec() {
-        return sizeOfRec;
-    }
-
-    public static Seat[][] getSeats(int[][] input, double height, double width) {
-        Seat[][] seats = new Seat[input.length][input[0].length];
-        if (input.length < input[0].length) {
-            sizeOfRec = (int)width / (input[0].length);
-        } else {
-            sizeOfRec = (int)height / (input.length);
-        }
-        for (int i = 0; i < seats.length; i++) {
-            for (int j = 0; j < seats[i].length; j++) {
-                seats[i][j] = new Seat(input[i][j]);
-            }
-        }
-        return seats;
-    }
-
-    @Override
-    public String toString() {
-        return "Seat{" + status +
-                '}';
+    @FXML
+    private void seatsPlaneMouseReleased(MouseEvent event) {
+        mouseIsPressedSeatsPlane = false;
     }
 }

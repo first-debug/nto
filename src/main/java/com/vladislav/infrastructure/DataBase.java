@@ -7,10 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.sql.*;
+import java.util.HashSet;
 
 
 @Repository
@@ -73,6 +71,23 @@ public class DataBase {
         }
     }
 
+    public static HashSet<Integer> getOccupiedSpaces() {
+        HashSet<Integer> occupiedSpaces = new HashSet<>();
+        try {
+            PreparedStatement pStatement;
+            for (String str : new String[] {"events", "lessons"}){
+                pStatement = connection.prepareStatement("SELECT spaceId FROM " + str);
+                ResultSet answer = pStatement.executeQuery();
+                while (answer.next()) {
+                    occupiedSpaces.add(answer.getInt("spaceId"));
+                }
+            }
+        } catch (SQLException ex) {
+            logger.error(ex.getMessage());
+        }
+        return occupiedSpaces;
+    }
+
     public static void addEvent(String title, String description, Space space, Long timeToStart, EventType type) {
         try {
             PreparedStatement pStatement = connection.prepareStatement(
@@ -109,6 +124,7 @@ public class DataBase {
         String sql = "SELECT e.id as eventId, e.title as eventTitle, e.description as eventDescription," +
                 " e.timeToStart as eventTimeToStart,  e.timeToStart as eventTimeToStart, " +
                 "s.id, s.space, s.description, s.area, s.capacity, s.type, s.hasSeveralParts, s.firstPartArea, " +
+                "s.seats as seats," +
                 "s.secondPartArea, " +
                 "te.id as typeId, te.type as typeName,  te.isEntertainment " +
                 "FROM events as e, spaces as s, typesOfEvents as te " +
@@ -177,12 +193,21 @@ public class DataBase {
 
     public static void addSpace(String space, String description, Integer area,
                                 Integer capacity, Boolean hasSeveralParts, Integer[] partsArea,
-                                String type, Integer[] seats) {
+                                String type, int[][] seats) {
         try {
             PreparedStatement pStatement = connection.prepareStatement(
-                    "INSERT OR REPLACE INTO spaces(space, description, area, capacity, hasSeveralParts," +
-                            " firstPartArea, secondPartArea, type, seats) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+                    "SELECT id FROM spaces WHERE space = ?"
             );
+            pStatement.setString(1, space);
+            int answer = pStatement.executeQuery().getInt(1);
+            String statement;
+            if (answer == 0)
+                statement = "INSERT INTO spaces(space, description, area, capacity, hasSeveralParts," +
+                        " firstPartArea, secondPartArea, type, seats) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            else
+                statement = "UPDATE spaces SET space=?, description=?, area=?, capacity=?, hasSeveralParts=?," +
+                        " firstPartArea=?, secondPartArea=?, type=?, seats=? WHERE id=?";
+            pStatement = connection.prepareStatement(statement);
             pStatement.setString(1, space);
             pStatement.setString(2, description);
             pStatement.setInt(3, area);
@@ -191,15 +216,18 @@ public class DataBase {
             pStatement.setInt(6, partsArea[0]);
             pStatement.setInt(7, partsArea[1]);
             pStatement.setString(8, type);
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            DataOutputStream dataOutput = new DataOutputStream(outputStream);
-            for (int seat : seats) {
-                dataOutput.writeInt(seat);
+            StringBuilder builder = new StringBuilder();
+            for (int[] row : seats) {
+                for (int seat : row)
+                    builder.append(seat);
+                builder.append(" ");
             }
-            pStatement.setBytes(9, outputStream.toByteArray());
+            pStatement.setString(9, builder.toString().strip());
+            if (answer == 0)
+                pStatement.setInt(10, answer);
             pStatement.execute();
             loadSpacesList(null);
-        } catch (SQLException | IOException ex) {
+        } catch (SQLException ex) {
             logger.error(ex.getMessage());
         }
     }
@@ -333,6 +361,7 @@ public class DataBase {
                 "e.id as eventId, e.title as eventTitle, e.description as eventDescription, " +
                 "e.timeToStart as eventTimeToStart, " +
                 "s.id, s.space, s.description, s.area, s.capacity, s.hasSeveralParts, s.firstPartArea," +
+                "s.seats as seats," +
                 " s.secondPartArea, s.type, " +
                 "te.id as typeId, te.type as typeName, te.isEntertainment " +
                 "FROM tasks as t, typesOfTasks as tt, " +
@@ -412,6 +441,7 @@ public class DataBase {
         String sql = "SELECT b.id as bookingId, b.time_reg as bookingReg, b.timeOfStart as bookingStart, b.timeOfEnd, b.halfOfSpace, b.comment, " +
                 "e.id as eventId, e.title as eventTitle, e.description as eventDescription, e.timeToStart as eventTimeToStart, " +
                 "s.id, s.space, s.description, s.area, s.capacity, s.hasSeveralParts, s.firstPartArea, s.secondPartArea, s.type, " +
+                "s.seats as seats," +
                 "te.id as typeId, te.type as typeName, te.isEntertainment " +
                 "FROM booking as b, events as e, typesOfEvents as te, spaces as s " +
                 "WHERE b.eventId = e.id AND e.spaceId = s.id " +
@@ -506,6 +536,7 @@ public class DataBase {
                 "sunday_end, " +
                 "ct.id as typeId, ct.title as typeTitle, ct.description as typeDescription, " +
                 "s.id, s.space, s.description, s.area, s.capacity, s.type, s.hasSeveralParts, s.firstPartArea, " +
+                "s.seats as seats," +
                 "s.secondPartArea, " +
                 "e.id as teacherId, e.first_name, e.last_name, e.patronymic " +
                 "FROM lessons as c, typesOfLessons as ct, spaces as s , employees as e " +
