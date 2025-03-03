@@ -1,8 +1,8 @@
 package com.vladislav.application;
 
-import atlantafx.base.theme.CupertinoLight;
 import com.vladislav.application.events.StartApplicationEvent;
 import com.vladislav.infrastructure.DataBase;
+import com.vladislav.presentation.WindowService;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +24,7 @@ public class JFXApplication extends javafx.application.Application {
                applicationContext -> {
                         applicationContext.registerBean(javafx.application.Application.class, () -> JFXApplication.this);
                         applicationContext.registerBean(DataBase.class);
+                        applicationContext.registerBean(WindowService.class);
                 };
 
         this.context = new SpringApplicationBuilder()

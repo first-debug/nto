@@ -1,6 +1,5 @@
 package com.vladislav.presentation;
 
-import com.vladislav.application.ApplicationService;
 import com.vladislav.presentation.primary.PrimaryController;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
@@ -12,7 +11,7 @@ import java.util.Calendar;
 @Component
 public class Controller {
 
-    protected final ApplicationService applicationService;
+    protected final WindowService windowService;
 
     @FXML
     protected MenuItem loginWindowButton;
@@ -20,33 +19,33 @@ public class Controller {
 
     @FXML
     private void exit() {
-        applicationService.stopApplication();
+        windowService.stopApplication();
     }
 
     @FXML
     private void closeWindow() {
-        applicationService.closeSecondWindow();
+        windowService.closeSecondWindow();
     }
 
     @FXML
     private void showDocumentation() {
-        applicationService.createNewWindow("about",
-                new AboutController(applicationService), "About", 720, 520);
+        windowService.createNewWindow("about",
+                new AboutController(windowService), "About", 720, 520);
     }
 
     @FXML
     private void switchToLoginWindow() {
-        applicationService.changeRootStage("loginForSE",
-                new LoginForSEController(applicationService));
+        windowService.changeRootStage("loginForSE",
+                new LoginForSEController(windowService));
     }
 
     @FXML
     private void switchToPrimary() {
-        applicationService.changeRootStage("primary", new PrimaryController(applicationService));
+        windowService.changeRootStage("primary", new PrimaryController(windowService));
     }
 
-    public Controller(ApplicationService applicationService) {
-        this.applicationService = applicationService;
+    public Controller(WindowService windowService) {
+        this.windowService = windowService;
     }
 
     protected Calendar parseDate(LocalDate date, String hourString, String minuteString) {

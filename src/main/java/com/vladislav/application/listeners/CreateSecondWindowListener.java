@@ -1,6 +1,6 @@
 package com.vladislav.application.listeners;
 
-import com.vladislav.application.ApplicationService;
+import com.vladislav.presentation.WindowService;
 import com.vladislav.application.events.CreateSecondWindowEvent;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -26,17 +26,17 @@ public class CreateSecondWindowListener implements ApplicationListener<CreateSec
 
     private final Logger logger = LoggerFactory.getLogger(CreateSecondWindowListener.class);
 
-    private final ApplicationService applicationService;
+    private final WindowService windowService;
     private final Image applicationIcon;
     private final Stage stage;
 
 
     public CreateSecondWindowListener(@Value("${ui.icon}") Resource appIconPath,
-                                      @Autowired ApplicationService applicationService,
+                                      @Autowired WindowService windowService,
                                       @Autowired @Qualifier("secondWindowStage") Stage secondWindowStage) {
         try {
             applicationIcon = new Image(Objects.requireNonNull(appIconPath.getInputStream()));
-            this.applicationService = applicationService;
+            this.windowService = windowService;
             this.stage = secondWindowStage;
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
@@ -47,7 +47,7 @@ public class CreateSecondWindowListener implements ApplicationListener<CreateSec
     @Override
     public void onApplicationEvent(@NonNull CreateSecondWindowEvent createEvent) {
         try {
-            Parent parent = applicationService.loadFXML(createEvent.getFxml(), createEvent.getController());
+            Parent parent = windowService.loadFXML(createEvent.getFxml(), createEvent.getController());
             stage.getIcons().add(applicationIcon);
             Scene scene = new Scene(parent, createEvent.getWidth(), createEvent.getHeight());
             stage.setMinWidth(500);
@@ -61,7 +61,7 @@ public class CreateSecondWindowListener implements ApplicationListener<CreateSec
             stage.getIcons().add(applicationIcon);
             stage.setOnCloseRequest(event -> {
                 try {
-                    applicationService.closeSecondWindow();
+                    windowService.closeSecondWindow();
                 } catch (Exception e) {
                     logger.error(e.getMessage(), e);
                 }

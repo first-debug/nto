@@ -1,7 +1,6 @@
 package com.vladislav.presentation.admin;
 
-import com.vladislav.application.ApplicationService;
-import com.vladislav.presentation.AdminDesktopController;
+import com.vladislav.presentation.WindowService;
 import com.vladislav.presentation.EventTablesController;
 import com.vladislav.infrastructure.DataBase;
 import com.vladislav.domain.Task;
@@ -44,18 +43,18 @@ public class AdminAllTasksController extends EventTablesController implements In
     @FXML
     private TableColumn<Task, String> typeColumn;
 
-    public AdminAllTasksController(@Autowired ApplicationService applicationService) {
-        super(applicationService);
+    public AdminAllTasksController(@Autowired WindowService windowService) {
+        super(windowService);
     }
 
     @FXML
     public void switchToPrimary() {
-        applicationService.changeRootStage("adminDesktop", new AdminDesktopController(applicationService));
+        windowService.changeRootStage("adminDesktop", new AdminDesktopController(windowService));
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        tableOfTasks.setRowFactory(row -> new TableRow<Task>() {
+        tableOfTasks.setRowFactory(row -> new TableRow<>() {
             @Override
             public void updateItem(Task item, boolean empty) {
                 if (!empty) {

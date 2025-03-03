@@ -1,6 +1,5 @@
 package com.vladislav.presentation;
 
-import com.vladislav.application.ApplicationService;
 import com.vladislav.application.JFXApplication;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -25,13 +24,13 @@ public class AboutController extends Controller implements Initializable {
     @FXML
     private Text textArea;
 
-    public AboutController(@Autowired ApplicationService applicationService) {
-        super(applicationService);
+    public AboutController(@Autowired WindowService windowService) {
+        super(windowService);
     }
 
     @FXML
     private void close() {
-        applicationService.closeSecondWindow();
+        windowService.closeSecondWindow();
     }
 
     @Override
@@ -41,7 +40,7 @@ public class AboutController extends Controller implements Initializable {
             BufferedReader text = new BufferedReader(new InputStreamReader((InputStream) doc.getContent()));
             text.lines().reduce((x, y) -> x + '\n' + y).ifPresent(t -> textArea.setText(t));
             text.close();
-        } catch (IOException ex) {
+        } catch (IOException | NullPointerException ex) {
             logger.error(ex.getMessage());
         }
 

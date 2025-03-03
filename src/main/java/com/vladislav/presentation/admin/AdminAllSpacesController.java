@@ -1,7 +1,6 @@
 package com.vladislav.presentation.admin;
 
-import com.vladislav.application.ApplicationService;
-import com.vladislav.presentation.AdminDesktopController;
+import com.vladislav.presentation.WindowService;
 import com.vladislav.presentation.EventTablesController;
 import com.vladislav.infrastructure.DataBase;
 import com.vladislav.domain.Space;
@@ -40,19 +39,19 @@ public class AdminAllSpacesController extends EventTablesController implements I
     @FXML
     private TableColumn<Space, String> typeColumn;
 
-    public AdminAllSpacesController(@Autowired ApplicationService applicationService) {
-        super(applicationService);
+    public AdminAllSpacesController(@Autowired WindowService windowService) {
+        super(windowService);
     }
 
     @FXML
     public void switchToPrimary() {
-        applicationService.changeRootStage("adminDesktop", new AdminDesktopController(applicationService));
+        windowService.changeRootStage("adminDesktop", new AdminDesktopController(windowService));
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loginWindowButton.setVisible(false);
-        ArrayList<String> spaceTypeList = new ArrayList<String>() {{
+        ArrayList<String> spaceTypeList = new ArrayList<>() {{
             add("Все");
             add("Для мероприятий");
             add("Для кружков");
@@ -60,18 +59,15 @@ public class AdminAllSpacesController extends EventTablesController implements I
         filter.setValue("Все");
         filter.setItems(FXCollections.observableList(spaceTypeList));
         filter.valueProperty().addListener((observable, oldValue, newValue) -> filteredSpaceList.setPredicate(space -> {
-            boolean result = false;
+            boolean result;
             String type = space.getType();
             if (newValue == null || newValue.isEmpty() || newValue.equals("Все")) result = true;
             else {
-                switch (newValue) {
-                    case "Для мероприятий":
-                        result = type.equals("event");
-                        break;
-                    case "Для кружков":
-                        result = type.equals("lesson");
-                        break;
-                }
+                result = switch (newValue) {
+                    case "Для мероприятий" -> type.equals("event");
+                    case "Для кружков" -> type.equals("lesson");
+                    default -> false;
+                };
             }
             tableOfSpaces.refresh();
             return result;
@@ -80,14 +76,11 @@ public class AdminAllSpacesController extends EventTablesController implements I
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         areaColumn.setCellValueFactory(new PropertyValueFactory<>("area"));
         capacityColumn.setCellValueFactory(new PropertyValueFactory<>("capacity"));
-        typeColumn.setCellValueFactory(cell -> {
-            switch (cell.getValue().getType()) {
-                case "event":
-                    return new SimpleStringProperty("Для событий");
-                case "lesson":
-                    return new SimpleStringProperty("Для кружков");
-            }
-            return new SimpleStringProperty("error");
+        typeColumn.setCellValueFactory(cell ->
+                switch (cell.getValue().getType()) {
+                    case "event" -> new SimpleStringProperty("Для событий");
+                    case "lesson" -> new SimpleStringProperty("Для кружков");
+                    default -> new SimpleStringProperty("error");
         });
 
 

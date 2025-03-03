@@ -1,6 +1,5 @@
 package com.vladislav.presentation;
 
-import com.vladislav.application.ApplicationService;
 import com.vladislav.domain.LessonType;
 import com.vladislav.infrastructure.DataBase;
 import javafx.beans.property.StringProperty;
@@ -57,8 +56,8 @@ public class EditLessonTypeController extends Controller implements Initializabl
     @FXML
     private Text successfulSaving;
 
-    public EditLessonTypeController(@Autowired ApplicationService applicationService) {
-        super(applicationService);
+    public EditLessonTypeController(@Autowired WindowService windowService) {
+        super(windowService);
     }
 
     @FXML
@@ -137,7 +136,7 @@ public class EditLessonTypeController extends Controller implements Initializabl
 
     @FXML
     private void close() {
-        applicationService.closeSecondWindow();
+        windowService.closeSecondWindow();
     }
 
     @Override

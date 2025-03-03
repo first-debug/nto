@@ -31,7 +31,6 @@ public class LessonType {
             objectsList.forEach(f -> {
                 if (f.getId().equals(id)) {
                     f.setName(name);
-                    return;
                 }
             });
             return objectsList.get(objectIndex);

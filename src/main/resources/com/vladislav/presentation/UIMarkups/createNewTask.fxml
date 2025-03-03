@@ -54,7 +54,7 @@
                         </TableView>
                         <Text fx:id="warningEvent" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;"
                               text="Нужно выбрать мероприятие!" visible="false"/>
-                        <Button mnemonicParsing="false" onAction="#switchToEditEvents" text="Редактивароть">
+                        <Button mnemonicParsing="false" onAction="#switchToEditEvents" text="Редактировать">
                             <font>
                                 <Font size="13.0"/>
                             </font>
@@ -70,7 +70,7 @@
                                 <TableColumn fx:id="eventNameColumn" prefWidth="181.0" text="Мероприятие" />
                                 <TableColumn fx:id="spaceColumn" prefWidth="129.0" text="Помещение" />
                                 <TableColumn fx:id="deadlineColumn" prefWidth="95.0" text="Срок" />
-                                <TableColumn fx:id="descriptionColumn" minWidth="0.0" prefWidth="120.0" text="Описнание" />
+                                <TableColumn fx:id="descriptionColumn" minWidth="0.0" prefWidth="120.0" text="Описание" />
                                 <TableColumn fx:id="statusColumn" prefWidth="93.0" text="Статус" />
                             </columns>
                         </TableView>

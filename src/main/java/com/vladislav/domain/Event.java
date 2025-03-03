@@ -49,7 +49,6 @@ public class Event {
                     f.setSpace(space);
                     f.setTimeToStart(timeToStart);
                     f.setEventType(eventType);
-                    return;
                 }
             });
             return objectsList.get(objectIndex);

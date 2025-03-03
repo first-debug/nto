@@ -1,6 +1,6 @@
 package com.vladislav.presentation.primary;
 
-import com.vladislav.application.ApplicationService;
+import com.vladislav.presentation.WindowService;
 import com.vladislav.presentation.EventTablesController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,8 +15,8 @@ public class EntertainmentEventsController extends EventTablesController impleme
     @FXML
     private Button goBackButton;
 
-    public EntertainmentEventsController(@Autowired ApplicationService applicationService) {
-        super(applicationService);
+    public EntertainmentEventsController(@Autowired WindowService windowService) {
+        super(windowService);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.vladislav.presentation;
 
-import com.vladislav.application.ApplicationService;
 import com.vladislav.infrastructure.DataBase;
 import com.vladislav.domain.EventType;
 import javafx.beans.property.StringProperty;
@@ -51,8 +50,8 @@ public class EditEventTypeController extends Controller implements Initializable
     @FXML
     private Text successfulSaving;
 
-    public EditEventTypeController(@Autowired ApplicationService applicationService) {
-        super(applicationService);
+    public EditEventTypeController(@Autowired WindowService windowService) {
+        super(windowService);
     }
 
     @FXML
@@ -140,7 +139,7 @@ public class EditEventTypeController extends Controller implements Initializable
 
     @FXML
     private void close() {
-        applicationService.closeSecondWindow();
+        windowService.closeSecondWindow();
     }
 
     @Override

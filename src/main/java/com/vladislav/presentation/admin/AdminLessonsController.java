@@ -1,7 +1,6 @@
 package com.vladislav.presentation.admin;
 
-import com.vladislav.application.ApplicationService;
-import com.vladislav.presentation.AdminDesktopController;
+import com.vladislav.presentation.WindowService;
 import com.vladislav.presentation.Controller;
 import com.vladislav.infrastructure.DataBase;
 import com.vladislav.domain.Lesson;
@@ -49,13 +48,13 @@ public class AdminLessonsController extends Controller implements Initializable 
     @FXML
     private TableColumn<Lesson, String> sundayColumn;
 
-    public AdminLessonsController(@Autowired ApplicationService applicationService) {
-        super(applicationService);
+    public AdminLessonsController(@Autowired WindowService windowService) {
+        super(windowService);
     }
 
     @FXML
     public void switchToPrimary() {
-        applicationService.changeRootStage("adminDesktop", new AdminDesktopController(applicationService));
+        windowService.changeRootStage("adminDesktop", new AdminDesktopController(windowService));
     }
 
     @Override

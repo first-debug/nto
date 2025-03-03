@@ -35,7 +35,6 @@ public class Teacher {
                     f.setFirstName(firstName);
                     f.setLastName(lastName);
                     f.setPatronymic(patronymic);
-                    return;
                 }
             });
             return objectsList.get(objectIndex);

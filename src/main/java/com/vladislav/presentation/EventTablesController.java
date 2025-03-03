@@ -1,6 +1,5 @@
 package com.vladislav.presentation;
 
-import com.vladislav.application.ApplicationService;
 import com.vladislav.infrastructure.DataBase;
 import com.vladislav.domain.Event;
 import javafx.beans.property.StringProperty;
@@ -37,8 +36,8 @@ public class EventTablesController extends Controller {
     @FXML
     private TableColumn<Event, String> typeColumn;
 
-    public EventTablesController(@Autowired ApplicationService applicationService) {
-        super(applicationService);
+    public EventTablesController(@Autowired WindowService windowService) {
+        super(windowService);
     }
 
     public void createEventsTable(Boolean isEntertainment, String title) {

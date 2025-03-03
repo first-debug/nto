@@ -58,7 +58,6 @@ public class Lesson {
                     f.setType(type);
                     f.setTeacher(teacher);
                     f.setSchedule(schedule);
-                    return;
                 }
             });
             return objectsList.get(objectIndex);

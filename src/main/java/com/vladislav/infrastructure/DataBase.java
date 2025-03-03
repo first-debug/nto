@@ -88,18 +88,31 @@ public class DataBase {
         return occupiedSpaces;
     }
 
-    public static void addEvent(String title, String description, Space space, Long timeToStart, EventType type) {
+    public static void addEvent(String title, String description, Space space, Long timeToStart, EventType type, int[][] seats) {
         try {
             PreparedStatement pStatement = connection.prepareStatement(
-                    "INSERT OR REPLACE INTO events(title, description, spaceId, timeToStart, typeId, isEntertainment) " +
-                            "VALUES (?, ?, ?, ?, ?, ?)"
+                    "SELECT id FROM events WHERE title = ?"
             );
+            pStatement.setString(1, title);
+            int answer = pStatement.executeQuery().getInt(1);
+            String statement;
+            if (answer == 0)
+                statement = "INSERT INTO events(title, description, spaceId, timeToStart, typeId, isEntertainment, seats)" +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?)";
+            else
+                statement = "UPDATE events SET title=?, description=?, spaceId=?, timeToStart=?, typeId=?," +
+                        " isEntertainment=?, seats=? WHERE id=?";
+
+            pStatement = connection.prepareStatement(statement);
             pStatement.setString(1, title);
             pStatement.setString(2, description);
             pStatement.setInt(3, space.getId());
             pStatement.setLong(4, timeToStart);
             pStatement.setInt(5, type.getId());
             pStatement.setBoolean(6, type.getIsEntertainment());
+            pStatement.setString(7, getSeatsString(seats));
+            if (answer != 0)
+                pStatement.setInt(8, answer);
             pStatement.execute();
             loadEvents(type.getIsEntertainment());
         } catch (SQLException ex) {
@@ -216,20 +229,24 @@ public class DataBase {
             pStatement.setInt(6, partsArea[0]);
             pStatement.setInt(7, partsArea[1]);
             pStatement.setString(8, type);
-            StringBuilder builder = new StringBuilder();
-            for (int[] row : seats) {
-                for (int seat : row)
-                    builder.append(seat);
-                builder.append(" ");
-            }
-            pStatement.setString(9, builder.toString().strip());
-            if (answer == 0)
+            pStatement.setString(9, getSeatsString(seats));
+            if (answer != 0)
                 pStatement.setInt(10, answer);
             pStatement.execute();
             loadSpacesList(null);
         } catch (SQLException ex) {
             logger.error(ex.getMessage());
         }
+    }
+
+    private static String getSeatsString(int[][] seats) {
+        StringBuilder builder = new StringBuilder();
+        for (int[] row : seats) {
+            for (int seat : row)
+                builder.append(seat);
+            builder.append(" ");
+        }
+        return builder.toString().strip();
     }
 
     public static void removeSpace(Space space) {

@@ -1,7 +1,6 @@
 package com.vladislav.presentation.admin;
 
-import com.vladislav.application.ApplicationService;
-import com.vladislav.presentation.AdminDesktopController;
+import com.vladislav.presentation.WindowService;
 import com.vladislav.presentation.EventTablesController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -12,18 +11,18 @@ import java.util.ResourceBundle;
 
 public class AdminAllEventsController extends EventTablesController implements Initializable {
 
-    public AdminAllEventsController(@Autowired ApplicationService applicationService) {
-        super(applicationService);
+    public AdminAllEventsController(@Autowired WindowService windowService) {
+        super(windowService);
     }
 
     @FXML
     public void switchToPrimary() {
-        applicationService.changeRootStage("adminDesktop", new AdminDesktopController(applicationService));
+        windowService.changeRootStage("adminDesktop", new AdminDesktopController(windowService));
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        createEventsTable(null, "Все меороприятия");
+        createEventsTable(null, "Все мероприятия");
         loginWindowButton.setVisible(false);
     }
 }

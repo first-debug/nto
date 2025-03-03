@@ -1,7 +1,6 @@
 package com.vladislav.presentation.admin;
 
-import com.vladislav.application.ApplicationService;
-import com.vladislav.presentation.AdminDesktopController;
+import com.vladislav.presentation.WindowService;
 import com.vladislav.presentation.Controller;
 import com.vladislav.domain.Booking;
 import com.vladislav.infrastructure.DataBase;
@@ -122,8 +121,8 @@ public class AdminCreateNewBookingController extends Controller implements Initi
     @FXML
     private Text warningSpace;
 
-    public AdminCreateNewBookingController(@Autowired ApplicationService applicationService) {
-        super(applicationService);
+    public AdminCreateNewBookingController(@Autowired WindowService windowService) {
+        super(windowService);
     }
 
     @FXML
@@ -375,23 +374,23 @@ public class AdminCreateNewBookingController extends Controller implements Initi
 
     @FXML
     void switchToEditEvents() {
-        applicationService.changeRootStage("createNewEvent", new AdminCreateNewEventController(applicationService));
+        windowService.changeRootStage("createNewEvent", new AdminCreateNewEventController(windowService));
     }
 
     @FXML
     void switchToEditSpaces() {
-        applicationService.changeRootStage("createNewSpace", new AdminCreateNewSpaceController(applicationService));
+        windowService.changeRootStage("createNewSpace", new AdminCreateNewSpaceController(windowService));
     }
 
     @FXML
     void switchToPrimary() {
-        applicationService.changeRootStage("adminDesktop", new AdminDesktopController(applicationService));
+        windowService.changeRootStage("adminDesktop", new AdminDesktopController(windowService));
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // ComboBox - часы
-        ObservableList<String> hoursList = FXCollections.observableList(new ArrayList<String>() {{
+        ObservableList<String> hoursList = FXCollections.observableList(new ArrayList<>() {{
             for (Integer i = 0; i < 24; i++) {
                 if (i < 10) {
                     add('0' + i.toString());
@@ -404,7 +403,7 @@ public class AdminCreateNewBookingController extends Controller implements Initi
         hoursEnd.setValue(null);
 
         // ComboBox - минуты
-        ObservableList<String> minutesList = FXCollections.observableList(new ArrayList<String>() {{
+        ObservableList<String> minutesList = FXCollections.observableList(new ArrayList<>() {{
             for (Integer i = 0; i < 60; i++) {
                 if (i < 10) {
                     add('0' + i.toString());

@@ -1,7 +1,6 @@
 package com.vladislav.presentation.admin;
 
-import com.vladislav.application.ApplicationService;
-import com.vladislav.presentation.AdminDesktopController;
+import com.vladislav.presentation.WindowService;
 import com.vladislav.presentation.Controller;
 import com.vladislav.infrastructure.DataBase;
 import com.vladislav.domain.Space;
@@ -101,8 +100,8 @@ public class AdminCreateNewSpaceController extends Controller implements Initial
     private int[] seatsAreaPreviousCoords;
     private int typeFillSeats;
 
-    public AdminCreateNewSpaceController(@Autowired ApplicationService applicationService) {
-        super(applicationService);
+    public AdminCreateNewSpaceController(@Autowired WindowService windowService) {
+        super(windowService);
     }
 
     void showPartAreaInputs(boolean value) {
@@ -118,7 +117,7 @@ public class AdminCreateNewSpaceController extends Controller implements Initial
     private Task<Void> drawSeats(int[][] seats) {
         return new Task<>() {
             @Override
-            protected Void call() throws Exception {
+            protected Void call(){
                 int offsetHeight, offsetWidth;
                 if (seats.length < seats[0].length && seats.length / seatsPlane.getHeight() < seats[0].length / seatsPlane.getWidth()) {
                     sizeOfRec = (int)seatsPlane.getWidth() / (seats[0].length);
@@ -360,7 +359,7 @@ public class AdminCreateNewSpaceController extends Controller implements Initial
 
     @FXML
     void switchToPrimary() {
-        applicationService.changeRootStage("adminDesktop", new AdminDesktopController(applicationService));
+        windowService.changeRootStage("adminDesktop", new AdminDesktopController(windowService));
     }
 
     @FXML

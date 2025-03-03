@@ -1,7 +1,6 @@
 package com.vladislav.presentation.admin;
 
-import com.vladislav.application.ApplicationService;
-import com.vladislav.presentation.AdminDesktopController;
+import com.vladislav.presentation.WindowService;
 import com.vladislav.presentation.Controller;
 import com.vladislav.infrastructure.DataBase;
 import com.vladislav.domain.Event;
@@ -18,6 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.URL;
@@ -102,25 +102,25 @@ public class AdminCreateNewEventController extends Controller implements Initial
     @FXML
     private Text successfulSaving;
 
-    public AdminCreateNewEventController(@Autowired ApplicationService applicationService) {
-        super(applicationService);
+    public AdminCreateNewEventController(@Autowired WindowService windowService) {
+        super(windowService);
     }
 
     @FXML
     private void switchToPrimary() {
-        applicationService.changeRootStage("adminDesktop", new AdminDesktopController(applicationService));
+        windowService.changeRootStage("adminDesktop", new AdminDesktopController(windowService));
     }
 
     @FXML
     private void switchToEditEventTypes() {
         hideWarnings();
-        applicationService.createNewWindow("editEventType", new EditEventTypeController(applicationService),
+        windowService.createNewWindow("editEventType", new EditEventTypeController(windowService),
                 "Редактирование видов мероприятий",505, 490);
     }
 
     @FXML
     private void switchToEditSpaces() {
-        applicationService.changeRootStage("createNewSpace", new AdminCreateNewSpaceController(applicationService));
+        windowService.changeRootStage("createNewSpace", new AdminCreateNewSpaceController(windowService));
     }
 
     @FXML
@@ -254,8 +254,9 @@ public class AdminCreateNewEventController extends Controller implements Initial
             return;
         }
         if (!flag) return;
-
-        DataBase.addEvent(title, description, spaceList.get(0), timeToStart.getTimeInMillis(), eventTypeList.get(0));
+        LoggerFactory.getLogger(AdminCreateNewEventController.class).info("{}", spaceList.get(0));
+        DataBase.addEvent(title, description, spaceList.get(0), timeToStart.getTimeInMillis(), eventTypeList.get(0),
+                spaceList.get(0).getSeats());
         successfulSaving.setVisible(true);
     }
 
@@ -285,7 +286,7 @@ public class AdminCreateNewEventController extends Controller implements Initial
         FilteredList<Event> filteredEventList = new FilteredList<>(Event.objectsList, p -> true);
         eventsTable.setItems(filteredEventList);
         // ComboBox - часы
-        ObservableList<String> hoursList = FXCollections.observableList(new ArrayList<String>() {{
+        ObservableList<String> hoursList = FXCollections.observableList(new ArrayList<>() {{
             for (Integer i = 0; i < 24; i++) {
                 if (i < 10) {
                     add('0' + i.toString());
@@ -296,7 +297,7 @@ public class AdminCreateNewEventController extends Controller implements Initial
         hours.setValue(null);
 
         // ComboBox - минуты
-        ObservableList<String> minutesList = FXCollections.observableList(new ArrayList<String>() {{
+        ObservableList<String> minutesList = FXCollections.observableList(new ArrayList<>() {{
             for (Integer i = 0; i < 60; i++) {
                 if (i < 10) {
                     add('0' + i.toString());

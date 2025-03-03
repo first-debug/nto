@@ -32,7 +32,6 @@ public class TaskType {
                 if (f.getId().equals(id)) {
                     f.setName(name);
                     f.setDescription(description);
-                    return;
                 }
             });
             return objectsList.get(objectIndex);

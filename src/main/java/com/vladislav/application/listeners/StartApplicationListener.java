@@ -1,6 +1,6 @@
 package com.vladislav.application.listeners;
 
-import com.vladislav.application.ApplicationService;
+import com.vladislav.presentation.WindowService;
 import com.vladislav.application.events.StartApplicationEvent;
 import com.vladislav.presentation.primary.PrimaryController;
 import javafx.scene.Parent;
@@ -29,7 +29,7 @@ public class StartApplicationListener implements ApplicationListener<StartApplic
     private final String applicationTitle;
     private final Image applicationIcon;
     private final ConfigurableApplicationContext context;
-    public final ApplicationService applicationService;
+    public final WindowService windowService;
 
     public StartApplicationListener(@Value("${ui.icon}") Resource appIconPath, @Value("${ui.title}") String title,
                                     @Autowired ConfigurableApplicationContext context) {
@@ -40,15 +40,15 @@ public class StartApplicationListener implements ApplicationListener<StartApplic
         }
         applicationTitle = title;
         this.context = context;
-        applicationService = context.getBean(ApplicationService.class);
+        windowService = context.getBean(WindowService.class);
     }
 
     @Override
     public void onApplicationEvent(@NonNull StartApplicationEvent startApplicationEvent) {
         try {
             Stage stage = startApplicationEvent.getStage();
-            Parent parent = applicationService
-                    .loadFXML("primary", new PrimaryController(context.getBean(ApplicationService.class)));
+            Parent parent = windowService
+                    .loadFXML("primary", new PrimaryController(context.getBean(WindowService.class)));
             Scene scene = new Scene(parent, 1240, 650);
             stage.setMinWidth(960);
             stage.setMinHeight(600);

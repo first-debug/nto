@@ -1,10 +1,12 @@
 package com.vladislav.presentation.admin;
 
-import com.vladislav.application.ApplicationService;
+import com.vladislav.domain.Event;
+import com.vladislav.domain.Status;
+import com.vladislav.domain.Task;
+import com.vladislav.domain.TaskType;
+import com.vladislav.presentation.WindowService;
 import com.vladislav.infrastructure.DataBase;
-import com.vladislav.presentation.AdminDesktopController;
 import com.vladislav.presentation.Controller;
-import com.vladislav.domain.*;
 import com.vladislav.presentation.EditTasksTypeController;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
@@ -80,8 +82,8 @@ public class AdminCreateNewTaskController extends Controller implements Initiali
     @FXML
     private Tab taskTab;
 
-    public AdminCreateNewTaskController(@Autowired ApplicationService applicationService) {
-        super(applicationService);
+    public AdminCreateNewTaskController(@Autowired WindowService windowService) {
+        super(windowService);
     }
 
     @FXML
@@ -220,17 +222,17 @@ public class AdminCreateNewTaskController extends Controller implements Initiali
 
     @FXML
     private void switchToPrimary() {
-        applicationService.changeRootStage("adminDesktop", new AdminDesktopController(applicationService));
+        windowService.changeRootStage("adminDesktop", new AdminDesktopController(windowService));
     }
 
     @FXML
     void switchToEditEvents() {
-        applicationService.changeRootStage("createNewEvent", new AdminCreateNewEventController(applicationService));
+        windowService.changeRootStage("createNewEvent", new AdminCreateNewEventController(windowService));
     }
 
     @FXML
     void switchToEditTypes() {
-        applicationService.createNewWindow("editType", new EditTasksTypeController(applicationService), "Редактирование видов заявок",
+        windowService.createNewWindow("editType", new EditTasksTypeController(windowService), "Редактирование видов заявок",
                 505, 490);
     }
 
@@ -256,7 +258,7 @@ public class AdminCreateNewTaskController extends Controller implements Initiali
         typeTable.setItems(taskTypesList);
 
 
-        tableOfTasks.setRowFactory(row -> new TableRow<Task>() {
+        tableOfTasks.setRowFactory(row -> new TableRow<>() {
             @Override
             public void updateItem(Task item, boolean empty) {
 //                if (!empty) {

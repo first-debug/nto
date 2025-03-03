@@ -1,6 +1,5 @@
 package com.vladislav.presentation;
 
-import com.vladislav.application.ApplicationService;
 import com.vladislav.infrastructure.DataBase;
 import com.vladislav.domain.Status;
 import com.vladislav.domain.Task;
@@ -42,8 +41,8 @@ public class SEDesktopController extends Controller implements Initializable {
     @FXML
     private TableColumn<Task, StringProperty> descriptionColumn;
 
-    public SEDesktopController(@Autowired ApplicationService applicationService) {
-        super(applicationService);
+    public SEDesktopController(@Autowired WindowService windowService) {
+        super(windowService);
     }
 
     @FXML
@@ -79,7 +78,7 @@ public class SEDesktopController extends Controller implements Initializable {
         spaceColumn.setCellValueFactory(cell -> cell.getValue().getSpace().nameProperty());
         deadlineColumn.setCellValueFactory(new PropertyValueFactory<>("deadlineString"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
-        tableOfTasks.setRowFactory(row -> new TableRow<Task>() {
+        tableOfTasks.setRowFactory(row -> new TableRow<>() {
             @Override
             public void updateItem(Task item, boolean empty) {
                 super.updateItem(item, empty);

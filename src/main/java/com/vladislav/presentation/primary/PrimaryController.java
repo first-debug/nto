@@ -1,38 +1,38 @@
 package com.vladislav.presentation.primary;
 
-import com.vladislav.application.ApplicationService;
+import com.vladislav.presentation.WindowService;
 import com.vladislav.presentation.Controller;
 import javafx.fxml.FXML;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class PrimaryController extends Controller {
 
-    public PrimaryController(@Autowired ApplicationService applicationService) {
-        super(applicationService);
+    public PrimaryController(@Autowired WindowService windowService) {
+        super(windowService);
     }
 
     @FXML
     private void switchToEventsList() {
-        applicationService.changeRootStage("allEvents", new AllEventsController(applicationService));
+        windowService.changeRootStage("allEvents", new AllEventsController(windowService));
     }
 
     @FXML
     private void switchToEntertainments() {
-        applicationService.changeRootStage("allEvents", new EntertainmentEventsController(applicationService));
+        windowService.changeRootStage("allEvents", new EntertainmentEventsController(windowService));
     }
 
     @FXML
     private void switchToEducation() {
-        applicationService.changeRootStage("allEvents", new EducationalEventsController(applicationService));
+        windowService.changeRootStage("allEvents", new EducationalEventsController(windowService));
     }
 
     @FXML
     private void switchToTeaching() {
-        applicationService.changeRootStage("allEvents", new TeachingEventsController(applicationService));
+        windowService.changeRootStage("allEvents", new TeachingEventsController(windowService));
     }
 
     @FXML
     private void switchToLessonsList() {
-        applicationService.changeRootStage("allLessons", new LessonsController(applicationService));
+        windowService.changeRootStage("allLessons", new LessonsController(windowService));
     }
 }

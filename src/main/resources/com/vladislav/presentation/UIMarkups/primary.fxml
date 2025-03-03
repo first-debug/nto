@@ -22,7 +22,7 @@
             <MenuItem mnemonicParsing="false" onAction="#showDocumentation" text="О приложении" />
         </Menu>
     </MenuBar>
-    <Label text="Выбирете раздел:">
+    <Label text="Выберите раздел:">
         <font>
             <Font size="34.0" />
         </font>

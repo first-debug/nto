@@ -1,7 +1,7 @@
 package com.vladislav.presentation;
 
-import com.vladislav.application.ApplicationService;
 import com.vladislav.infrastructure.DataBase;
+import com.vladislav.presentation.admin.AdminDesktopController;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -23,8 +23,8 @@ public class LoginForSEController extends Controller {
     @FXML
     private Text warningPassword;
 
-    public LoginForSEController(@Autowired ApplicationService applicationService) {
-        super(applicationService);
+    public LoginForSEController(@Autowired WindowService windowService) {
+        super(windowService);
     }
 
     @FXML
@@ -46,9 +46,9 @@ public class LoginForSEController extends Controller {
     @FXML
     void login() {
         if (loginInput.getText().equalsIgnoreCase("e"))
-            applicationService.changeRootStage("desktopForSE", new SEDesktopController(applicationService));
+            windowService.changeRootStage("desktopForSE", new SEDesktopController(windowService));
         if (loginInput.getText().equalsIgnoreCase("a") || loginInput.getText().equalsIgnoreCase(""))
-            applicationService.changeRootStage("adminDesktop", new AdminDesktopController(applicationService));
+            windowService.changeRootStage("adminDesktop", new AdminDesktopController(windowService));
         boolean flag = true;
 
         String login = loginInput.getText();
@@ -85,9 +85,9 @@ public class LoginForSEController extends Controller {
         }
         String role = dbAnswer[1];
         if (role.equals("admin"))
-            applicationService.changeRootStage("adminDesktop", new AdminDesktopController(applicationService));
+            windowService.changeRootStage("adminDesktop", new AdminDesktopController(windowService));
         else if (role.equals("service"))
-            applicationService.changeRootStage("desktopForSE", new SEDesktopController(applicationService));
+            windowService.changeRootStage("desktopForSE", new SEDesktopController(windowService));
     }
 
     @FXML

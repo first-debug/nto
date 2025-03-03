@@ -36,7 +36,6 @@ public class EventType {
                 if (f.getId() == id) {
                     f.setName(name);
                     f.setIsEntertainmentString(isEntertainment);
-                    return;
                 }
             });
             return objectsList.get(objectIndex);

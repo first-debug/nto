@@ -53,7 +53,6 @@ public class Task {
                     f.setType(type);
                     f.setDeadline(deadline);
                     f.setStatus(status);
-                    return;
                 }
             });
             return objectsList.get(objectIndex);

@@ -1,6 +1,5 @@
 package com.vladislav.presentation;
 
-import com.vladislav.application.ApplicationService;
 import com.vladislav.infrastructure.DataBase;
 import com.vladislav.domain.TaskType;
 import javafx.beans.property.StringProperty;
@@ -48,8 +47,8 @@ public class EditTasksTypeController extends Controller implements Initializable
     @FXML
     private Text successfulSaving;
 
-    public EditTasksTypeController(@Autowired ApplicationService applicationService) {
-        super(applicationService);
+    public EditTasksTypeController(@Autowired WindowService windowService) {
+        super(windowService);
     }
 
     @FXML
@@ -128,7 +127,7 @@ public class EditTasksTypeController extends Controller implements Initializable
 
     @FXML
     private void close() {
-        applicationService.closeSecondWindow();
+        windowService.closeSecondWindow();
     }
 
     @Override

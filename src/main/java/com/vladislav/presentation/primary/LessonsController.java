@@ -1,6 +1,6 @@
 package com.vladislav.presentation.primary;
 
-import com.vladislav.application.ApplicationService;
+import com.vladislav.presentation.WindowService;
 import com.vladislav.presentation.Controller;
 import com.vladislav.infrastructure.DataBase;
 import com.vladislav.domain.Lesson;
@@ -48,8 +48,8 @@ public class LessonsController extends Controller implements Initializable {
     @FXML
     private TableColumn<Lesson, String> sundayColumn;
 
-    public LessonsController(@Autowired ApplicationService applicationService) {
-        super(applicationService);
+    public LessonsController(@Autowired WindowService windowService) {
+        super(windowService);
     }
 
     @Override

@@ -58,7 +58,6 @@ public class Booking {
                     f.setSpace(space);
                     f.setHalfOfSpace(halfOfSpace);
                     f.setComment(comment);
-                    return;
                 }
             });
             return objectsList.get(objectIndex);

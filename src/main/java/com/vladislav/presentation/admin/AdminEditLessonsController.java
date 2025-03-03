@@ -1,10 +1,12 @@
 package com.vladislav.presentation.admin;
 
-import com.vladislav.application.ApplicationService;
+import com.vladislav.domain.Lesson;
+import com.vladislav.domain.LessonType;
+import com.vladislav.domain.Space;
+import com.vladislav.domain.Teacher;
+import com.vladislav.presentation.WindowService;
 import com.vladislav.infrastructure.DataBase;
-import com.vladislav.presentation.AdminDesktopController;
 import com.vladislav.presentation.Controller;
-import com.vladislav.domain.*;
 import com.vladislav.presentation.EditLessonTypeController;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
@@ -149,8 +151,8 @@ public class AdminEditLessonsController extends Controller implements Initializa
     @FXML
     private Text successfulSaving;
 
-    public AdminEditLessonsController(@Autowired ApplicationService applicationService) {
-        super(applicationService);
+    public AdminEditLessonsController(@Autowired WindowService windowService) {
+        super(windowService);
     }
 
     private boolean fixTime(TextField field) {
@@ -470,25 +472,25 @@ public class AdminEditLessonsController extends Controller implements Initializa
 
     @FXML
     void switchToEditLessonTypes() {
-        applicationService.createNewWindow("editType", new EditLessonTypeController(applicationService),
+        windowService.createNewWindow("editType", new EditLessonTypeController(windowService),
                 "Новый вид кружков", 505, 490);
     }
 
     @FXML
     void switchToEditSpaces() {
-        applicationService.changeRootStage("createNewSpace", new AdminCreateNewSpaceController(applicationService));
+        windowService.changeRootStage("createNewSpace", new AdminCreateNewSpaceController(windowService));
     }
 
     @FXML
     void switchToPrimary() {
-        applicationService.changeRootStage("adminDesktop", new AdminDesktopController(applicationService));
+        windowService.changeRootStage("adminDesktop", new AdminDesktopController(windowService));
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         schedulesInput = new TextField[]{monStart, monEnd, tueStart, tueEnd, wenStart, wenEnd, thuStart, thuEnd,
                 friStart, friEnd, satStart, satEnd, sunStart, sunEnd};
-        teacherBox.setConverter(new StringConverter<Teacher>() {
+        teacherBox.setConverter(new StringConverter<>() {
             @Override
             public String toString(Teacher object) {
                 return object.getLastName() + " " + object.getFirstName() + " " + object.getPatronymic();
