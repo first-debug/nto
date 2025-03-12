@@ -1,6 +1,8 @@
-package com.vladislav.presentation;
+package com.vladislav.presentation.servicesImpl;
 
 import com.vladislav.application.events.CreateSecondWindowEvent;
+import com.vladislav.presentation.Controller;
+import com.vladislav.presentation.services.WindowService;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,12 +17,12 @@ import java.io.IOException;
 import java.net.URL;
 
 @Service
-public class WindowService {
-    private final Logger logger = LoggerFactory.getLogger(WindowService.class);
+public class WindowServiceImpl implements WindowService {
+    private final Logger logger = LoggerFactory.getLogger(WindowServiceImpl.class);
 
     private final ConfigurableApplicationContext applicationContext;
 
-    public WindowService(@Autowired ConfigurableApplicationContext applicationContext) {
+    public WindowServiceImpl(@Autowired ConfigurableApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
     }
 
@@ -50,7 +52,7 @@ public class WindowService {
     public Parent loadFXML(String fxml, Controller controller) {
         try {
             URL fxmlFile;
-            fxmlFile = WindowService.class.getResource("UIMarkups/" + fxml + ".fxml");
+            fxmlFile = WindowServiceImpl.class.getResource("UIMarkups/" + fxml + ".fxml");
             FXMLLoader fxmlLoader = new FXMLLoader(fxmlFile);
             fxmlLoader.setController(controller);
             return fxmlLoader.load();

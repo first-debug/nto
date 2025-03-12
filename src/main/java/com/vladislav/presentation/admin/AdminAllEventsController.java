@@ -1,6 +1,6 @@
 package com.vladislav.presentation.admin;
 
-import com.vladislav.presentation.WindowService;
+import com.vladislav.presentation.services.WindowService;
 import com.vladislav.presentation.EventTablesController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

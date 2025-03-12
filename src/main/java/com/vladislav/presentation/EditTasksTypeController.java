@@ -2,6 +2,7 @@ package com.vladislav.presentation;
 
 import com.vladislav.infrastructure.DataBase;
 import com.vladislav.domain.TaskType;
+import com.vladislav.presentation.services.WindowService;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;

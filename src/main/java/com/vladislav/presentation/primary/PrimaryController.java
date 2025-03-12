@@ -1,6 +1,6 @@
 package com.vladislav.presentation.primary;
 
-import com.vladislav.presentation.WindowService;
+import com.vladislav.presentation.services.WindowService;
 import com.vladislav.presentation.Controller;
 import javafx.fxml.FXML;
 import org.springframework.beans.factory.annotation.Autowired;

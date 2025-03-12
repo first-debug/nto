@@ -4,7 +4,7 @@ import com.vladislav.domain.Lesson;
 import com.vladislav.domain.LessonType;
 import com.vladislav.domain.Space;
 import com.vladislav.domain.Teacher;
-import com.vladislav.presentation.WindowService;
+import com.vladislav.presentation.services.WindowService;
 import com.vladislav.infrastructure.DataBase;
 import com.vladislav.presentation.Controller;
 import com.vladislav.presentation.EditLessonTypeController;

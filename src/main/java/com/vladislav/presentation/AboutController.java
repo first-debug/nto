@@ -1,6 +1,7 @@
 package com.vladislav.presentation;
 
 import com.vladislav.application.JFXApplication;
+import com.vladislav.presentation.services.WindowService;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.text.Text;

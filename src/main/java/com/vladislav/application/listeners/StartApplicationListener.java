@@ -1,6 +1,6 @@
 package com.vladislav.application.listeners;
 
-import com.vladislav.presentation.WindowService;
+import com.vladislav.presentation.services.WindowService;
 import com.vladislav.application.events.StartApplicationEvent;
 import com.vladislav.presentation.primary.PrimaryController;
 import javafx.scene.Parent;

@@ -1,6 +1,7 @@
 package com.vladislav.presentation;
 
 import com.vladislav.presentation.primary.PrimaryController;
+import com.vladislav.presentation.services.WindowService;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
 import org.springframework.stereotype.Component;

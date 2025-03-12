@@ -1,6 +1,6 @@
 package com.vladislav.presentation.admin;
 
-import com.vladislav.presentation.WindowService;
+import com.vladislav.presentation.services.WindowService;
 import com.vladislav.presentation.Controller;
 import com.vladislav.infrastructure.DataBase;
 import com.vladislav.domain.Space;
@@ -208,7 +208,7 @@ public class AdminCreateNewSpaceController extends Controller implements Initial
         );
         DataBase.loadSpacesList(null);
         FilteredList<Space> filteredSpacesList = new FilteredList<>(Space.objectsList, p ->
-                !DataBase.getOccupiedSpaces().contains(p.getId()));
+                /*true);*/!DataBase.getOccupiedSpaces().contains(p.getId()));
         spacesTable.setItems(filteredSpacesList);
 
         mouseIsPressedSeatsPlane = false;

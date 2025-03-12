@@ -2,7 +2,7 @@ package com.vladislav.application;
 
 import com.vladislav.application.events.StartApplicationEvent;
 import com.vladislav.infrastructure.DataBase;
-import com.vladislav.presentation.WindowService;
+import com.vladislav.presentation.servicesImpl.WindowServiceImpl;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class JFXApplication extends javafx.application.Application {
                applicationContext -> {
                         applicationContext.registerBean(javafx.application.Application.class, () -> JFXApplication.this);
                         applicationContext.registerBean(DataBase.class);
-                        applicationContext.registerBean(WindowService.class);
+                        applicationContext.registerBean(WindowServiceImpl.class);
                 };
 
         this.context = new SpringApplicationBuilder()

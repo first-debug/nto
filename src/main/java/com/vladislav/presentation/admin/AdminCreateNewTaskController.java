@@ -4,7 +4,7 @@ import com.vladislav.domain.Event;
 import com.vladislav.domain.Status;
 import com.vladislav.domain.Task;
 import com.vladislav.domain.TaskType;
-import com.vladislav.presentation.WindowService;
+import com.vladislav.presentation.services.WindowService;
 import com.vladislav.infrastructure.DataBase;
 import com.vladislav.presentation.Controller;
 import com.vladislav.presentation.EditTasksTypeController;

@@ -1,7 +1,7 @@
 package com.vladislav.presentation.admin;
 
 import com.vladislav.presentation.Controller;
-import com.vladislav.presentation.WindowService;
+import com.vladislav.presentation.services.WindowService;
 import javafx.fxml.FXML;
 import org.springframework.beans.factory.annotation.Autowired;
 

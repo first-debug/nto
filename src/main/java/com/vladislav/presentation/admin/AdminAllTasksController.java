@@ -1,6 +1,6 @@
 package com.vladislav.presentation.admin;
 
-import com.vladislav.presentation.WindowService;
+import com.vladislav.presentation.services.WindowService;
 import com.vladislav.presentation.EventTablesController;
 import com.vladislav.infrastructure.DataBase;
 import com.vladislav.domain.Task;
