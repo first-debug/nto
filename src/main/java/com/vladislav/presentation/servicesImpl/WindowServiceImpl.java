@@ -52,7 +52,7 @@ public class WindowServiceImpl implements WindowService {
     public Parent loadFXML(String fxml, Controller controller) {
         try {
             URL fxmlFile;
-            fxmlFile = WindowServiceImpl.class.getResource("UIMarkups/" + fxml + ".fxml");
+            fxmlFile = WindowServiceImpl.class.getResource("../UIMarkups/" + fxml + ".fxml");
             FXMLLoader fxmlLoader = new FXMLLoader(fxmlFile);
             fxmlLoader.setController(controller);
             return fxmlLoader.load();
