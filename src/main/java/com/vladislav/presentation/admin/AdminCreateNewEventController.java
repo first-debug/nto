@@ -254,7 +254,6 @@ public class AdminCreateNewEventController extends Controller implements Initial
             return;
         }
         if (!flag) return;
-        LoggerFactory.getLogger(AdminCreateNewEventController.class).info("{}", spaceList.get(0));
         DataBase.addEvent(title, description, spaceList.get(0), timeToStart.getTimeInMillis(), eventTypeList.get(0),
                 spaceList.get(0).getSeats());
         successfulSaving.setVisible(true);

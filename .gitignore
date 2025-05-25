@@ -4,3 +4,6 @@ target/
 out/
 solution/
 log4j2.xml
+db.db-shm
+db.db-wal
+*.sql

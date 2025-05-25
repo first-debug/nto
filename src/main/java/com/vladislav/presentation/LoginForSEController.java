@@ -46,20 +46,23 @@ public class LoginForSEController extends Controller {
 
     @FXML
     void login() {
-        if (loginInput.getText().equalsIgnoreCase("e"))
-            windowService.changeRootStage("desktopForSE", new SEDesktopController(windowService));
-        if (loginInput.getText().equalsIgnoreCase("a") || loginInput.getText().equalsIgnoreCase(""))
-            windowService.changeRootStage("adminDesktop", new AdminDesktopController(windowService));
         boolean flag = true;
-
         String login = loginInput.getText();
         String password = passwordInput.getText();
-
+        
         if (login == null) {
             warningLogin.setText("Нужно ввести логин!");
             warningLogin.setVisible(true);
             flag = false;
         }
+        else {
+            if (login.equalsIgnoreCase("e"))
+                windowService.changeRootStage("desktopForSE", new SEDesktopController(windowService));
+            if (login.equalsIgnoreCase("a") || login.equalsIgnoreCase(""))
+                windowService.changeRootStage("adminDesktop", new AdminDesktopController(windowService));
+        }
+
+        
         if (login != null && login.isEmpty()) {
             warningLogin.setText("Нужно ввести логин!");
             warningLogin.setVisible(true);
